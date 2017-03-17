@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, Icon, Text } from 'native-base';
 
-const SButton = ({ onPress, children }) => {
+const SButton = ({ onPress, children, icon }) => {
   const { buttonStyle } = styles;
   return (
     <Button iconLeft bordered rounded style={buttonStyle} onPress={onPress}>
-      <Icon name='md-log-in' style={{ color: '#FFF' }} />
+      <Icon name={icon} style={{ color: '#FFF' }} />
       <Text style={{ color: '#FFF' }}>
         {children}
       </Text>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://192.168.1.65:3000/api';
+const URL = 'https://minifoot.herokuapp.com/api';
 //axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 const config = {
   headers: { 'Content-Type': 'application/json' }

@@ -43,7 +43,7 @@ class LoginForm extends Component {
       return <Spinner size="large" />;
     }
     return (
-      <SButton onPress={this.onButtonPress.bind(this)}>
+      <SButton icon='md-log-in' onPress={this.onButtonPress.bind(this)}>
         Login
       </SButton>
     );
@@ -59,16 +59,16 @@ class LoginForm extends Component {
                 <Form>
                   <InputText
                     label="Email"
-                    placeholder="Enter votre E-mail"
+                    placeholder="Enter E-mail"
                     onChangeText={this.onEmailChange.bind(this)}
                     value={this.props.email}
                     testInput={this.props.testEmail}
-                    icon={'md-contact'}
+                    icon={'ios-mail-outline'}
                   />
                   <InputText
                     secureTextEntry
                     label="Password"
-                    placeholder="Enter votre Password"
+                    placeholder="Enter Password"
                     onChangeText={this.onPasswordChange.bind(this)}
                     value={this.props.password}
                     testInput={this.props.testPassword}
