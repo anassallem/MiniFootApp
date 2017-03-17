@@ -10,6 +10,7 @@ class LoginForm extends Component {
   componentWillMount() {
     this.props.loadUser();
     //test
+    //test3
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== '') {
