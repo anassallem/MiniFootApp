@@ -6,7 +6,7 @@ import { Container, Thumbnail, Text, Content,
 
 class SideBar extends Component {
   componentWillMount() {
-
+      //test
   }
 
   render() {
