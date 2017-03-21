@@ -5,6 +5,8 @@ import { Container, Thumbnail, Text, Content,
      ListItem, Left, Right, Icon, Body } from 'native-base';
 
 let user = null;
+const background = require('./assets/drawer.jpg');
+const imageUser = require('./assets/userdefault.png');
 
 class SideBar extends Component {
 
@@ -32,14 +34,13 @@ class SideBar extends Component {
       catch (e) { console.log('caught error', e); }
   }
   renderUser() {
-      const background = require('./assets/drawer.jpg');
-      const imageUser = require('./assets/userdefault.png');
       const { backgroundImage, textUserStyle } = styles;
       if (user !== null) {
           return (
               <Thumbnail style={backgroundImage} square source={background}>
                    <Thumbnail source={imageUser}
-                    style={{ width: 70, height: 70 }} />
+                    style={{ width: 70, height: 70 }}
+                   />
                 <Text style={textUserStyle}>{ user.user.firstname + ' ' + user.user.lastname}</Text>
                    <Text style={textUserStyle}>{user.user.email}</Text>
               </Thumbnail>
