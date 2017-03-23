@@ -9,7 +9,7 @@ class UserCharacteristic extends Component {
 
   render() {
       const { background, styleUserImage, styleContainerUser, styleCharacteristic, textStyle, textStyleCharacteristic } = styles;
-      const { imageUser, userName, age, poids, taille } = this.props;
+      const { imageUser, userName, age, poids, taille, total } = this.props;
       return (
         <Image source={backgroundImage} style={background}>
            <Container style={styleContainerUser}>
@@ -24,7 +24,7 @@ class UserCharacteristic extends Component {
                   halfStar={'ios-star-half'}
                   iconSet={'Ionicons'}
                   maxStars={5}
-                  rating={3}
+                  rating={total}
                   starColor={'yellow'}
                   starSize={20}
                   emptyStarColor={'yellow'}

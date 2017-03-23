@@ -10,3 +10,5 @@ export const LOGIN_USER = 'login_user';
 export const CREATE_USER = 'create_user';
 export const CREATE_USER_SUCCESS = 'create_user_success';
 export const CREATE_USER_FAIL = 'create_user_fail';
+export const GET_USER = 'get_user';
+export const GET_USER_SKILLS = 'get_user_SKILLS';

@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { create } from './api/UserApi';
 import {
@@ -8,7 +7,7 @@ import {
   PASSWORDCONFIRM_CHANGED,
   CREATE_USER,
   CREATE_USER_SUCCESS,
-  CREATE_USER_FAIL
+  CREATE_USER_FAIL,
 } from './types';
 
 export const nameChanged = (text) => {
@@ -47,20 +46,7 @@ export const passwordConfirmChanged = (text, password) => {
   };
 };
 
-export const loadedUser = () => {
-  return (dispatch) => {
-    try {
-         AsyncStorage.getItem("user", (err, user) => {
-           if (user !== null){
-               Actions.main();
-            }
-        });
-    }
-    catch (e) {
-        console.log('caught error', e);
-    }
-  }
-};
+
 export const createUser = (user) => {
   return (dispatch) => {
     dispatch({ type: CREATE_USER });
@@ -85,24 +71,15 @@ const createUserFail = (dispatch, message) => {
   });
 };
 
-const createUserSuccess = (dispatch, user) => {
+const createUserSuccess = (dispatch) => {
   dispatch({
     type: CREATE_USER_SUCCESS,
   });
-  setCache(user);
-  Actions.main();
+  Actions.login();
 };
 
-async function setCache (user){
-  try {
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-    } catch (error) {
-      // Error saving data
-    }
-}
-
 function testPassword(password, confirmPassword) {
-  return (password !== confirmPassword)? false: true;
+  return (password !== confirmPassword) ? false: true;
 }
 function testAdresse(adresse) {
   if (adresse === '') {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Card, CardItem, Icon } from 'native-base';
 
-const UserInfo = ({ city, position, email, phone, equipe }) => {
+const UserInfo = ({ city, position, email, phone, equipe, adresse }) => {
   const { containerInfo, textStyle, styleIcon } = styles;
   return (
             <Card style={containerInfo}>
@@ -11,6 +11,10 @@ const UserInfo = ({ city, position, email, phone, equipe }) => {
                 <CardItem>
                     <Icon name="ios-navigate-outline" style={styleIcon} />
                     <Text style={textStyle}>Habite à {city}</Text>
+                </CardItem>
+                <CardItem>
+                    <Icon name="ios-home-outline" style={styleIcon} />
+                    <Text style={textStyle}>{adresse}</Text>
                 </CardItem>
                 <CardItem>
                     <Icon name="ios-football-outline" style={styleIcon} />

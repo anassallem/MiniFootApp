@@ -16,9 +16,6 @@ import {
 import { InputText, SButton, Spinner } from './common';
 
 class RegisterForm extends Component {
-  componentWillMount() {
-    this.props.loadedUser();
-  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== '') {
         Toast.show({

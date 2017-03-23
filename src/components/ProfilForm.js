@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
+import { getUserById, getSkills } from '../actions';
 
 const imageUser = require('./assets/userdefault.png');
+
+  let age = '---';
+  let taille = '---';
+  let poste = 'Ajouter votre position sur le terrain';
+  let poid = '---';
 
 class ProfilForm extends Component {
     constructor(props) {
       super(props);
       this.state = { modalVisible: false };
+    }
+    componentWillMount() {
+      this.props.getUserById();
+      this.props.getSkills();
+    }
+    componentWillReceiveProps(nextProps) {
+        age === undefined ? age : nextProps.user.joueur.age;
+        taille === undefined ? taille : nextProps.user.joueur.taille;
+        poste === undefined ? poste : nextProps.user.joueur.poste;
+        poid === undefined ? poid : nextProps.user.joueur.poid;
     }
     onButtonPressUpdate() {
         this.setState({ modalVisible: true });
@@ -18,16 +35,21 @@ class ProfilForm extends Component {
     }
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
+      let { phone, city } = this.props.user;
+      phone !== undefined ? phone : phone = 'Ajouter votre numéro de téléphone';
+      city !== undefined ? city : city = 'Ajouter votre ville';
+      let { attaque, defence, milieu, gardien, total } = this.props.skills;
+
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={imageUser} userName={'user name'} age={25} poids={80} taille={160} />
+                <UserCharacteristic imageUser={imageUser} total={total} userName={this.props.user.firstname + ' ' + this.props.user.lastname} age={age} poids={poid} taille={taille} />
                     <Modal
-                        animationType={'slide'}
-                        transparent
-                        visible={this.state.modalVisible}
-                        onRequestClose={() => {}}
-                        >
+                      animationType={'slide'}
+                      transparent
+                      visible={this.state.modalVisible}
+                      onRequestClose={() => {}}
+                    >
                           <View style={containerStyle}>
                             <View style={closeButton}>
                               <TouchableNativeFeedback onPress={() => { this.setState({ modalVisible: false }); }}>
@@ -55,8 +77,8 @@ class ProfilForm extends Component {
                         </Text>
                     </Button>
                 </View>
-                <UserSkills AC={3} DF={1.5} MC={4} GB={1} nbrAC={20} nbrDF={15} nbrMC={30} nbrGB={8} disabled />
-                <UserInfo city={'sousse'} position={'attaquant'} email={'exemple@gmail.com'} phone={22000000} equipe={'-'} />
+                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrAC={20} nbrDF={15} nbrMC={30} nbrGB={8} disabled />
+                <UserInfo city={city} adresse={this.props.user.adresse} position={poste} email={this.props.user.email} phone={phone} equipe={'--'} />
             </View>
         </ScrollView>
     );
@@ -108,4 +130,10 @@ const styles = {
  }
 };
 
-export default ProfilForm;
+const mapStateToProps = ({ userProfile }) => {
+  const { user, skills } = userProfile;
+
+  return { user, skills };
+};
+
+export default connect(mapStateToProps, { getUserById, getSkills })(ProfilForm);
