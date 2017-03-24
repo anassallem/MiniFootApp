@@ -13,7 +13,7 @@ export const create = (user) => {
 
 export const getUser = (idUser) => {
 //  const idUser = '58c86411f633e229300cf3ea';
-    const requestURL = `${URL}/${idUser}`;
+    const requestURL = `${URL}/users/${idUser}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;
@@ -23,7 +23,17 @@ export const getUser = (idUser) => {
 };
 
 export const getUserSkills = (idUser) => {
-    const requestURL = `${URL}/${idUser}/skills`;
+    const requestURL = `${URL}/users/${idUser}/skills`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const getUsers = (text) => {
+    const requestURL = `${URL}/users?name=${text}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;

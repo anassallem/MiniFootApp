@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { AsyncStorage, BackAndroid } from 'react-native';
-import getTheme from '../theme/components';
-import material from '../theme/variables/material';
+import { BackAndroid } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Tab, Tabs, TabHeading, Icon,
-     Text, Button, Header, Right, Left, Body, Title, Drawer, StyleProvider } from 'native-base';
+    Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
 import SideBar from './SideBar';
 
 class Accueil extends Component {
   componentWillMount() {
     const route = this.props.title;
-    BackAndroid.addEventListener('hardwareBackPress', function() {
+    BackAndroid.addEventListener('hardwareBackPress', function(){
      if (route === 'Accueil') {
       //BackAndroid.exitApp();
       return false;
@@ -33,9 +31,8 @@ class Accueil extends Component {
               content={<SideBar />}
               onClose={() => this.closeDrawer()}
       >
-      <StyleProvider style={getTheme(material)}>
         <Container>
-          <Header hasTabs>
+          <Header hasTabs searchBar rounded>
               <Left>
                 <Button transparent onPress={() => this.openDrawer()}>
                     <Icon name='menu' />
@@ -44,7 +41,11 @@ class Accueil extends Component {
               <Body>
                   <Title>Header</Title>
               </Body>
-              <Right />
+              <Right>
+                  <Button transparent onPress={() => Actions.searchPlayer()}>
+                      <Icon name='md-search' />
+                  </Button>
+              </Right>
           </Header>
           <Container>
               <Tabs>
@@ -63,7 +64,6 @@ class Accueil extends Component {
               </Tabs>
           </Container>
         </Container>
-      </StyleProvider>
       </Drawer>
     );
   }
