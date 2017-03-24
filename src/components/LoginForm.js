@@ -9,9 +9,6 @@ import { InputText, SButton, Spinner } from './common';
 class LoginForm extends Component {
   componentWillMount() {
     this.props.loadUser();
-    //test
-    //test3
-    //test 2
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.error !== '') {

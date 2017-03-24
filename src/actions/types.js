@@ -12,3 +12,5 @@ export const CREATE_USER_SUCCESS = 'create_user_success';
 export const CREATE_USER_FAIL = 'create_user_fail';
 export const GET_USER = 'get_user';
 export const GET_USER_SKILLS = 'get_user_SKILLS';
+export const IMAGE_CHANGED = 'image_changed';
+export const MODAL_CHANGED = 'modal_changed';

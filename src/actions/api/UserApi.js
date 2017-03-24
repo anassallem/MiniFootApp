@@ -13,7 +13,7 @@ export const create = (user) => {
 
 export const getUser = (idUser) => {
 //  const idUser = '58c86411f633e229300cf3ea';
-    const requestURL = `${URL}/${idUser}`;
+    const requestURL = `${URL}/users/${idUser}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;

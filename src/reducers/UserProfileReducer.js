@@ -1,11 +1,13 @@
 import {
   GET_USER,
-  GET_USER_SKILLS
+  GET_USER_SKILLS,
+  IMAGE_CHANGED
 } from '../actions/types';
 
 const INITIAL_STATE = {
   user: {},
-  skills: {}
+  skills: {},
+  photo: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -14,7 +16,8 @@ export default (state = INITIAL_STATE, action) => {
           return { ...state, user: action.payload };
     case GET_USER_SKILLS:
           return { ...state, skills: action.payload };
-
+    case IMAGE_CHANGED:
+          return { ...state, photo: action.payload };
     default:
       return state;
   }
