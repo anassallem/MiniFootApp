@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills, changeImage } from '../actions';
+import { getUserById, getSkills, openModal } from '../actions';
 
 const imageUser = require('./assets/userdefault.png');
 
@@ -26,34 +26,14 @@ var options = {
 class ProfilForm extends Component {
     constructor(props) {
       super(props);
-      this.state = { modalVisible: false };
+  //    this.state = { modalVisible: false };
       this.state = { photo: null };
-
-       setImage (response) {
-        console.log('Response = ', response);
-
-        if (response.didCancel) {
-          console.log('User cancelled photo picker');
-        }
-        else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
-        }
-        else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
-        }
-        else {
-          const source = { uri: response.uri, isStatic: true };
-          //console.log(source);
-          this.setState({ photo: source });
-        }
     }
-    }
+
     componentWillMount() {
       this.props.getUserById();
+      console.log(this.props.user);
       this.props.getSkills();
-
-    }
-    componentDidMount() {
 
     }
 
@@ -64,16 +44,36 @@ class ProfilForm extends Component {
         poid === undefined ? poid : nextProps.user.joueur.poid;
     }
     onButtonPressUpdate() {
-        this.setState({ modalVisible: true });
+        this.props.openModal()
     }
     onButtonPressFrinds() {
     }
 
     onTextChangePhoto() {
       // Open Image Library:
-     ImagePicker.launchImageLibrary(noData:null, (this.setImage));
-  }
+    // ImagePicker.launchImageLibrary(noData:null, (this.setImage));
+      ImagePicker.showImagePicker(null, (response) => {
+      console.log('Response = ', response);
 
+      if (response.didCancel) {
+       console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+       console.log('ImagePicker Error: ', response.error);
+      }
+
+      else {
+       let source = { uri: response.uri };
+      console.log(response.uri);
+       // You can also display the image using data:
+       // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+       this.setState({
+         photo: source,
+         modalVisible: false
+       });
+      }
+      });
+  }
 
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
@@ -85,11 +85,11 @@ class ProfilForm extends Component {
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={photo} total={total} userName={this.props.user.firstname + ' ' + this.props.user.lastname} age={age} poids={poid} taille={taille} />
+                <UserCharacteristic imageUser={this.state.photo} total={total} userName={this.props.user.firstname + ' ' + this.props.user.lastname} age={age} poids={poid} taille={taille} />
                     <Modal
                       animationType={'slide'}
                       transparent
-                      visible={this.state.modalVisible}
+                      visible={this.props.modalchange}
                       onRequestClose={() => {}}
                     >
                           <View style={containerStyle}>
@@ -174,9 +174,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, photo } = userProfile;
+  const { user, skills, modalchange } = userProfile;
 
-  return { user, skills, photo };
+  return { user, skills, modalchange };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills, changeImage })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, openModal })(ProfilForm);
