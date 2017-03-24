@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
+import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills } from '../actions';
+import { getUserById, getSkills, changeImage } from '../actions';
 
 const imageUser = require('./assets/userdefault.png');
 
+var options = {
+  title: 'Select Avatar',
+  customButtons: [
+    { name: 'fb', title: 'Choose Photo from Facebook' },
+  ],
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
   let age = '---';
   let taille = '---';
   let poste = 'Ajouter votre position sur le terrain';
@@ -16,11 +27,36 @@ class ProfilForm extends Component {
     constructor(props) {
       super(props);
       this.state = { modalVisible: false };
+      this.state = { photo: null };
+
+       setImage (response) {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+          console.log('User cancelled photo picker');
+        }
+        else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+        }
+        else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+        }
+        else {
+          const source = { uri: response.uri, isStatic: true };
+          //console.log(source);
+          this.setState({ photo: source });
+        }
+    }
     }
     componentWillMount() {
       this.props.getUserById();
       this.props.getSkills();
+
     }
+    componentDidMount() {
+
+    }
+
     componentWillReceiveProps(nextProps) {
         age === undefined ? age : nextProps.user.joueur.age;
         taille === undefined ? taille : nextProps.user.joueur.taille;
@@ -31,19 +67,25 @@ class ProfilForm extends Component {
         this.setState({ modalVisible: true });
     }
     onButtonPressFrinds() {
-
     }
+
+    onTextChangePhoto() {
+      // Open Image Library:
+     ImagePicker.launchImageLibrary(noData:null, (this.setImage));
+  }
+
+
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       let { phone, city } = this.props.user;
       phone !== undefined ? phone : phone = 'Ajouter votre numéro de téléphone';
       city !== undefined ? city : city = 'Ajouter votre ville';
-      let { attaque, defence, milieu, gardien, total } = this.props.skills;
+      const { attaque, defence, milieu, gardien, total } = this.props.skills;
 
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={imageUser} total={total} userName={this.props.user.firstname + ' ' + this.props.user.lastname} age={age} poids={poid} taille={taille} />
+                <UserCharacteristic imageUser={photo} total={total} userName={this.props.user.firstname + ' ' + this.props.user.lastname} age={age} poids={poid} taille={taille} />
                     <Modal
                       animationType={'slide'}
                       transparent
@@ -58,7 +100,7 @@ class ProfilForm extends Component {
                             </View>
                             <View style={containerModal}>
                               <Text style={styleTextModal}> Modifier votre profile </Text>
-                              <Text style={styleTextModal}> Changer votre photo de profile</Text>
+                              <Text style={styleTextModal} onPress={this.onTextChangePhoto.bind(this)}> Changer votre photo de profile </Text>
                               <Text style={styleTextModal}> Changer votre mot de passe </Text>
                             </View>
                           </View>
@@ -77,9 +119,10 @@ class ProfilForm extends Component {
                         </Text>
                     </Button>
                 </View>
+
                 <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrAC={20} nbrDF={15} nbrMC={30} nbrGB={8} disabled />
                 <UserInfo city={city} adresse={this.props.user.adresse} position={poste} email={this.props.user.email} phone={phone} equipe={'--'} />
-            </View>
+          </View>
         </ScrollView>
     );
   }
@@ -131,9 +174,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills } = userProfile;
+  const { user, skills, photo } = userProfile;
 
-  return { user, skills };
+  return { user, skills, photo };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, changeImage })(ProfilForm);

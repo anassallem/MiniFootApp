@@ -2,7 +2,8 @@ import { AsyncStorage } from 'react-native';
 import { getUser, getUserSkills } from './api/UserApi';
 import {
   GET_USER,
-  GET_USER_SKILLS
+  GET_USER_SKILLS,
+  IMAGE_CHANGED,
 } from './types';
 
 export const getUserById = () => {
@@ -21,6 +22,13 @@ export const getUserById = () => {
   } catch (e) {
       console.log('caught error', e);
   }
+  };
+};
+
+export const changeImage = (uri) => {
+  return {
+    type: IMAGE_CHANGED,
+    payload: uri
   };
 };
 
