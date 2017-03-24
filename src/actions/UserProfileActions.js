@@ -3,7 +3,8 @@ import { getUser, getUserSkills } from './api/UserApi';
 import {
   GET_USER,
   GET_USER_SKILLS,
-  IMAGE_CHANGED
+  IMAGE_CHANGED,
+  OPEN_MODAL
 } from './types';
 
 export const getUserById = () => {
@@ -29,6 +30,11 @@ export const changeImage = (uri) => {
   return {
     type: IMAGE_CHANGED,
     payload: uri
+  };
+};
+export const openModal = () => {
+  return {
+    type: OPEN_MODAL
   };
 };
 

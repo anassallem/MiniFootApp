@@ -17,5 +17,6 @@ export const GET_USER_SKILLS = 'get_user_SKILLS';
 export const SEARCH_CHANGED = 'search_changed';
 export const FETCH_PLAYERS = 'fetch_players';
 export const LOADING_PLAYERS = 'loading_players';
+
 export const IMAGE_CHANGED = 'image_changed';
-export const MODAL_CHANGED = 'modal_changed';
+export const OPEN_MODAL = 'open_modal';

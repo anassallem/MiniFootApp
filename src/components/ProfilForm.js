@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills, changeImage } from '../actions';
+import { getUserById, getSkills, changeImage, openModal } from '../actions';
 import { URL } from '../actions/api/config';
 
 const options = {
@@ -21,55 +21,55 @@ const options = {
 class ProfilForm extends Component {
     constructor(props) {
       super(props);
-      this.state = { modalVisible: false };
+      this.state = { photo: null };
     }
+
     componentWillMount() {
       this.props.getUserById();
+      console.log(this.props.user);
       this.props.getSkills();
     }
 
     onButtonPressUpdate() {
-        this.setState({ modalVisible: true });
+        this.props.openModal()
     }
     onButtonPressFrinds() {
     }
 
     onTextChangePhoto() {
+        ImagePicker.showImagePicker(null, (response) => {
+        console.log('Response = ', response);
 
-    }
-    setImage(response) {
-       console.log('Response = ', response);
-
-       if (response.didCancel) {
-         console.log('User cancelled photo picker');
-       }
-       else if (response.error) {
+        if (response.didCancel) {
+         console.log('User cancelled image picker');
+        }
+        else if (response.error) {
          console.log('ImagePicker Error: ', response.error);
-       }
-       else if (response.customButton) {
-         console.log('User tapped custom button: ', response.customButton);
-       }
-       else {
-         const source = { uri: response.uri, isStatic: true };
-         //console.log(source);
-         this.props.changeImage(source);
-       }
+        }
+        else {
+         let source = { uri: response.uri };
+         console.log(response.uri);
+         this.setState({
+           photo: source,
+           modalVisible: false
+         });
+        }
+      });
     }
 
-   render() {
+  render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
       const { attaque, defence, milieu, gardien, total } = this.props.skills;
-      console.log(photo);
       const urlimg = `${URL}/users/upload/${photo}`;
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={urlimg} total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille} />
+                <UserCharacteristic imageUser={this.state.photo} total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille} />
                     <Modal
                       animationType={'slide'}
                       transparent
-                      visible={this.state.modalVisible}
+                      visible={this.props.modalchange}
                       onRequestClose={() => {}}
                     >
                           <View style={containerStyle}>
@@ -154,9 +154,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, photo } = userProfile;
+  const { user, skills, modalchange } = userProfile;
 
-  return { user, skills, photo };
+  return { user, skills, modalchange };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills, changeImage })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, openModal })(ProfilForm);

@@ -1,7 +1,8 @@
 import {
   GET_USER,
   GET_USER_SKILLS,
-  IMAGE_CHANGED
+  OPEN_MODAL
+
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -24,7 +25,8 @@ const INITIAL_STATE = {
     }
   },
   skills: {},
-  photo: null,
+//  photo: null,
+ modalchange: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,8 +35,10 @@ export default (state = INITIAL_STATE, action) => {
           return { ...state, user: action.payload };
     case GET_USER_SKILLS:
           return { ...state, skills: action.payload };
-    case IMAGE_CHANGED:
-          return { ...state, photo: action.payload };
+  /*  case IMAGE_CHANGED:
+          return { ...state, photo: action.payload };*/
+    case OPEN_MODAL:
+          return { ...state, modalchange: true };
     default:
       return state;
   }
