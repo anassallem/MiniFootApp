@@ -5,7 +5,24 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  user: {},
+  user: {
+    firstname: '',
+    lastname: '',
+    adresse: '',
+    city: '',
+    photo: '',
+    phone: 0,
+    email: '',
+    password: '',
+    role: 'Joueur',
+    joueur: {
+        poste: '',
+        taille: 0,
+        poid: 0,
+        age: 0,
+        type: 'Joueur'
+    }
+  },
   skills: {},
   photo: null,
 };

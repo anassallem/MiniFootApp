@@ -3,7 +3,7 @@ import { getUser, getUserSkills } from './api/UserApi';
 import {
   GET_USER,
   GET_USER_SKILLS,
-  IMAGE_CHANGED,
+  IMAGE_CHANGED
 } from './types';
 
 export const getUserById = () => {
