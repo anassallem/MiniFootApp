@@ -50,7 +50,7 @@ class SearchPlayer extends Component {
   render() {
     return (
         <View style={{ marginBottom: 60 }}>
-          <Header searchBar rounded style={styles.headerStyle}>
+          <Header searchBar rounded>
               <Item>
                   <Icon name="search" />
                   <Input placeholder="Search" onChangeText={this.onSearchChanged.bind(this)} />
@@ -65,9 +65,7 @@ class SearchPlayer extends Component {
     );
   }
 }
-const styles = {
 
-};
 const mapStateToProps = ({ searchPlayer }) => {
   const { players, text, loading } = searchPlayer;
   return { players, text, loading };

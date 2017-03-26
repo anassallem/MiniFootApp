@@ -60,7 +60,7 @@ class SideBar extends Component {
                 <ListItem itemHeader first>
                        <Text>Informations</Text>
                 </ListItem>
-                <TouchableNativeFeedback onPress={() => Actions.profil()}>
+                <TouchableNativeFeedback onPress={() => this.props.onClickProfil()}>
                     <ListItem icon>
                         <Left>
                             <Icon name="ios-contact-outline" style={colorIcon} />

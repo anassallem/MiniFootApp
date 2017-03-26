@@ -14,7 +14,7 @@ class UserCharacteristic extends Component {
         <Image source={backgroundImage} style={background}>
            <Container style={styleContainerUser}>
                <TouchableNativeFeedback>
-                   <Thumbnail source={imageUser} style={styleUserImage} />
+                   <Thumbnail source={{ uri: imageUser }} style={styleUserImage} />
                </TouchableNativeFeedback>
                <Text style={textStyle}>{userName}</Text>
                <StarRating

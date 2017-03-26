@@ -26,7 +26,6 @@ class ProfilForm extends Component {
 
     componentWillMount() {
       this.props.getUserById();
-      console.log(this.props.user);
       this.props.getSkills();
     }
 
@@ -100,7 +99,7 @@ class ProfilForm extends Component {
                     </Button>
                 </View>
 
-                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrAC={20} nbrDF={15} nbrMC={30} nbrGB={8} disabled />
+                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={20} disabled />
                 <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={'--'} />
           </View>
         </ScrollView>

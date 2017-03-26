@@ -2,7 +2,6 @@ import {
   GET_USER,
   GET_USER_SKILLS,
   OPEN_MODAL
-
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -25,8 +24,7 @@ const INITIAL_STATE = {
     }
   },
   skills: {},
-//  photo: null,
- modalchange: false
+  modalchange: false
 };
 
 export default (state = INITIAL_STATE, action) => {

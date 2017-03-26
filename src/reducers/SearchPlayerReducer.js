@@ -15,7 +15,6 @@ export default (state = INITIAL_STATE, action) => {
     case SEARCH_CHANGED:
           return { ...state, text: action.payload };
     case FETCH_PLAYERS:
-          console.log(action.payload);
           return { ...state, players: action.payload, loading: false };
     case LOADING_PLAYERS:
           return { ...state, loading: true };
