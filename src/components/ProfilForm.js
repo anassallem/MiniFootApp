@@ -45,8 +45,7 @@ class ProfilForm extends Component {
     }
     handleButtonUpload() {
       this.props.uploadImage(this.props.photo);
-    }
-
+}
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
