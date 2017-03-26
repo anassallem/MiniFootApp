@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Dimensions, Image, TouchableNativeFeedback } from 'react-native';
-import { Container, Thumbnail, Text, Button } from 'native-base';
+import { Container, Thumbnail, Text, Button, Icon } from 'native-base';
 import StarRating from 'react-native-star-rating';
 
 const backgroundImage = require('../assets/backgroundprofil.png');
@@ -14,7 +14,12 @@ class UserCharacteristic extends Component {
   }
   renderButton() {
     if (this.props.display === true) {
-      return <Button light onPress={this.onClickButtonUpload.bind(this)}><Text> Upload </Text></Button>;
+      return (<Button iconLeft style={styles.buttonStyle} onPress={this.onClickButtonUpload.bind(this)}>
+                  <Icon name='ios-camera-outline' style={styles.colorGray} />
+                  <Text style={styles.colorGray}>
+                   Changer photo
+                  </Text>
+             </Button>);
     }
   }
   render() {
@@ -26,7 +31,6 @@ class UserCharacteristic extends Component {
                <TouchableNativeFeedback onPress={this.onClickImage.bind(this)}>
                    <Thumbnail source={{ uri: imageUser }} style={styleUserImage} />
                </TouchableNativeFeedback>
-
                <Text style={textStyle}>{userName}</Text>
                <StarRating
                   disabled
@@ -40,6 +44,7 @@ class UserCharacteristic extends Component {
                   starSize={20}
                   emptyStarColor={'yellow'}
                />
+                {this.renderButton()}
            </Container>
            <Container style={styleCharacteristic}>
                <Container style={{ alignItems: 'center' }}>
@@ -55,7 +60,7 @@ class UserCharacteristic extends Component {
                    <Text style={textStyleCharacteristic}>Taille</Text>
                </Container>
            </Container>
-                {this.renderButton()}         
+
         </Image>
       );
   }
@@ -71,6 +76,7 @@ const styles = {
   styleUserImage: {
    width: 100,
    height: 100,
+   marginTop: 30,
    borderRadius: 50,
    borderWidth: 2,
    borderColor: '#FFFFFF'
@@ -79,10 +85,11 @@ const styles = {
    alignItems: 'center',
    justifyContent: 'center',
    marginBottom: 30,
-   marginTop: 30
+   marginTop: 40
   },
   styleCharacteristic: {
-   flexDirection: 'row'
+   flexDirection: 'row',
+   paddingTop: 30
   },
   textStyle: {
    color: '#FFFFFF',
@@ -91,6 +98,16 @@ const styles = {
   textStyleCharacteristic: {
    color: '#FFFFFF',
    marginTop: 10
+  },
+  buttonStyle: {
+     backgroundColor: '#FFFFFF',
+     alignSelf: 'center',
+     height: 30,
+     marginTop: 10,
+     marginBottom: 10
+  },
+  colorGray: {
+      color: '#616161'
   }
 };
 

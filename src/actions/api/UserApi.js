@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { URL, CONFIG, CONFIGIMAGE } from './config';
+import { AsyncStorage } from 'react-native';
+import { URL, CONFIG } from './config';
 
 export const create = (user) => {
     const requestURL = `${URL}/register`;
@@ -41,24 +42,52 @@ export const getUsers = (text) => {
 };
 
 export const uploadImageUser = (idUser, photo) => {
-/*  const requestURL = `${URL}/users/upload/${idUser}`;
-  const formData = new FormData();
-  formData.append('image', {
-    uri: photo,
-    type: 'image/jpg',
-    name: 'image.jpg',
-  });
-  fetch('requestURL', {
-  method: 'POST',
-  body: formData
-});*/
+    const requestURL = `${URL}/users/upload/${idUser}`;
+    const x = photo.fileName.split('.');
+    const imageName = `image${Date.now()}.${x[1]}`;
+    const data = new FormData();
+        data.append('name', 'testName');
+        data.append('photo', {
+          uri: photo.uri,
+          type: photo.type,
+          name: imageName
+        });
+      return futch(requestURL, {
+          method: 'post',
+          body: data
+        }, (e) => {
+          const progress = e.loaded / e.total;
+          console.log(progress);
+        }).then((res) => {
+          try {
+               AsyncStorage.getItem('user').then((value) => {
+                 const user = JSON.parse(value);
+                 user.user.photo = imageName;
+                 AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
 
-    /*  return axios.post(requestURL, formData, CONFIGIMAGE).then((res) => {
-        return res.data;
-    }, (res) => {
-      throw new Error(res);
-    });*/
-  };
+                });
+               }).done();
+           } catch (e) {
+               console.log('caught error', e);
+           }
+        }, (e) => console.log(e));
+};
+
+const futch = (url, opts = {}, onProgress) => {
+    console.log(url, opts)
+    return new Promise((res, rej) => {
+        let xhr = new XMLHttpRequest();
+        xhr.open(opts.method || 'get', url);
+        for (var k in opts.headers || {})
+            xhr.setRequestHeader(k, opts.headers[k]);
+        xhr.onload = e => res(e.target);
+        xhr.onerror = rej;
+        if (xhr.upload && onProgress)
+            xhr.upload.onprogress = onProgress; // event.loaded / event.total * 100 ; //event.lengthComputable
+        xhr.send(opts.body);
+    });
+};
+
 export const postUserSkills = (idUser, skills, from) => {
     const requestURL = `${URL}/users/${idUser}/skills?id=${from}`;
       return axios.post(requestURL, skills, CONFIG)

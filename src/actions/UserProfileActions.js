@@ -63,41 +63,15 @@ export const getSkills = (idUser) => {
   };
 };
 
-export const uploadImage = (photo) => {
+export const uploadImage = (idUser, photo) => {
   return (dispatch) => {
-        const formData = new FormData();
-        formData.append('image', {
-          uri: photo,
-          type: 'image/jpeg',
-          file: 'image.jpeg',
-        });
-        fetch('http://192.168.1.65:3000/api/users/upload/58d50e3d961991214c96f0b7', {
-        method: 'POST',
-        headers: {
-           'Content-Type': 'multipart/form-data;',
-         },
-        body: formData
-      }).then((res,err) => {
-        if(err){
+      dispatch({ type: UPLOAD_IMAGE_USER, payload: true });
+      uploadImageUser(idUser, photo).then((res, err) => {
+        if (err) {
           console.log(err);
-        }else{
-          dispatch({ type: UPLOAD_IMAGE_USER });
-          console.log("image uploaded");
-          console.log(res);
-        };
-  });
+        } else {
+            dispatch({ type: UPLOAD_IMAGE_USER, payload: false });
+        }
+      });
+  };
 };
-};
-  /*
-  try {
-      AsyncStorage.getItem('user').then((value) => {
-        const user = JSON.parse(value);
-   uploadImageUser(user.user._id, photo).then((res, err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        dispatch({ type: UPLOAD_IMAGE_USER });
-      }
-    });
-          }).done();
-    */

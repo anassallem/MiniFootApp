@@ -29,7 +29,8 @@ const INITIAL_STATE = {
   skills: {},
   photo: null,
   show: false,
-  modalchange: false
+  modalchange: false,
+  loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -45,7 +46,7 @@ export default (state = INITIAL_STATE, action) => {
     case CLOSE_MODAL:
           return { ...state, modalchange: false };
     case UPLOAD_IMAGE_USER:
-          return { ...state };
+          return { ...state, loading: action.payload, show: false };
 
     default:
       return state;
