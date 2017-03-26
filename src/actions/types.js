@@ -17,6 +17,11 @@ export const GET_USER_SKILLS = 'get_user_skills';
 export const SEARCH_CHANGED = 'search_changed';
 export const FETCH_PLAYERS = 'fetch_players';
 export const LOADING_PLAYERS = 'loading_players';
+export const CHANGE_RATING_ATTAQUE = 'change_rating_attaque';
+export const CHANGE_RATING_DEFENCE = 'change_rating_defence';
+export const CHANGE_RATING_MILIEU = 'change_rating_milieu';
+export const CHANGE_RATING_GARDIEN = 'change_rating_gardien';
+export const LOADING_SKILLS = 'loading_skills';
 
 export const IMAGE_CHANGED = 'image_changed';
 export const OPEN_MODAL = 'open_modal';

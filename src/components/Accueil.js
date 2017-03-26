@@ -16,7 +16,11 @@ class Accueil extends Component {
      return true;
     });
   }
-
+  handelProfile() {
+      Actions.profil();
+      this.closeDrawer();
+  }
+  
   closeDrawer = () => {
       this.drawer._root.close();
     };
@@ -28,7 +32,7 @@ class Accueil extends Component {
     return (
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
-              content={<SideBar />}
+              content={<SideBar onClickProfil={this.handelProfile.bind(this)} />}
               onClose={() => this.closeDrawer()}
       >
         <Container>

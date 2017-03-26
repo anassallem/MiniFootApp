@@ -28,6 +28,7 @@ const INITIAL_STATE = {
   },
   skills: {},
   photo: null,
+  show: false,
   modalchange: false
 };
 
@@ -38,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
     case GET_USER_SKILLS:
           return { ...state, skills: action.payload };
     case IMAGE_CHANGED:
-          return { ...state, user: { ...state.user, photo: action.payload }, photo: action.photo };
+          return { ...state, user: { ...state.user, photo: action.payload }, photo: action.photo, show: true };
     case OPEN_MODAL:
           return { ...state, modalchange: true };
     case CLOSE_MODAL:

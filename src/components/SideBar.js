@@ -3,10 +3,10 @@ import { Dimensions, TouchableNativeFeedback, AsyncStorage } from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { Container, Thumbnail, Text, Content,
      ListItem, Left, Right, Icon, Body } from 'native-base';
+import { URL } from '../actions/api/config';
 
 let user = null;
 const background = require('./assets/drawer.jpg');
-const imageUser = require('./assets/userdefault.png');
 
 class SideBar extends Component {
 
@@ -36,9 +36,10 @@ class SideBar extends Component {
   renderUser() {
       const { backgroundImage, textUserStyle } = styles;
       if (user !== null) {
+          const uriImg = `${URL}/users/upload/${user.user.photo}`;
           return (
               <Thumbnail style={backgroundImage} square source={background}>
-                   <Thumbnail source={imageUser}
+                   <Thumbnail source={{ uri: uriImg }}
                     style={{ width: 70, height: 70 }}
                    />
                 <Text style={textUserStyle}>{ user.user.firstname + ' ' + user.user.lastname}</Text>
@@ -60,7 +61,7 @@ class SideBar extends Component {
                 <ListItem itemHeader first>
                        <Text>Informations</Text>
                 </ListItem>
-                <TouchableNativeFeedback onPress={() => Actions.profil()}>
+                <TouchableNativeFeedback onPress={() => this.props.onClickProfil()}>
                     <ListItem icon>
                         <Left>
                             <Icon name="ios-contact-outline" style={colorIcon} />

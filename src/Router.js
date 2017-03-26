@@ -5,6 +5,8 @@ import RegisterForm from './components/RegisterForm';
 import Accueil from './components/Accueil';
 import ProfilForm from './components/ProfilForm';
 import SearchPlayer from './components/SearchPlayer';
+import SearchPlayerProfile from './components/SearchPlayerProfile';
+import PlayerNoteForm from './components/PlayerNoteForm';
 
 const icon = require('./components/assets/back.png');
 
@@ -21,6 +23,12 @@ const RouterComponent = () => {
               navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
           />
           <Scene key="searchPlayer" component={SearchPlayer} hideNavBar />
+          <Scene key="searchPlayerProfile" component={SearchPlayerProfile} hideNavBar={false}
+              navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+          />
+          <Scene key="playerNoteForm" component={PlayerNoteForm} hideNavBar={false}
+              navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+          />
        </Scene>
     </Router>
   );

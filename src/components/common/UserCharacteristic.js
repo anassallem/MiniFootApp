@@ -12,7 +12,11 @@ class UserCharacteristic extends Component {
   onClickButtonUpload() {
       this.props.onClickButtonUpload();
   }
-
+  renderButton() {
+    if (this.props.display === true) {
+      return <Button light onPress={this.onClickButtonUpload.bind(this)}><Text> Upload </Text></Button>;
+    }
+  }
   render() {
       const { background, styleUserImage, styleContainerUser, styleCharacteristic, textStyle, textStyleCharacteristic } = styles;
       const { imageUser, userName, age, poids, taille, total } = this.props;
@@ -22,7 +26,7 @@ class UserCharacteristic extends Component {
                <TouchableNativeFeedback onPress={this.onClickImage.bind(this)}>
                    <Thumbnail source={{ uri: imageUser }} style={styleUserImage} />
                </TouchableNativeFeedback>
-                <Button light onPress={this.onClickButtonUpload.bind(this)}><Text> Upload </Text></Button>
+
                <Text style={textStyle}>{userName}</Text>
                <StarRating
                   disabled
@@ -51,6 +55,7 @@ class UserCharacteristic extends Component {
                    <Text style={textStyleCharacteristic}>Taille</Text>
                </Container>
            </Container>
+                {this.renderButton()}         
         </Image>
       );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
+import { ScrollView, View, TouchableNativeFeedback, Modal, AsyncStorage } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
 import { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage } from '../actions';
@@ -10,7 +10,14 @@ class ProfilForm extends Component {
 
     componentWillMount() {
       this.props.getUserById();
-      this.props.getSkills();
+      try {
+          AsyncStorage.getItem('user').then((value) => {
+              const user = JSON.parse(value);
+              this.props.getSkills(user.user._id);
+          }).done();
+      } catch (e) {
+          console.log('caught error', e);
+      }
     }
 
     onButtonPressUpdate() {
@@ -32,24 +39,26 @@ class ProfilForm extends Component {
        console.log('ImagePicker Error: ', response.error);
       }
       else {
-       this.props.changeImage(response.uri, response.path);
+       this.props.changeImage(response.uri, response.path, true);
       }
     });
     }
     handleButtonUpload() {
-      console.log(this.props.photo);
       this.props.uploadImage(this.props.photo);
     }
 
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
-      const { attaque, defence, milieu, gardien, total } = this.props.skills;
+      const { attaque, defence, milieu, gardien, total, nbrPersonne } = this.props.skills;
 
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={photo} onClickImage={this.handleImage.bind(this)} onClickButtonUpload={this.handleButtonUpload.bind(this)} total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille} />
+                <UserCharacteristic imageUser={photo} display={this.props.show}
+                  onClickImage={this.handleImage.bind(this)} onClickButtonUpload={this.handleButtonUpload.bind(this)}
+                  total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille}
+                />
                     <Modal
                       animationType={'slide'}
                       transparent
@@ -64,7 +73,6 @@ class ProfilForm extends Component {
                             </View>
                             <View style={containerModal}>
                               <Text style={styleTextModal}> Modifier votre profile </Text>
-                              <Text style={styleTextModal}> Changer votre photo de profile </Text>
                               <Text style={styleTextModal}> Changer votre mot de passe </Text>
                             </View>
                           </View>
@@ -84,7 +92,7 @@ class ProfilForm extends Component {
                     </Button>
                 </View>
 
-                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrAC={20} nbrDF={15} nbrMC={30} nbrGB={8} disabled />
+                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne}disabled />
                 <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={'--'} />
           </View>
         </ScrollView>
@@ -138,9 +146,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, modalchange, photo } = userProfile;
+  const { user, skills, modalchange, photo, show } = userProfile;
 
-  return { user, skills, modalchange, photo };
+  return { user, skills, modalchange, photo, show };
 };
 
 export default connect(mapStateToProps, { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage })(ProfilForm);

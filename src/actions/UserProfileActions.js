@@ -30,13 +30,16 @@ export const getUserById = () => {
   };
 };
 
-export const changeImage = (uri, data) => {
+export const changeImage = (uri, data, show) => {
   return {
     type: IMAGE_CHANGED,
     payload: uri,
-    photo: data
+    photo: data,
+    show
   };
 };
+
+
 export const openModal = () => {
   return {
     type: OPEN_MODAL
@@ -48,22 +51,15 @@ export const closeModal = () => {
   };
 };
 
-export const getSkills = () => {
+export const getSkills = (idUser) => {
   return (dispatch) => {
-  try {
-      AsyncStorage.getItem('user').then((value) => {
-        const user = JSON.parse(value);
-            getUserSkills(user.user._id).then((res, err) => {
-              if (err) {
-                console.log(err);
-              } else {
-                  dispatch({ type: GET_USER_SKILLS, payload: res });
-              }
-            });
-      }).done();
-  } catch (e) {
-      console.log('caught error', e);
-  }
+      getUserSkills(idUser).then((res, err) => {
+        if (err) {
+          console.log(err);
+        } else {
+            dispatch({ type: GET_USER_SKILLS, payload: res });
+        }
+      });
   };
 };
 
