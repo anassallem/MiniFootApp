@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import { Dimensions, Image, TouchableNativeFeedback } from 'react-native';
-import { Container, Thumbnail, Text } from 'native-base';
+import { Container, Thumbnail, Text, Button } from 'native-base';
 import StarRating from 'react-native-star-rating';
 
 const backgroundImage = require('../assets/backgroundprofil.png');
 
 class UserCharacteristic extends Component {
+  onClickImage() {
+    this.props.onClickImage();
+  }
+  onClickButtonUpload() {
+      this.props.onClickButtonUpload();
+  }
 
   render() {
       const { background, styleUserImage, styleContainerUser, styleCharacteristic, textStyle, textStyleCharacteristic } = styles;
@@ -13,9 +19,10 @@ class UserCharacteristic extends Component {
       return (
         <Image source={backgroundImage} style={background}>
            <Container style={styleContainerUser}>
-               <TouchableNativeFeedback>
-                   <Thumbnail source={imageUser} style={styleUserImage} />
+               <TouchableNativeFeedback onPress={this.onClickImage.bind(this)}>
+                   <Thumbnail source={{ uri: imageUser }} style={styleUserImage} />
                </TouchableNativeFeedback>
+                <Button light onPress={this.onClickButtonUpload.bind(this)}><Text> Upload </Text></Button>
                <Text style={textStyle}>{userName}</Text>
                <StarRating
                   disabled

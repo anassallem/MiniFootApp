@@ -4,68 +4,52 @@ import { connect } from 'react-redux';
 import { ScrollView, View, TouchableNativeFeedback, Modal } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills, changeImage, openModal } from '../actions';
-import { URL } from '../actions/api/config';
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [
-    { name: 'fb', title: 'Choose Photo from Facebook' },
-  ],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images'
-  }
-};
+import { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage } from '../actions';
 
 class ProfilForm extends Component {
-    constructor(props) {
-      super(props);
-      this.state = { photo: null };
-    }
 
     componentWillMount() {
       this.props.getUserById();
-      console.log(this.props.user);
       this.props.getSkills();
     }
 
     onButtonPressUpdate() {
-        this.props.openModal()
+      this.props.openModal();
+    }
+    onCloseModal() {
+      this.props.closeModal();
     }
     onButtonPressFrinds() {
     }
+    handleImage() {
+      ImagePicker.showImagePicker(null, (response) => {
+      console.log('Response = ', response);
 
-    onTextChangePhoto() {
-        ImagePicker.showImagePicker(null, (response) => {
-        console.log('Response = ', response);
-
-        if (response.didCancel) {
-         console.log('User cancelled image picker');
-        }
-        else if (response.error) {
-         console.log('ImagePicker Error: ', response.error);
-        }
-        else {
-         let source = { uri: response.uri };
-         console.log(response.uri);
-         this.setState({
-           photo: source,
-           modalVisible: false
-         });
-        }
-      });
+      if (response.didCancel) {
+       console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+       console.log('ImagePicker Error: ', response.error);
+      }
+      else {
+       this.props.changeImage(response.uri, response.path);
+      }
+    });
+    }
+    handleButtonUpload() {
+      console.log(this.props.photo);
+      this.props.uploadImage(this.props.photo);
     }
 
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
       const { attaque, defence, milieu, gardien, total } = this.props.skills;
-      const urlimg = `${URL}/users/upload/${photo}`;
+
     return (
         <ScrollView>
             <View>
-                <UserCharacteristic imageUser={this.state.photo} total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille} />
+                <UserCharacteristic imageUser={photo} onClickImage={this.handleImage.bind(this)} onClickButtonUpload={this.handleButtonUpload.bind(this)} total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille} />
                     <Modal
                       animationType={'slide'}
                       transparent
@@ -74,13 +58,13 @@ class ProfilForm extends Component {
                     >
                           <View style={containerStyle}>
                             <View style={closeButton}>
-                              <TouchableNativeFeedback onPress={() => { this.setState({ modalVisible: false }); }}>
+                              <TouchableNativeFeedback onPress={this.onCloseModal.bind(this)}>
                                   <Icon name="ios-close-circle-outline" />
                               </TouchableNativeFeedback>
                             </View>
                             <View style={containerModal}>
                               <Text style={styleTextModal}> Modifier votre profile </Text>
-                              <Text style={styleTextModal} onPress={this.onTextChangePhoto.bind(this)}> Changer votre photo de profile </Text>
+                              <Text style={styleTextModal}> Changer votre photo de profile </Text>
                               <Text style={styleTextModal}> Changer votre mot de passe </Text>
                             </View>
                           </View>
@@ -154,9 +138,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, modalchange } = userProfile;
+  const { user, skills, modalchange, photo } = userProfile;
 
-  return { user, skills, modalchange };
+  return { user, skills, modalchange, photo };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills, openModal })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage })(ProfilForm);

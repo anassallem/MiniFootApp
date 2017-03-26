@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { URL, CONFIG } from './config';
+import { URL, CONFIG, CONFIGIMAGE } from './config';
 
 export const create = (user) => {
     const requestURL = `${URL}/register`;
@@ -40,4 +40,24 @@ export const getUsers = (text) => {
     }, (res) => {
       throw new Error(res);
     });
+};
+
+export const uploadImageUser = (idUser, photo) => {
+/*  const requestURL = `${URL}/users/upload/${idUser}`;
+  const formData = new FormData();
+  formData.append('image', {
+    uri: photo,
+    type: 'image/jpg',
+    name: 'image.jpg',
+  });
+  fetch('requestURL', {
+  method: 'POST',
+  body: formData
+});*/
+
+    /*  return axios.post(requestURL, formData, CONFIGIMAGE).then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });*/
 };

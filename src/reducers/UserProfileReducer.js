@@ -1,8 +1,10 @@
 import {
   GET_USER,
   GET_USER_SKILLS,
-  OPEN_MODAL
-
+  IMAGE_CHANGED,
+  OPEN_MODAL,
+  CLOSE_MODAL,
+  UPLOAD_IMAGE_USER
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -11,7 +13,7 @@ const INITIAL_STATE = {
     lastname: '',
     adresse: '',
     city: '',
-    photo: '',
+    photo: null,
     phone: 0,
     email: '',
     password: '',
@@ -25,8 +27,8 @@ const INITIAL_STATE = {
     }
   },
   skills: {},
-//  photo: null,
- modalchange: false
+  photo: null,
+  modalchange: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -35,10 +37,15 @@ export default (state = INITIAL_STATE, action) => {
           return { ...state, user: action.payload };
     case GET_USER_SKILLS:
           return { ...state, skills: action.payload };
-  /*  case IMAGE_CHANGED:
-          return { ...state, photo: action.payload };*/
+    case IMAGE_CHANGED:
+          return { ...state, user: { ...state.user, photo: action.payload }, photo: action.photo };
     case OPEN_MODAL:
           return { ...state, modalchange: true };
+    case CLOSE_MODAL:
+          return { ...state, modalchange: false };
+    case UPLOAD_IMAGE_USER:
+          return { ...state };
+
     default:
       return state;
   }

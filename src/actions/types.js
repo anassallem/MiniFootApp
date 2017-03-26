@@ -12,7 +12,7 @@ export const CREATE_USER_SUCCESS = 'create_user_success';
 export const CREATE_USER_FAIL = 'create_user_fail';
 
 export const GET_USER = 'get_user';
-export const GET_USER_SKILLS = 'get_user_SKILLS';
+export const GET_USER_SKILLS = 'get_user_skills';
 
 export const SEARCH_CHANGED = 'search_changed';
 export const FETCH_PLAYERS = 'fetch_players';
@@ -20,3 +20,5 @@ export const LOADING_PLAYERS = 'loading_players';
 
 export const IMAGE_CHANGED = 'image_changed';
 export const OPEN_MODAL = 'open_modal';
+export const CLOSE_MODAL = 'close_modal';
+export const UPLOAD_IMAGE_USER = 'upload_image_user';
