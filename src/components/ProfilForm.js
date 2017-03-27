@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { ScrollView, View, TouchableNativeFeedback, Modal, AsyncStorage } from 'react-native';
+import { ScrollView, View, TouchableNativeFeedback, Modal, AsyncStorage, ActivityIndicator } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
 import { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage } from '../actions';
@@ -39,13 +39,34 @@ class ProfilForm extends Component {
        console.log('ImagePicker Error: ', response.error);
       }
       else {
-       this.props.changeImage(response.uri, response.path, true);
+       this.props.changeImage(response.uri, response, true);
       }
     });
     }
     handleButtonUpload() {
-      this.props.uploadImage(this.props.photo);
-}
+        try {
+            AsyncStorage.getItem('user').then((value) => {
+                const user = JSON.parse(value);
+                this.props.uploadImage(user.user._id, this.props.photo);
+            }).done();
+        } catch (e) {
+            console.log('caught error', e);
+        }
+    }
+
+    renderLoading() {
+      if (this.props.loading === true) {
+        return (<Modal animationType={'fade'} transparent visible={this.props.loading} onRequestClose={() => {}}>
+                  <View style={styles.containerLoadingStyle}>
+                    <View style={styles.containerLoadingModal}>
+                      <ActivityIndicator size="large" />
+                      <Text>  Chargement ...</Text>
+                    </View>
+                  </View>
+                </Modal>
+                );
+      }
+    }
   render() {
       const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
       const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
@@ -76,6 +97,7 @@ class ProfilForm extends Component {
                             </View>
                           </View>
                     </Modal>
+                    {this.renderLoading()}
                 <View style={styles.containerButtonStyle}>
                     <Button iconLeft style={styles.buttonStyle} onPress={this.onButtonPressUpdate.bind(this)}>
                         <Icon name='ios-contact-outline' style={colorGray} />
@@ -141,13 +163,27 @@ const styles = {
  },
  colorGray: {
      color: '#616161'
+ },
+ containerLoadingStyle: {
+     position: 'relative',
+     flex: 1,
+     justifyContent: 'center'
+ },
+ containerLoadingModal: {
+     backgroundColor: '#FFFFFF',
+     flexDirection: 'row',
+     alignItems: 'center',
+     justifyContent: 'center',
+     padding: 30,
+     marginLeft: 30,
+     marginRight: 30
  }
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, modalchange, photo, show } = userProfile;
+  const { user, skills, modalchange, photo, show, loading } = userProfile;
 
-  return { user, skills, modalchange, photo, show };
+  return { user, skills, modalchange, photo, show, loading };
 };
 
 export default connect(mapStateToProps, { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage })(ProfilForm);

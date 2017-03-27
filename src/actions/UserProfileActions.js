@@ -63,7 +63,15 @@ export const getSkills = (idUser) => {
   };
 };
 
-export const uploadImage = (photo) => {
+export const uploadImage = (idUser, photo) => {
   return (dispatch) => {
+      dispatch({ type: UPLOAD_IMAGE_USER, payload: true });
+      uploadImageUser(idUser, photo).then((res, err) => {
+        if (err) {
+          console.log(err);
+        } else {
+            dispatch({ type: UPLOAD_IMAGE_USER, payload: false });
+        }
+      });
   };
 };
