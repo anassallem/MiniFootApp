@@ -4,11 +4,14 @@ import UserReducer from './UserReducer';
 import UserProfileReducer from './UserProfileReducer';
 import SearchPlayerReducer from './SearchPlayerReducer';
 import PlayerNoteFormReducer from './PlayerNoteFormReducer';
+import UpdateProfileUserReducer from './UpdateProfileUserReducer';
+
 
 export default combineReducers({
   auth: AuthReducer,
   user: UserReducer,
   userProfile: UserProfileReducer,
   searchPlayer: SearchPlayerReducer,
-  notePlayer: PlayerNoteFormReducer
+  notePlayer: PlayerNoteFormReducer,
+  updateUser: UpdateProfileUserReducer
 });

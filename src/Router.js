@@ -1,4 +1,5 @@
 import React from 'react';
+import { Navigator } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
@@ -7,6 +8,7 @@ import ProfilForm from './components/ProfilForm';
 import SearchPlayer from './components/SearchPlayer';
 import SearchPlayerProfile from './components/SearchPlayerProfile';
 import PlayerNoteForm from './components/PlayerNoteForm';
+import UpdateProfilUser from './components/UpdateProfilUser';
 
 const icon = require('./components/assets/back.png');
 
@@ -22,6 +24,7 @@ const RouterComponent = () => {
           <Scene key="profil" component={ProfilForm} title="Profile" hideNavBar={false}
               navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
           />
+          <Scene key="updateProfil" component={UpdateProfilUser} title="Modifier Profile" hideNavBar />
           <Scene key="searchPlayer" component={SearchPlayer} hideNavBar />
           <Scene key="searchPlayerProfile" component={SearchPlayerProfile} hideNavBar={false}
               navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}

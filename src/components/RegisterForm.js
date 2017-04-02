@@ -91,30 +91,30 @@ class RegisterForm extends Component {
           <Content>
             <Form style={{ padding: 30 }}>
               <InputText
-                label="FirstName"
-                placeholder="Enter FirstName"
+                label="Nom"
+                placeholder="Saisir votre nom"
                 onChangeText={this.onNameChange.bind(this)}
                 value={this.props.firstname}
                 testInput={this.props.testFirstName}
                 icon={'ios-person-outline'}
               />
               <Text style={styles.errorTextStyle}>
-                {this.props.testFirstName === false ? ' Champ name est vide ' : ''}
+                {this.props.testFirstName === false ? 'Champ Nom est vide' : ''}
               </Text>
               <InputText
-                label="LastName"
-                placeholder="Enter LastName"
+                label="Prénom"
+                placeholder="Saisir votre prénom"
                 onChangeText={this.onLastNameChange.bind(this)}
                 value={this.props.lastname}
                 testInput={this.props.testLastName}
                 icon={'ios-contact-outline'}
               />
               <Text style={styles.errorTextStyle}>
-                {this.props.testLastName === false ? ' Champ last name est vide ' : ''}
+                {this.props.testLastName === false ? 'Champ prénom est vide' : ''}
               </Text>
               <InputText
                 label="Adresse"
-                placeholder="Enter Adress"
+                placeholder="Saisir votre adresse"
                 onChangeText={this.onAdresseChange.bind(this)}
                 value={this.props.adresse}
                 testInput={this.props.testAdresse}
@@ -124,8 +124,8 @@ class RegisterForm extends Component {
                 {this.props.testAdresse === false ? ' Champ adresse est vide ' : ''}
               </Text>
               <InputText
-                label="Email"
-                placeholder="Enter E-mail"
+                label="E-mail"
+                placeholder="Saisir votre E-mail"
                 onChangeText={this.onEmailChange.bind(this)}
                 value={this.props.email}
                 testInput={this.props.testEmail}
@@ -136,8 +136,8 @@ class RegisterForm extends Component {
               </Text>
               <InputText
                 secureTextEntry
-                label="Password"
-                placeholder="Enter password"
+                label="Mot de passe"
+                placeholder="Saisir un mot de passe"
                 onChangeText={this.onPasswordChange.bind(this)}
                 value={this.props.password}
                 testInput={this.props.testPassword}
@@ -150,15 +150,15 @@ class RegisterForm extends Component {
               </Text>
               <InputText
                 secureTextEntry
-                label="ConfirmPassword"
-                placeholder="Enter confirmation password"
+                label="Confirmer le mot de passe"
+                placeholder="Retaper le mot de passe"
                 onChangeText={this.onPasswordConfirmChange.bind(this)}
                 value={this.props.passwordConfirm}
                 testInput={this.props.validPassword}
                 icon={'md-finger-print'}
               />
               <Text style={styles.errorTextStyle}>
-                  {this.props.validPassword === false ? 'Password non confirmé ' : ''}
+                  {this.props.validPassword === false ? 'Mot de passe non confirmé ' : ''}
               </Text>
 
               {this.renderButton()}

@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
-import { ScrollView, View, TouchableNativeFeedback, Modal, AsyncStorage, ActivityIndicator } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { ScrollView, View, Modal, AsyncStorage, ActivityIndicator } from 'react-native';
 import { Button, Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage } from '../actions';
+import { getUserById, getSkills, changeImage, uploadImage } from '../actions';
 
 class ProfilForm extends Component {
 
-    componentWillMount() {
+    componentDidMount() {
       this.props.getUserById();
       try {
           AsyncStorage.getItem('user').then((value) => {
@@ -21,11 +22,9 @@ class ProfilForm extends Component {
     }
 
     onButtonPressUpdate() {
-      this.props.openModal();
+       Actions.updateProfil({ user: this.props.user });
     }
-    onCloseModal() {
-      this.props.closeModal();
-    }
+
     onButtonPressFrinds() {
     }
     handleImage() {
@@ -67,36 +66,20 @@ class ProfilForm extends Component {
                 );
       }
     }
-  render() {
-      const { containerStyle, containerModal, closeButton, colorGray, styleTextModal } = styles;
-      const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
-      const { attaque, defence, milieu, gardien, total, nbrPersonne } = this.props.skills;
 
-    return (
-        <ScrollView>
+  renderProfile() {
+    const { colorGray } = styles;
+    const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
+    const { attaque, defence, milieu, gardien, total, nbrPersonne } = this.props.skills;
+
+    if (this.props.refresh === false) {
+      return (
             <View>
                 <UserCharacteristic imageUser={photo} display={this.props.show}
                   onClickImage={this.handleImage.bind(this)} onClickButtonUpload={this.handleButtonUpload.bind(this)}
                   total={total} userName={`${firstname} ${lastname}`} age={joueur.age} poids={joueur.poid} taille={joueur.taille}
                 />
-                    <Modal
-                      animationType={'slide'}
-                      transparent
-                      visible={this.props.modalchange}
-                      onRequestClose={() => {}}
-                    >
-                          <View style={containerStyle}>
-                            <View style={closeButton}>
-                              <TouchableNativeFeedback onPress={this.onCloseModal.bind(this)}>
-                                  <Icon name="ios-close-circle-outline" />
-                              </TouchableNativeFeedback>
-                            </View>
-                            <View style={containerModal}>
-                              <Text style={styleTextModal}> Modifier votre profile </Text>
-                              <Text style={styleTextModal}> Changer votre mot de passe </Text>
-                            </View>
-                          </View>
-                    </Modal>
+
                     {this.renderLoading()}
                 <View style={styles.containerButtonStyle}>
                     <Button iconLeft style={styles.buttonStyle} onPress={this.onButtonPressUpdate.bind(this)}>
@@ -116,6 +99,15 @@ class ProfilForm extends Component {
                 <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne}disabled />
                 <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={'--'} />
           </View>
+      );
+    }
+    return <ActivityIndicator size="large" />;
+  }
+
+  render() {
+    return (
+        <ScrollView>
+          {this.renderProfile()}
         </ScrollView>
     );
   }
@@ -128,7 +120,7 @@ const styles = {
  buttonStyle: {
     marginLeft: 10,
     marginRight: 10,
-    borderColor: '#FFF',
+    borderColor: '#FFFFFF',
     backgroundColor: 'transparent'
  },
  containerStyle: {
@@ -181,9 +173,9 @@ const styles = {
 };
 
 const mapStateToProps = ({ userProfile }) => {
-  const { user, skills, modalchange, photo, show, loading } = userProfile;
+  const { user, skills, photo, show, loading, refresh } = userProfile;
 
-  return { user, skills, modalchange, photo, show, loading };
+  return { user, skills, photo, show, loading, refresh };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills, changeImage, openModal, closeModal, uploadImage })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, changeImage, uploadImage })(ProfilForm);

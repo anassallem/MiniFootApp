@@ -21,6 +21,15 @@ export const getUser = (idUser) => {
     });
 };
 
+export const updateUser = (idUser, user) => {
+    const requestURL = `${URL}/users/${idUser}`;
+      return axios.put(requestURL, user, CONFIG).then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
 export const getUserSkills = (idUser) => {
     const requestURL = `${URL}/users/${idUser}/skills`;
       return axios.get(requestURL)
@@ -74,7 +83,7 @@ export const uploadImageUser = (idUser, photo) => {
 };
 
 const futch = (url, opts = {}, onProgress) => {
-    console.log(url, opts)
+    console.log(url, opts);
     return new Promise((res, rej) => {
         let xhr = new XMLHttpRequest();
         xhr.open(opts.method || 'get', url);
@@ -92,6 +101,16 @@ export const postUserSkills = (idUser, skills, from) => {
     const requestURL = `${URL}/users/${idUser}/skills?id=${from}`;
       return axios.post(requestURL, skills, CONFIG)
       .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const updatePassword = (idUser, password) => {
+    const requestURL = `${URL}/users/${idUser}`;
+console.log(password);
+      return axios.patch(requestURL, ({ password }), CONFIG).then((res) => {
         return res.data;
     }, (res) => {
       throw new Error(res);

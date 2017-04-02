@@ -5,14 +5,14 @@ import {
   GET_USER,
   GET_USER_SKILLS,
   IMAGE_CHANGED,
-  OPEN_MODAL,
-  CLOSE_MODAL,
-  UPLOAD_IMAGE_USER
+  UPLOAD_IMAGE_USER,
+  REFRESH_START
 } from './types';
 
 export const getUserById = () => {
   return (dispatch) => {
   try {
+    dispatch({ type: REFRESH_START });
       AsyncStorage.getItem('user').then((value) => {
         const user = JSON.parse(value);
             getUser(user.user._id).then((res, err) => {
@@ -39,25 +39,13 @@ export const changeImage = (uri, data, show) => {
   };
 };
 
-
-export const openModal = () => {
-  return {
-    type: OPEN_MODAL
-  };
-};
-export const closeModal = () => {
-  return {
-    type: CLOSE_MODAL
-  };
-};
-
 export const getSkills = (idUser) => {
   return (dispatch) => {
       getUserSkills(idUser).then((res, err) => {
         if (err) {
           console.log(err);
         } else {
-            dispatch({ type: GET_USER_SKILLS, payload: res });
+            dispatch({ type: GET_USER_SKILLS, payload: res, refresh: false });
         }
       });
   };

@@ -7,7 +7,7 @@ const InputText = ({ label, value, onChangeText, placeholder, secureTextEntry, t
   return (
     <View style={containerGroupe}>
         <View style={containerIcon} >
-            <Icon name={icon} style={{ color: '#FFF' }} />
+            <Icon name={icon} style={{ color: '#000' }} />
         </View>
         <View style={containerInputText}>
             <Text style={labelStyle}>{label}</Text>
@@ -37,7 +37,7 @@ const renderIcon = (testInput) => {
 };
 const styles = {
   inputStyle: {
-    color: '#FFF'
+    color: '#000'
   },
   labelStyle: {
     fontSize: 16,
