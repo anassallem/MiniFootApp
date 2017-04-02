@@ -20,7 +20,10 @@ class Accueil extends Component {
       Actions.profil();
       this.closeDrawer();
   }
-  
+  handelFriends() {
+      Actions.listFriends();
+      this.closeDrawer();
+  }
   closeDrawer = () => {
       this.drawer._root.close();
     };
@@ -32,7 +35,7 @@ class Accueil extends Component {
     return (
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
-              content={<SideBar onClickProfil={this.handelProfile.bind(this)} />}
+              content={<SideBar onClickProfil={this.handelProfile.bind(this)} onClickFriends={this.handelFriends.bind(this)} />}
               onClose={() => this.closeDrawer()}
       >
         <Container>

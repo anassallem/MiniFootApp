@@ -3,7 +3,8 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  TOKEN_CHANGED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -12,8 +13,11 @@ const INITIAL_STATE = {
   error: '',
   loading: false,
   testEmail: null,
-  testPassword: null
+  testPassword: null,
+  token: '',
+  notification: null
 };
+
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -23,6 +27,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, password: action.payload, testPassword: action.validate };
     case LOGIN_USER:
       return { ...state, loading: true, error: '' };
+    case TOKEN_CHANGED:
+      return { ...state, token: action.payload };
     case LOGIN_USER_SUCCESS:
       return { ...state, ...INITIAL_STATE };
     case LOGIN_USER_FAIL:

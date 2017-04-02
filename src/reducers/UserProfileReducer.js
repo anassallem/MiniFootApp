@@ -4,7 +4,12 @@ import {
   IMAGE_CHANGED,
   OPEN_MODAL,
   CLOSE_MODAL,
-  UPLOAD_IMAGE_USER
+  UPLOAD_IMAGE_USER,
+  GET_RELATIONSHIP_USER,
+  DELETE_RELATIONSHIP_USER,
+  CANCEL_INVITATION_USER,
+  ADD_INVITATION_USER,
+  CONFIRM_INVITATIONS
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -30,7 +35,15 @@ const INITIAL_STATE = {
   photo: null,
   show: false,
   modalchange: false,
-  loading: false
+  loading: false,
+  relationship: { success: false,
+                  data: {
+                    _id: '',
+                    from: '',
+                    to: '',
+                    accepted: false
+                    }
+                }
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -47,7 +60,16 @@ export default (state = INITIAL_STATE, action) => {
           return { ...state, modalchange: false };
     case UPLOAD_IMAGE_USER:
           return { ...state, loading: action.payload, show: false };
-
+    case GET_RELATIONSHIP_USER:
+          return { ...state, relationship: action.payload };
+    case DELETE_RELATIONSHIP_USER:
+          return { ...state, relationship: { ...state.relationship, success: false } };
+    case CANCEL_INVITATION_USER:
+          return { ...state, relationship: { ...state.relationship, success: false } };
+    case ADD_INVITATION_USER:
+          return { ...state, relationship: { success: true, data: { ...state.relationship.data, _id: action.payload } } };
+    case CONFIRM_INVITATIONS:
+          return { ...state, relationship: { success: true, data: { ...state.relationship.data, accepted: true } } };
     default:
       return state;
   }

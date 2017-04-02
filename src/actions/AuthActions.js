@@ -6,7 +6,8 @@ import {
   PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  TOKEN_CHANGED
 } from './types';
 
 export const emailChanged = (text) => {
@@ -24,6 +25,13 @@ export const passwordChanged = (text) => {
     type: PASSWORD_CHANGED,
     payload: text,
     validate: valid
+  };
+};
+
+export const tokenChanged = (token) => {
+  return {
+    type: TOKEN_CHANGED,
+    payload: token
   };
 };
 

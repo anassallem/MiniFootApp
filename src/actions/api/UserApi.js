@@ -31,6 +31,56 @@ export const getUserSkills = (idUser) => {
     });
 };
 
+export const getRelationshipUser = (idUser, idFriend) => {
+    const requestURL = `${URL}/friends/${idUser}/relationship/${idFriend}`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const removeFriends = (idInvitation, relationship) => {
+    const requestURL = `${URL}/friends/${idInvitation}?idUser=${relationship.idUser}&idFriend=${relationship.idFriend}`;
+      return axios.delete(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const deleteInvitationFriend = (idInvitation) => {
+    const requestURL = `${URL}/friends/${idInvitation}/rejected`;
+      return axios.delete(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const addInvitation = (idUser, idFriend, title) => {
+    const requestURL = `${URL}/friends/${idUser}/notificate?to=${idFriend}`;
+      return axios.post(requestURL, title)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const confirmInvitationsUser = (idInvitation, invitation) => {
+  const requestURL = `${URL}/friends/${idInvitation}/accepted`;
+    return axios.put(requestURL, invitation)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};
+
 export const getUsers = (text) => {
     const requestURL = `${URL}/users?name=${text}`;
       return axios.get(requestURL)
