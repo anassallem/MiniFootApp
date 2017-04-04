@@ -2,12 +2,13 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { ScrollView, TouchableWithoutFeedback, View, LayoutAnimation, Alert, Modal, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { Text, Header, Right, Body, Title } from 'native-base';
+import { Text, Header, Right, Body, Title, Thumbnail } from 'native-base';
 import { userUpdate, phoneChanged, updateUserProfil, onchangeCardInfo, onchangeCardCarac, onchangeCardPassword,
         passwordUpdateChanged, updateUserPassword, confirmNewPassword, updateUserPost, joueurUpdate
        } from '../actions';
-import { CardSection, UpdateUserInfo, UpdateUserPasswordd, UpdateUserCharacteristic } from './common';
+import { CardSection, UpdateUserInfo, UpdateUserPassword, UpdateUserCharacteristic } from './common';
 
+const backgroundImage = require('./assets/drawer.jpg');
 
 class UpdateProfilUser extends Component {
 
@@ -55,11 +56,7 @@ onButtonUpdate() {
       if ((testPassword === true) && (validPassword === true)) {
         this.props.updateUserPassword(id, password);
     } else {
-      return (
-        <View>
-          <Text> Err</Text>
-        </View>
-      );
+        Alert.alert('Information', 'Verifier vos champs', [{ text: 'OK', onPress: () => console.log('OK Pressed!') }]);
     }
   }
 
@@ -115,7 +112,7 @@ handelPoste(value) {
     const { changeCardPassword } = this.props;
     if (changeCardPassword) {
       return (
-        <UpdateUserPasswordd
+        <UpdateUserPassword
           password={this.props.password}
           testPassword={this.props.testPassword}
           passwordConfirm={this.props.passwordConfirm}
@@ -142,9 +139,10 @@ handelPoste(value) {
     }
   }
   render() {
-    const { styleViewCardSection, titleStyle, textHeaderStyle } = styles;
+    const { styleViewCardSection, titleStyle, textHeaderStyle, styleUserImage } = styles;
+    const uriImg = `${this.props.user.photo}`;
     return (
-        <View>
+        <View style={{ backgroundColor: '#01579B', flex: 1 }}>
           <Header>
             <Body>
                 <Title>Modifier Profile</Title>
@@ -156,10 +154,11 @@ handelPoste(value) {
             </Right>
           </Header>
             {this.renderLoading()}
-          <ScrollView style={{ marginBottom: 70 }}>
+          <ScrollView>
+                <Thumbnail source={{ uri: uriImg }} style={styleUserImage} />
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardInfo()} >
                 <View style={styleViewCardSection} >
-                  <CardSection style={{ backgroundColor: '#eeeeee', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
                     <Text style={titleStyle}>
                        Infromations générales
                     </Text>
@@ -169,9 +168,9 @@ handelPoste(value) {
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardCarac()} >
                 <View style={styleViewCardSection}>
-                  <CardSection style={{ backgroundColor: '#eeeeee', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
                     <Text style={titleStyle}>
-                      caractéristique de joueur
+                      Caractéristique de joueur
                     </Text>
                   </CardSection>
                     {this.changeCardCarac()}
@@ -179,7 +178,7 @@ handelPoste(value) {
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardPassword()} >
                 <View style={styleViewCardSection}>
-                  <CardSection style={{ backgroundColor: '#eeeeee', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
                     <Text style={titleStyle}>
                       Changer de mot de passe
                     </Text>
@@ -203,8 +202,7 @@ const styles = {
     paddingTop: 15
   },
   styleViewCardSection: {
-    marginTop: 10,
-    marginBottom: 0,
+    marginBottom: 10,
     flex: 1,
     flexDirection: 'column',
   },
@@ -229,6 +227,17 @@ const styles = {
      padding: 30,
      marginLeft: 30,
      marginRight: 30
+ },
+ styleUserImage: {
+  width: 100,
+  height: 100,
+  marginTop: 30,
+  borderRadius: 50,
+  borderWidth: 2,
+  borderColor: '#FFFFFF',
+  justifyContent: 'center',
+  alignSelf: 'center',
+  marginBottom: 10
  }
 };
 const mapStateToProps = ({ updateUser }) => {

@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, TextInput } from 'react-native';
-import { Text, Icon } from 'native-base';
+import { Icon } from 'native-base';
 
-const InputText = ({ label, value, onChangeText, placeholder, secureTextEntry, testInput, icon, keyboardType }) => {
-  const { inputStyle, containerIcon, containerInputText, containerGroupe, labelStyle } = styles;
+const InputTextAuth = ({ value, onChangeText, placeholder, secureTextEntry, testInput, icon, keyboardType }) => {
+  const { inputStyle, containerIcon, containerGroupe } = styles;
   return (
     <View style={containerGroupe}>
         <View style={containerIcon} >
             <Icon name={icon} style={{ color: '#FFFFFF' }} />
         </View>
-        <View style={containerInputText}>
-            <Text style={labelStyle}>{label}</Text>
               <TextInput
                 keyboardType={keyboardType ? keyboardType : 'default'}
                 underlineColorAndroid={'transparent'}
@@ -20,10 +18,8 @@ const InputText = ({ label, value, onChangeText, placeholder, secureTextEntry, t
                 value={value}
                 style={inputStyle}
                 onChangeText={onChangeText}
-                placeholderTextColor='#FFFFFF'
+                placeholderTextColor='#eeeeee'
               />
-
-        </View>
         <View style={containerIcon} >
             {renderIcon(testInput)}
         </View>
@@ -41,32 +37,24 @@ const renderIcon = (testInput) => {
 
 const styles = {
   inputStyle: {
-    color: '#FFF',
-    flex: 1,
+    color: '#FFFFFF',
     fontSize: 18,
-  },
-  labelStyle: {
-    fontSize: 16,
-    color: '#FFF',
-    marginLeft: 17
+    flex: 1
   },
   containerIcon: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    marginRight: 10
+    marginRight: 10,
+    marginLeft: 10
   },
   containerGroupe: {
-    flex: 1,
+    backgroundColor: '#039BE5',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#FFFFFF'
-  },
-  containerInputText: {
-    flex: 1,
-    flexDirection: 'column',
+    borderWidth: 1,
+    borderColor: '#01579B',
+    borderRadius: 8,
+    marginBottom: 10,
   }
 };
 
-export { InputText };
+export { InputTextAuth };

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Dimensions, Image, TouchableNativeFeedback } from 'react-native';
+import { Dimensions, TouchableNativeFeedback, View } from 'react-native';
 import { Container, Thumbnail, Text, Button, Icon } from 'native-base';
 import StarRating from 'react-native-star-rating';
 
-const backgroundImage = require('../assets/backgroundprofil.png');
+//const backgroundImage = require('../assets/backgroundprofil.png');
 
 class UserCharacteristic extends Component {
   onClickImage() {
@@ -26,7 +26,7 @@ class UserCharacteristic extends Component {
       const { background, styleUserImage, styleContainerUser, styleCharacteristic, textStyle, textStyleCharacteristic } = styles;
       const { imageUser, userName, age, poids, taille, total } = this.props;
       return (
-        <Image source={backgroundImage} style={background}>
+          <View style={background}>
            <Container style={styleContainerUser}>
                <TouchableNativeFeedback onPress={this.onClickImage.bind(this)}>
                    <Thumbnail source={{ uri: imageUser }} style={styleUserImage} />
@@ -60,18 +60,18 @@ class UserCharacteristic extends Component {
                    <Text style={textStyleCharacteristic}>Taille</Text>
                </Container>
            </Container>
-
-        </Image>
+          </View>
       );
   }
 }
 const { width } = Dimensions.get('window');
 const styles = {
   background: {
-    width,
+    flex: 1,
     height: 300,
-    backgroundColor: 'transparent',
-    marginTop: 50
+    backgroundColor: '#039BE5',
+    marginTop: 50,
+    marginBottom: 20
   },
   styleUserImage: {
    width: 100,

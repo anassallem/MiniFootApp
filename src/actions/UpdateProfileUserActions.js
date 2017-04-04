@@ -25,7 +25,7 @@ export const userUpdate = ({ prop, value, idChamps }) => {
 };
 
 export const joueurUpdate = ({ prop, value, idChamps }) => {
-  const validate = testChamps();
+  const validate = testChamps(prop, value);
   return {
     type: USER_UPDATE_JOUEUR,
     payload: { prop, value },
@@ -133,15 +133,17 @@ export const updateUserProfil = (idUser, user) => {
         if (err) {
           console.log(err);
         } else {
+          AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
             dispatch({ type: UPDATE_USER_PROFIL });
             Actions.profil();
+          });
         }
       });
   };
 };
 
 function validatePhone(phone) {
-    const phoneno = /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/;
+    const phoneno = /^[0-9]{8}$/;
     return phoneno.test(phone);
 }
 
@@ -170,6 +172,6 @@ function testChampVide(text) {
 }
 
 function testChampNumber(value) {
-    const re = /^\d+$/
+    const re = /^\d+$/;
     return re.test(value);
 }

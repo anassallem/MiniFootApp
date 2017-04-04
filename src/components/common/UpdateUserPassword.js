@@ -6,7 +6,7 @@ import { Spinner } from './Spinner';
 import { ButtonValid } from './ButtonValid';
 import { CardSection } from './CardSection';
 
-class UpdateUserPasswordd extends Component {
+class UpdateUserPassword extends Component {
 
 onPasswordChange(password) {
   this.props.onPasswordChange(password);
@@ -32,7 +32,7 @@ onPasswordConfirmChange(passwordConfirm) {
       const { errorTextStyle } = styles;
     return (
       <View>
-           <Form style={{ padding: 5 }}>
+           <Form style={{ paddingLeft: 15, paddingRight: 15 }}>
              <CardSection>
                 <InputText
                   secureTextEntry
@@ -83,8 +83,8 @@ const styles = {
   },
   errorTextStyle: {
     fontSize: 14,
-    color: '#FF0000',
-    marginLeft: 50
+    color: '#000000',
+    marginLeft: 32
   },
 };
-export { UpdateUserPasswordd };
+export { UpdateUserPassword };

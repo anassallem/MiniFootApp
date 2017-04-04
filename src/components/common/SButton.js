@@ -1,25 +1,33 @@
 import React from 'react';
-import { Button, Icon, Text } from 'native-base';
+import { Text, View, TouchableNativeFeedback } from 'react-native';
+import { Icon } from 'native-base';
 
-const SButton = ({ onPress, children, icon }) => {
-  const { buttonStyle } = styles;
+const SButton = ({ onPress, children }) => {
   return (
-    <Button iconLeft bordered rounded style={buttonStyle} onPress={onPress}>
-      <Icon name={icon} style={{ color: '#FFF' }} />
-      <Text style={{ color: '#FFF' }}>
-        {children}
-      </Text>
-    </Button>
+    <TouchableNativeFeedback onPress={onPress}>
+      <View style={styles.buttonStyle}>
+        <Text style={styles.textStyle}>
+          {children}
+        </Text>
+      </View>
+    </TouchableNativeFeedback>
   );
 };
 
 const styles = {
   buttonStyle: {
-    alignSelf: 'center',
-    paddingLeft: 80,
-    paddingRight: 80,
-    margin: 30,
-    borderColor: '#FFF'
+    justifyContent: 'center',
+    borderColor: '#FFFFFF',
+    borderWidth: 1,
+    borderRadius: 8,
+    flexDirection: 'row',
+    padding: 8,
+    marginBottom: 10
+  },
+  textStyle: {
+    color: '#FFF',
+    fontSize: 18,
+    alignSelf: 'center'
   }
 };
 

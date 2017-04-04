@@ -25,10 +25,6 @@ class SideBar extends Component {
     Actions.auth();
   }
 
-  getCache() {
-
-  }
-
   async removeCache(key) {
       try { await AsyncStorage.removeItem(key); }
       catch (e) { console.log('caught error', e); }
@@ -71,15 +67,17 @@ class SideBar extends Component {
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>
-                <ListItem icon>
-                    <Left>
-                        <Icon name="ios-people-outline" style={colorIcon} />
-                    </Left>
-                    <Body>
-                        <Text style={textStyle}>Mes amis</Text>
-                    </Body>
-                    <Right />
-                </ListItem>
+                <TouchableNativeFeedback onPress={() => this.props.onClickFriends()}>
+                    <ListItem icon>
+                        <Left>
+                            <Icon name="ios-people-outline" style={colorIcon} />
+                        </Left>
+                        <Body>
+                            <Text style={textStyle}>Mes amis</Text>
+                        </Body>
+                        <Right />
+                    </ListItem>
+                </TouchableNativeFeedback>
                 <ListItem icon>
                     <Left>
                         <Icon name="ios-shirt-outline" style={colorIcon} />

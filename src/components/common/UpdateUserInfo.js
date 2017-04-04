@@ -9,7 +9,7 @@ class UpdateUserInfo extends Component {
       const { errorTextStyle } = styles;
     return (
       <View>
-          <Form style={{ padding: 5 }}>
+          <Form style={{ paddingLeft: 15, paddingRight: 15 }}>
             <CardSection>
                <InputText
                   placeholder="Modifier le nom"
@@ -92,6 +92,7 @@ class UpdateUserInfo extends Component {
 
              <CardSection>
                <InputText
+                 keyboardType={'numeric'}
                  placeholder="Ajouter un numéro de téléphone"
                  value={this.props.phone + ''}
                  onChangeText={value => this.props.userUpdateUser('phone', value, 'testPhone')}
@@ -114,8 +115,8 @@ class UpdateUserInfo extends Component {
 const styles = {
   errorTextStyle: {
     fontSize: 14,
-    color: '#FF0000',
-    marginLeft: 50
+    color: '#000000',
+    marginLeft: 32
   },
 };
 

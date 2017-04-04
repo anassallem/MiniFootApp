@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { Container, Content, Form, Toast, Text, Thumbnail } from 'native-base';
+import { Toast, Text } from 'native-base';
 import {
        emailChanged,
        passwordChanged,
@@ -13,7 +13,7 @@ import {
        createUser,
        loadedUser
  } from '../actions';
-import { InputText, SButton, Spinner } from './common';
+import { SButton, Spinner, InputTextAuth } from './common';
 
 class RegisterForm extends Component {
   componentWillReceiveProps(nextProps) {
@@ -56,11 +56,11 @@ class RegisterForm extends Component {
         } = this.props;
 
   const user = { firstname, lastname, adresse, email, password };
-  if ((testEmail === true) ||
-      (testPassword === true) ||
-      (validPassword === true) ||
-      (testFirstName === true) ||
-      (testLastName === true) ||
+  if ((testEmail === true) &&
+      (testPassword === true) &&
+      (validPassword === true) &&
+      (testFirstName === true) &&
+      (testLastName === true) &&
       (testAdresse === true)) {
     this.props.createUser(user);
   } else {
@@ -86,12 +86,10 @@ class RegisterForm extends Component {
 
   render() {
     return (
-      <Container>
-        <Thumbnail source={require('./assets/backgroundimage.png')} square style={styles.backgroundImage}>
-          <Content>
-            <Form style={{ padding: 30 }}>
-              <InputText
-                label="Nom"
+      <View style={{ flex: 1, backgroundColor: '#0277BD' }}>
+          <View style={{ margin: 40 }}>
+            <Text style={styles.textStyle}> Créer un compte </Text>
+              <InputTextAuth
                 placeholder="Saisir votre nom"
                 onChangeText={this.onNameChange.bind(this)}
                 value={this.props.firstname}
@@ -101,8 +99,7 @@ class RegisterForm extends Component {
               <Text style={styles.errorTextStyle}>
                 {this.props.testFirstName === false ? 'Champ Nom est vide' : ''}
               </Text>
-              <InputText
-                label="Prénom"
+              <InputTextAuth
                 placeholder="Saisir votre prénom"
                 onChangeText={this.onLastNameChange.bind(this)}
                 value={this.props.lastname}
@@ -112,8 +109,7 @@ class RegisterForm extends Component {
               <Text style={styles.errorTextStyle}>
                 {this.props.testLastName === false ? 'Champ prénom est vide' : ''}
               </Text>
-              <InputText
-                label="Adresse"
+              <InputTextAuth
                 placeholder="Saisir votre adresse"
                 onChangeText={this.onAdresseChange.bind(this)}
                 value={this.props.adresse}
@@ -123,8 +119,7 @@ class RegisterForm extends Component {
               <Text style={styles.errorTextStyle}>
                 {this.props.testAdresse === false ? ' Champ adresse est vide ' : ''}
               </Text>
-              <InputText
-                label="E-mail"
+              <InputTextAuth
                 placeholder="Saisir votre E-mail"
                 onChangeText={this.onEmailChange.bind(this)}
                 value={this.props.email}
@@ -134,9 +129,8 @@ class RegisterForm extends Component {
               <Text style={styles.errorTextStyle}>
                 {this.props.testEmail === false ? ' Saisir votre email correctement ' : ''}
               </Text>
-              <InputText
+              <InputTextAuth
                 secureTextEntry
-                label="Mot de passe"
                 placeholder="Saisir un mot de passe"
                 onChangeText={this.onPasswordChange.bind(this)}
                 value={this.props.password}
@@ -148,9 +142,7 @@ class RegisterForm extends Component {
                     'Un mot de passe doit se composer au moins huit caractères et' +
                     'contenir des lettres (en majuscule et minuscule )' : '' }
               </Text>
-              <InputText
-                secureTextEntry
-                label="Confirmer le mot de passe"
+              <InputTextAuth
                 placeholder="Retaper le mot de passe"
                 onChangeText={this.onPasswordConfirmChange.bind(this)}
                 value={this.props.passwordConfirm}
@@ -168,33 +160,28 @@ class RegisterForm extends Component {
             >
               I have an account
             </Text>
-            </Form>
-          </Content>
-        </Thumbnail>
-      </Container>
+          </View>
+      </View>
     );
   }
 }
 
-const { height, width } = Dimensions.get('window');
 const styles = {
   errorTextStyle: {
     fontSize: 14,
-    color: '#FFF',
+    color: '#000000',
     marginLeft: 50
-  },
-  backgroundImage: {
-    flex: 1,
-    width,
-    height,
-    backgroundColor: 'transparent',
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   registerTextStyle: {
     fontSize: 14,
     alignSelf: 'center',
-    color: '#757575'
+    color: '#FFFFFF'
+  },
+  textStyle: {
+    fontSize: 22,
+    alignSelf: 'center',
+    color: '#FFFFFF',
+    marginBottom: 15
   }
 };
 const mapStateToProps = ({ user }) => {

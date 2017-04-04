@@ -13,14 +13,15 @@ class UpdateUserCharacteristic extends Component {
       const { age, taille, poid, poste } = this.props;
     return (
       <View>
-        <Form style={{ padding: 5 }}>
+        <Form style={{ paddingLeft: 15, paddingRight: 15 }}>
            <CardSection>
              <InputText
                placeholder="Age"
                value={age + ''}
+               keyboardType={'numeric'}
                onChangeText={value => this.props.joueurUpdate('age', value, 'testAge')}
                testInput={this.props.testAge}
-               icon={'ios-call-outline'}
+               icon={'ios-man-outline'}
              />
            </CardSection>
            <CardSection>
@@ -32,8 +33,9 @@ class UpdateUserCharacteristic extends Component {
              <InputText
                placeholder="Taille"
                value={taille +''}
+               keyboardType={'numeric'}
                onChangeText={value => this.props.joueurUpdate('taille', value, 'testTaille')}
-               icon={'ios-call-outline'}
+               icon={'ios-arrow-round-up-outline'}
                testInput={this.props.testTaille}
              />
            </CardSection>
@@ -46,8 +48,9 @@ class UpdateUserCharacteristic extends Component {
              <InputText
                placeholder="Poids"
                value={poid +''}
+               keyboardType={'numeric'}
                onChangeText={value => this.props.joueurUpdate('poid', value, 'testPoid')}
-               icon={'ios-call-outline'}
+               icon={'ios-speedometer-outline'}
                testInput={this.props.testPoid}
              />
            </CardSection>
@@ -56,9 +59,9 @@ class UpdateUserCharacteristic extends Component {
                {this.props.testPoid === false ? 'Champ poids invalide' : ''}
              </Text>
            </CardSection>
-           <CardSection style={{ flexDirection: 'column' }}>
+           <CardSection>
                <Picker
-                 style={{ flex: 1 }}
+                 style={{ flex: 1, color: '#FFFFFF' }}
                  selectedValue={poste}
                  onValueChange={this.updatePoste.bind(this)}
                >
@@ -79,8 +82,8 @@ class UpdateUserCharacteristic extends Component {
 const styles = {
   errorTextStyle: {
     fontSize: 14,
-    color: '#FF0000',
-    marginLeft: 50
+    color: '#000000',
+    marginLeft: 32
   },
 };
 

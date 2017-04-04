@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { AsyncStorage, Modal, View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import { Container, Content, Text } from 'native-base';
 import { UserSkills } from './common';
 import { changeRatingAttaque, changeRatingDefence, changeRatingMilieu, changeRatingGardien, addSkills } from '../actions';
@@ -73,7 +72,9 @@ const styles = {
   containerStyle: {
       position: 'relative',
       flex: 1,
-      justifyContent: 'center'
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: 'gray'
   },
   containerModal: {
       backgroundColor: '#FFFFFF',

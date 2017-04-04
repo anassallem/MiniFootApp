@@ -55,7 +55,7 @@ export const createUser = (user) => {
         createUserSuccess(dispatch, res);
         console.log(res);
       } else if (res.success === false) {
-        createUserFail(dispatch, res.message);
+        createUserFail(dispatch);
       }
       }, (err) => {
         console.log(err);

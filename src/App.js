@@ -9,7 +9,8 @@ import getTheme from './theme/components';
 import material from './theme/variables/material';
 
 class App extends Component {
-  render() {
+
+    render() {
     const store = createStore(reducers, {}, applyMiddleware(ReduxThunk));
 
     return (
@@ -18,7 +19,7 @@ class App extends Component {
             <Router />
           </Provider>
         </StyleProvider>
-    );
-  }
+        );
+    }
 }
 export default App;

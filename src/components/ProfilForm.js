@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { ScrollView, View, Modal, AsyncStorage, ActivityIndicator } from 'react-native';
-import { Button, Icon, Text } from 'native-base';
+import { ScrollView, RefreshControl, View, Modal, AsyncStorage, ActivityIndicator, TouchableNativeFeedback } from 'react-native';
+import { Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
 import { getUserById, getSkills, changeImage, uploadImage } from '../actions';
 
 class ProfilForm extends Component {
 
     componentDidMount() {
-      this.props.getUserById();
+      this.onRefresh();
+    }
+
+    onRefresh() {
       try {
           AsyncStorage.getItem('user').then((value) => {
               const user = JSON.parse(value);
+              this.props.getUserById(user.user._id);
               this.props.getSkills(user.user._id);
           }).done();
       } catch (e) {
@@ -25,7 +29,8 @@ class ProfilForm extends Component {
        Actions.updateProfil({ user: this.props.user });
     }
 
-    onButtonPressFrinds() {
+    onButtonPressFriends() {
+      Actions.listFriends();
     }
     handleImage() {
       ImagePicker.showImagePicker(null, (response) => {
@@ -82,46 +87,60 @@ class ProfilForm extends Component {
 
                     {this.renderLoading()}
                 <View style={styles.containerButtonStyle}>
-                    <Button iconLeft style={styles.buttonStyle} onPress={this.onButtonPressUpdate.bind(this)}>
+                    <TouchableNativeFeedback onPress={this.onButtonPressUpdate.bind(this)}>
+                      <View style={styles.buttonStyle}>
                         <Icon name='ios-contact-outline' style={colorGray} />
                         <Text style={colorGray}>
                           Modifier
                         </Text>
-                    </Button>
-                    <Button iconLeft style={styles.buttonStyle} onPress={this.onButtonPressFrinds.bind(this)}>
+                      </View>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback onPress={this.onButtonPressFriends.bind(this)}>
+                      <View style={styles.buttonStyle}>
                         <Icon name='ios-people-outline' style={colorGray} />
                         <Text style={colorGray}>
                           Mes amis
                         </Text>
-                    </Button>
+                      </View>
+                    </TouchableNativeFeedback>
                 </View>
-
                 <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne}disabled />
                 <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={'--'} />
           </View>
       );
     }
-    return <ActivityIndicator size="large" />;
   }
 
   render() {
     return (
-        <ScrollView>
-          {this.renderProfile()}
-        </ScrollView>
+          <ScrollView
+           refreshControl={
+           <RefreshControl
+             tintColor='blue'
+             colors={['#64B5F6', '#2196F3', '#1976D2']}
+             refreshing={this.props.refresh}
+             onRefresh={this.onRefresh.bind(this)}
+           />}
+          >
+            {this.renderProfile()}
+          </ScrollView>
     );
   }
 }
 const styles = {
  containerButtonStyle: {
      flexDirection: 'row',
-     justifyContent: 'center'
+     justifyContent: 'center',
+     marginBottom: 10
  },
  buttonStyle: {
     marginLeft: 10,
     marginRight: 10,
     borderColor: '#FFFFFF',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
  },
  containerStyle: {
      backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -154,7 +173,8 @@ const styles = {
      marginBottom: 30,
  },
  colorGray: {
-     color: '#616161'
+     color: '#616161',
+     marginLeft: 10
  },
  containerLoadingStyle: {
      position: 'relative',

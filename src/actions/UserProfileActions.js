@@ -1,32 +1,30 @@
 import { AsyncStorage } from 'react-native';
-import { getUser, getUserSkills, uploadImageUser } from './api/UserApi';
+import { getUser, getUserSkills, uploadImageUser, getRelationshipUser, removeFriends, deleteInvitationFriend, addInvitation, confirmInvitationsUser } from './api/UserApi';
 import { URL } from './api/config';
 import {
   GET_USER,
   GET_USER_SKILLS,
   IMAGE_CHANGED,
   UPLOAD_IMAGE_USER,
-  REFRESH_START
+  REFRESH_START,
+  GET_RELATIONSHIP_USER,
+  DELETE_RELATIONSHIP_USER,
+  CANCEL_INVITATION_USER,
+  ADD_INVITATION_USER,
+  CONFIRM_INVITATIONS
 } from './types';
 
-export const getUserById = () => {
+
+export const getUserById = (idUser) => {
   return (dispatch) => {
-  try {
-    dispatch({ type: REFRESH_START });
-      AsyncStorage.getItem('user').then((value) => {
-        const user = JSON.parse(value);
-            getUser(user.user._id).then((res, err) => {
-              if (err) {
-                console.log(err);
-              } else {
-                  const newUser = { ...res, photo: `${URL}/users/upload/${res.photo}` };
-                  dispatch({ type: GET_USER, payload: newUser });
-              }
-            });
-      }).done();
-  } catch (e) {
-      console.log('caught error', e);
-  }
+  getUser(idUser).then((res, err) => {
+    if (err) {
+      console.log(err);
+    } else {
+        const newUser = { ...res, photo: `${URL}/users/upload/${res.photo}` };
+        dispatch({ type: GET_USER, payload: newUser });
+    }
+  });
   };
 };
 
@@ -41,6 +39,7 @@ export const changeImage = (uri, data, show) => {
 
 export const getSkills = (idUser) => {
   return (dispatch) => {
+    dispatch({ type: REFRESH_START });
       getUserSkills(idUser).then((res, err) => {
         if (err) {
           console.log(err);
@@ -62,4 +61,63 @@ export const uploadImage = (idUser, photo) => {
         }
       });
   };
+};
+
+export const getRelationship = (idUser, idFriend) => {
+    return (dispatch) => {
+        getRelationshipUser(idUser, idFriend).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: GET_RELATIONSHIP_USER, payload: res });
+          }
+        });
+    };
+};
+
+export const deleteFriend = (idInvitation, relationship) => {
+    return (dispatch) => {
+        removeFriends(idInvitation, relationship).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: DELETE_RELATIONSHIP_USER, payload: res });
+          }
+        });
+    };
+};
+
+export const cancelInvitationFriend = (idInvitation) => {
+    return (dispatch) => {
+        deleteInvitationFriend(idInvitation).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: CANCEL_INVITATION_USER, payload: res });
+          }
+        });
+    };
+};
+
+export const addInvitationFriend = (idUser, idFriend, title) => {
+    return (dispatch) => {
+        addInvitation(idUser, idFriend, title).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: ADD_INVITATION_USER, payload: res.data._id });
+          }
+        });
+    };
+};
+
+export const confirmInvitations = (idInvitation, invitation) => {
+  return (dispatch) => {
+    confirmInvitationsUser(idInvitation, invitation).then((res) => {
+      dispatch({ type: CONFIRM_INVITATIONS, payload: idInvitation });
+      }, (err) => {
+        console.log(err);
+      }
+    );
+    };
 };

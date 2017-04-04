@@ -5,7 +5,8 @@ import UserProfileReducer from './UserProfileReducer';
 import SearchPlayerReducer from './SearchPlayerReducer';
 import PlayerNoteFormReducer from './PlayerNoteFormReducer';
 import UpdateProfileUserReducer from './UpdateProfileUserReducer';
-
+import ListFriendsReducer from './ListFriendsReducer';
+import MyInvitationsReducer from './MyInvitationsReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -13,5 +14,7 @@ export default combineReducers({
   userProfile: UserProfileReducer,
   searchPlayer: SearchPlayerReducer,
   notePlayer: PlayerNoteFormReducer,
-  updateUser: UpdateProfileUserReducer
+  updateUser: UpdateProfileUserReducer,
+  friends: ListFriendsReducer,
+  myInvitations: MyInvitationsReducer
 });
