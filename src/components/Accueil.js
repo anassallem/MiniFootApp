@@ -1,84 +1,42 @@
 import React, { Component } from 'react';
-import { BackAndroid } from 'react-native';
-import { Actions } from 'react-native-router-flux';
-import { Container, Tab, Tabs, TabHeading, Icon,
-    Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
-import SideBar from './SideBar';
+import { View, AsyncStorage } from 'react-native';
+import LoginForm from './LoginForm';
+import Home from './Home';
 
 class Accueil extends Component {
-  componentWillMount() {
-    const route = this.props.title;
-    BackAndroid.addEventListener('hardwareBackPress', function(){
-     if (route === 'Accueil') {
-      //BackAndroid.exitApp();
-      return false;
-     }
-     return true;
-    });
+    constructor(props) {
+    super(props);
+    this.state = { user: 0 };
   }
-  handelProfile() {
-      Actions.profil();
-      this.closeDrawer();
-  }
-  handelFriends() {
-      Actions.listFriends();
-      this.closeDrawer();
-  }
-  closeDrawer = () => {
-      this.drawer._root.close();
-    };
-  openDrawer = () => {
-      this.drawer._root.open();
-  };
+    componentDidMount() {
+        try {
+             AsyncStorage.getItem('user', (err, user) => {
+                 if (user !== null) {
+                     this.setState({ user: 1 });
+                 } else {
+                     this.setState({ user: 2 });
+                 }
+            });
+        } catch (e) {
+            console.log('caught error', e);
+        }
+    }
 
-  render() {
-    return (
-      <Drawer
-              ref={(ref) => { this.drawer = ref; }}
-              content={<SideBar onClickProfil={this.handelProfile.bind(this)} onClickFriends={this.handelFriends.bind(this)} />}
-              onClose={() => this.closeDrawer()}
-      >
-        <Container>
-          <Header hasTabs searchBar rounded>
-              <Left>
-                <Button transparent onPress={() => this.openDrawer()}>
-                    <Icon name='menu' />
-                </Button>
-              </Left>
-              <Body>
-                  <Title>Header</Title>
-              </Body>
-              <Right>
-                  <Button transparent onPress={() => Actions.searchPlayer()}>
-                      <Icon name='md-search' />
-                  </Button>
-              </Right>
-          </Header>
-          <Container>
-              <Tabs>
-                  <Tab heading={<TabHeading><Icon name="ios-keypad-outline" style={styles.styleIcon} /></TabHeading>}>
-                    <Text>page 1</Text>
-                  </Tab>
-                  <Tab heading={<TabHeading><Icon name="ios-chatbubbles-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Text>page 2</Text>
-                  </Tab>
-                  <Tab heading={<TabHeading><Icon name="ios-notifications-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Text>page 3</Text>
-                  </Tab>
-                  <Tab heading={<TabHeading><Icon name="ios-football-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Text>page 4</Text>
-                  </Tab>
-              </Tabs>
-          </Container>
-        </Container>
-      </Drawer>
-    );
-  }
+    renderPageAccueil() {
+        if (this.state.user === 2) {
+            return <LoginForm />;
+        } else if (this.state.user === 1) {
+            return <Home />;
+        }
+    }
+
+    render() {
+        return (
+            <View style={{ flex: 1 }}>
+                {this.renderPageAccueil()}
+            </View>
+        );
+    }
 }
 
-const styles = {
-  styleIcon: {
-    color: '#616161',
-  }
-};
 export default Accueil;

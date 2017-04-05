@@ -46,12 +46,11 @@ const styles = {
     marginLeft: 10
   },
   containerGroupe: {
-    backgroundColor: '#039BE5',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#01579B',
+    borderColor: '#FFFFFF',
     borderRadius: 8,
     marginBottom: 10,
   }

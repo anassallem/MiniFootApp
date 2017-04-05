@@ -7,7 +7,8 @@ import {
   ADRESSE_CHANGED,
   CREATE_USER,
   CREATE_USER_SUCCESS,
-  CREATE_USER_FAIL
+  CREATE_USER_FAIL,
+  MESSAGE_REGISTER_ERROR_CHANGED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -46,6 +47,8 @@ export default (state = INITIAL_STATE, action) => {
     case CREATE_USER_SUCCESS:
           return { ...state, ...INITIAL_STATE };
     case CREATE_USER_FAIL:
+          return { ...state, error: action.payload, loading: false };
+    case MESSAGE_REGISTER_ERROR_CHANGED:
           return { ...state, error: action.payload, loading: false };
     default:
       return state;

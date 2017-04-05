@@ -8,6 +8,7 @@ import {
   CREATE_USER,
   CREATE_USER_SUCCESS,
   CREATE_USER_FAIL,
+  MESSAGE_REGISTER_ERROR_CHANGED
 } from './types';
 
 export const nameChanged = (text) => {
@@ -16,6 +17,13 @@ export const nameChanged = (text) => {
     type: NAME_CHANGED,
     payload: text,
     validate: valid
+  };
+};
+
+export const setMessageRegisterError = (message) => {
+  return {
+    type: MESSAGE_REGISTER_ERROR_CHANGED,
+    payload: message
   };
 };
 
@@ -81,6 +89,7 @@ const createUserSuccess = (dispatch) => {
 function testPassword(password, confirmPassword) {
   return (password !== confirmPassword) ? false: true;
 }
+
 function testAdresse(adresse) {
   if (adresse === '') {
     return false;

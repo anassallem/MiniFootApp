@@ -7,7 +7,8 @@ import {
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
-  TOKEN_CHANGED
+  TOKEN_CHANGED,
+  MESSAGE_ERROR_CHANGED
 } from './types';
 
 export const emailChanged = (text) => {
@@ -32,6 +33,13 @@ export const tokenChanged = (token) => {
   return {
     type: TOKEN_CHANGED,
     payload: token
+  };
+};
+
+export const setMessageError = (message) => {
+  return {
+    type: MESSAGE_ERROR_CHANGED,
+    payload: message
   };
 };
 
@@ -78,7 +86,7 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_USER_SUCCESS
   });
   setCache(user);
-  Actions.main();//navigation between routes
+  Actions.home();//navigation between routes
 };
 
 async function setCache (user){

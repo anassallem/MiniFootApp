@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { Toast, Text } from 'native-base';
+import { Text } from 'native-base';
 import {
        emailChanged,
        passwordChanged,
@@ -11,21 +11,12 @@ import {
        lastNameChanged,
        adressChanged,
        createUser,
-       loadedUser
+       loadedUser,
+       setMessageRegisterError
  } from '../actions';
 import { SButton, Spinner, InputTextAuth } from './common';
 
 class RegisterForm extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error !== '') {
-        Toast.show({
-              text: nextProps.error,
-              position: 'bottom',
-              buttonText: 'Ok',
-              duration: 6000
-            });
-      }
-  }
 
   onEmailChange(text) {
     this.props.emailChanged(text);
@@ -64,12 +55,7 @@ class RegisterForm extends Component {
       (testAdresse === true)) {
     this.props.createUser(user);
   } else {
-    Toast.show({
-          text: 'verifiez vos champs',
-          position: 'bottom',
-          buttonText: 'Ok',
-          duration: 6000
-        });
+    this.props.setMessageRegisterError('Verifiez vos champs');
   }
  }
 
@@ -87,6 +73,7 @@ class RegisterForm extends Component {
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#0277BD' }}>
+         <ScrollView>
           <View style={{ margin: 40 }}>
             <Text style={styles.textStyle}> Créer un compte </Text>
               <InputTextAuth
@@ -143,6 +130,7 @@ class RegisterForm extends Component {
                     'contenir des lettres (en majuscule et minuscule )' : '' }
               </Text>
               <InputTextAuth
+                secureTextEntry
                 placeholder="Retaper le mot de passe"
                 onChangeText={this.onPasswordConfirmChange.bind(this)}
                 value={this.props.passwordConfirm}
@@ -154,13 +142,17 @@ class RegisterForm extends Component {
               </Text>
 
               {this.renderButton()}
-            <Text
-              style={styles.registerTextStyle}
-              onPress={this.onTextPress.bind(this)}
-            >
-              I have an account
-            </Text>
+              <Text style={styles.errorMessageStyle} onPress={this.onTextPress.bind(this)}>
+                  {this.props.error}
+              </Text>
+              <Text
+                  style={styles.registerTextStyle}
+                  onPress={this.onTextPress.bind(this)}
+              >
+                  I have an account
+              </Text>
           </View>
+         </ScrollView>
       </View>
     );
   }
@@ -170,7 +162,8 @@ const styles = {
   errorTextStyle: {
     fontSize: 14,
     color: '#000000',
-    marginLeft: 50
+    marginLeft: 5,
+    marginBottom: 10
   },
   registerTextStyle: {
     fontSize: 14,
@@ -182,6 +175,12 @@ const styles = {
     alignSelf: 'center',
     color: '#FFFFFF',
     marginBottom: 15
+  },
+  errorMessageStyle: {
+    fontSize: 14,
+    alignSelf: 'center',
+    color: '#000000',
+    marginBottom: 10
   }
 };
 const mapStateToProps = ({ user }) => {
@@ -224,5 +223,6 @@ export default connect(mapStateToProps,
     lastNameChanged,
     adressChanged,
     createUser,
-    loadedUser
+    loadedUser,
+    setMessageRegisterError
 })(RegisterForm);

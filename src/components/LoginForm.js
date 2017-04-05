@@ -3,14 +3,11 @@ import { Text, View } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
-import { Toast } from 'native-base';
-import { emailChanged, passwordChanged, loginUser, loadUser, tokenChanged } from '../actions';
+import { emailChanged, passwordChanged, loginUser, loadUser, tokenChanged, setMessageError } from '../actions';
 import { InputTextAuth, SButton, Spinner } from './common';
 
 class LoginForm extends Component {
-  componentWillMount() {
-    this.props.loadUser();
-  }
+
   componentDidMount() {
     let that = this;
     PushNotification.configure({
@@ -34,12 +31,6 @@ class LoginForm extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.error !== '') {
-        Toast.show({ text: nextProps.error, position: 'bottom', buttonText: 'Ok', duration: 6000 });
-      }
-  }
-
   onEmailChange(text) {
     this.props.emailChanged(text);
   }
@@ -51,10 +42,10 @@ class LoginForm extends Component {
   onButtonPress() {
     const { email, password, token, testEmail, testPassword } = this.props;
     const user = { email, password, token };
-    if (!(testEmail === true) || !(testPassword === true)) {
-        //Toast.show({ text: 'verifiez email et password', position: 'bottom', buttonText: 'Ok' });
+    if ((testEmail === true) || (testPassword === true)) {
+        this.props.loginUser(user);
     } else {
-      this.props.loginUser(user);
+        this.props.setMessageError('Verifiez vos champs');
     }
   }
 
@@ -93,9 +84,12 @@ class LoginForm extends Component {
               icon={'ios-lock-outline'}
             />
             {this.renderButton()}
-          <Text style={styles.registerTextStyle} onPress={this.onTextPress.bind(this)}>
-            DON'T HAVE AN ACCOUNT? SIGN UP
-          </Text>
+            <Text style={styles.errorTextStyle} onPress={this.onTextPress.bind(this)}>
+                {this.props.error}
+            </Text>
+            <Text style={styles.registerTextStyle} onPress={this.onTextPress.bind(this)}>
+                DON'T HAVE AN ACCOUNT? SIGN UP
+            </Text>
         </View>
     </View>
     );
@@ -107,6 +101,12 @@ const styles = {
     fontSize: 14,
     alignSelf: 'center',
     color: '#FFFFFF'
+  },
+  errorTextStyle: {
+    fontSize: 14,
+    alignSelf: 'center',
+    color: '#000000',
+    marginBottom: 10
   }
 };
 
@@ -116,5 +116,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  emailChanged, passwordChanged, loginUser, loadUser, tokenChanged
+  emailChanged, passwordChanged, loginUser, loadUser, tokenChanged, setMessageError
 })(LoginForm);

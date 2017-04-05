@@ -22,7 +22,7 @@ class SideBar extends Component {
 
   onButtonPress() {
     this.removeCache('user');
-    Actions.auth();
+    Actions.login();
   }
 
   async removeCache(key) {

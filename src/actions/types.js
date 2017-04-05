@@ -11,7 +11,8 @@ export const CREATE_USER = 'create_user';
 export const CREATE_USER_SUCCESS = 'create_user_success';
 export const CREATE_USER_FAIL = 'create_user_fail';
 export const TOKEN_CHANGED = 'token_changed';
-
+export const MESSAGE_ERROR_CHANGED = 'message_error_changed';
+export const MESSAGE_REGISTER_ERROR_CHANGED = 'message_register_error_changed';
 export const GET_USER = 'get_user';
 export const GET_USER_SKILLS = 'get_user_skills';
 export const REFRESH_START = 'refresh_start';
