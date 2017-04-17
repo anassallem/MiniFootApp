@@ -3,6 +3,7 @@ import { View, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import CreateEquipe from './CreateEquipe';
 import CreateEquipeStepOne from './CreateEquipeStepOne';
+import MenuEquipe from './MenuEquipe';
 import { changeStepOne, changeStepTow } from '../actions';
 
 class Equipe extends Component {
@@ -37,7 +38,7 @@ class Equipe extends Component {
     render() {
         return (
             <View style={styles.mainContainer}>
-               {this.renderPage()}
+               <MenuEquipe />
            </View>
         );
     }
