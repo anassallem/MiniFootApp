@@ -6,3 +6,6 @@ export * from './PlayerNoteFormActions';
 export * from './UpdateProfileUserActions';
 export * from './ListFriendsActions';
 export * from './MyInvitationsActions';
+export * from './DiscussionActions';
+export * from './HomeActions';
+export * from './EquipeActions';

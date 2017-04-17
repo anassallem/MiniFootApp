@@ -12,4 +12,3 @@ export * from './UpdateUserInfo';
 export * from './UpdateUserPassword';
 export * from './UpdateUserCharacteristic';
 export * from './SwitchSegment';
-export * from './ItemDiscussion';

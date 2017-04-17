@@ -13,27 +13,27 @@ class SwitchSegment extends Component {
     const { styleButtonLeft, styleText, styleButtonLeftClicked, styleTextClicked } = styles;
     if (this.props.switcher === true) {
       return (<View style={styleButtonLeftClicked}>
-                <Text style={styleTextClicked}>Mes amis</Text>
+                <Text style={styleTextClicked}>{this.props.leftButton}</Text>
               </View>);
     }
       return (<View style={styleButtonLeft}>
-                <Text style={styleText}>Mes amis</Text>
+                <Text style={styleText}>{this.props.leftButton}</Text>
               </View>);
   }
   renderButtonRight() {
     const { styleButtonRight, styleText, styleButtonRightClicked, styleTextClicked } = styles;
     if (this.props.switcher === false) {
       return (<View style={styleButtonRightClicked}>
-                <Text style={styleTextClicked}>Mes invitations</Text>
+                <Text style={styleTextClicked}>{this.props.rightButton}</Text>
               </View>);
     }
       return (<View style={styleButtonRight}>
-                <Text style={styleText}>Mes invitations</Text>
+                <Text style={styleText}>{this.props.rightButton}</Text>
               </View>);
   }
   render() {
       return (
-        <View style={styles.containerButtons}>
+        <View style={[styles.containerButtons, this.props.style]}>
           <TouchableNativeFeedback onPress={this.onClickMyFriends.bind(this)}>
             {this.renderButtonLeft()}
           </TouchableNativeFeedback>
@@ -50,8 +50,7 @@ const styles = {
   containerButtons: {
     padding: 5,
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 54
+    justifyContent: 'center'
   },
   styleButtonLeft: {
     padding: 10,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Scene, Router } from 'react-native-router-flux';
+import NavigationStateHandler from 'react-native-router-flux-focus-hook';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 import Accueil from './components/Accueil';
@@ -11,14 +12,18 @@ import PlayerNoteForm from './components/PlayerNoteForm';
 import UpdateProfilUser from './components/UpdateProfilUser';
 import ListFriends from './components/ListFriends';
 import Chat from './components/Chat';
+import ProfileEquipe from './components/ProfileEquipe';
 
 const icon = require('./components/assets/back.png');
 
 class RouterComponent extends Component {
-
     render() {
+        const navigationStateHandler = new NavigationStateHandler();
         return (
-          <Router>
+          <Router
+              createReducer={navigationStateHandler.getReducer.bind(navigationStateHandler)}
+              navigationStateHandler={navigationStateHandler}
+          >
             <Scene key="main" duration={1}>
               <Scene key="accueil" component={Accueil} title="Accueil" hideNavBar initial />
               <Scene key="home" component={Home} title="home" />
@@ -41,6 +46,7 @@ class RouterComponent extends Component {
               <Scene key="chat" component={Chat} title="Chat" hideNavBar={false} title="Mes amis"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
+              <Scene key="profileEquipe" component={ProfileEquipe} hideNavBar />
            </Scene>
         </Router>
         );

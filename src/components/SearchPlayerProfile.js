@@ -11,6 +11,10 @@ class SearchPlayerProfile extends Component {
 
   componentDidMount() {
     this.onRefresh();
+    this.props.navigationStateHandler.registerFocusHook(this);
+  }
+  componentWillUnmount() {
+    this.props.navigationStateHandler.unregisterFocusHook(this);
   }
 
   onRefresh() {
@@ -60,6 +64,10 @@ class SearchPlayerProfile extends Component {
   onRemoveFriends() {
       const { relationship } = this.props;
       this.props.deleteFriend(relationship.data._id, { idUser: relationship.data.to, idFriend: relationship.data.from });
+  }
+
+  handleNavigationSceneFocus() {
+    this.onRefresh();
   }
 
   renderButtonFriends() {
