@@ -10,6 +10,7 @@
     "axios": "^0.15.3",
     "firebase": "^3.7.0",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "native-base": "^2.0.12",
     "react": "15.4.2",
     "react-native": "0.42.0",
@@ -17,10 +18,12 @@
     "react-native-image-picker": "^0.26.2",
     "react-native-push-notification": "^2.2.1",
     "react-native-router-flux": "^3.38.0",
+    "react-native-router-flux-focus-hook": "github:leifdenby/react-native-router-flux-focus-hook",
     "react-native-star-rating": "^1.0.7",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "socket.io-client": "^1.7.3"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",

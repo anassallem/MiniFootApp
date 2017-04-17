@@ -1,17 +1,47 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
+import { AsyncStorage } from 'react-native';
+import io from 'socket.io-client/dist/socket.io';
 import { Container, Tab, Tabs, TabHeading, Icon,
     Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
+import { connect } from 'react-redux';
 import SideBar from './SideBar';
 import Discussion from './Discussion';
+import Equipe from './Equipe';
+import { URL } from '../actions/api/config';
+import { getSocket, getRoomUser } from '../actions';
 
 class Home extends Component {
+  constructor(props) {
+      super(props);
+      this.socket = io(URL, { jsonp: false });
+      this.socket.emit('connection');
+      try {
+        AsyncStorage.getItem('user').then((value) => {
+            const user = JSON.parse(value);
+            this.socket.emit('add_user', user.user._id);
+            this.props.getRoomUser(user.user._id);
+        }).done();
+      } catch (e) {
+        console.log('caught error', e);
+      }
+      this.props.getSocket(this.socket);
+  }
+  componentWillReceiveProps(nextProps) {
+    nextProps.rooms.forEach((room) => {
+        nextProps.socket.emit('room', room._id);
+    });
+  }
   handelProfile() {
       Actions.profil();
       this.closeDrawer();
   }
   handelFriends() {
       Actions.listFriends();
+      this.closeDrawer();
+  }
+  handelEquipe() {
+      Actions.profileEquipe();
       this.closeDrawer();
   }
   closeDrawer = () => {
@@ -25,7 +55,9 @@ class Home extends Component {
     return (
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
-              content={<SideBar onClickProfil={this.handelProfile.bind(this)} onClickFriends={this.handelFriends.bind(this)} />}
+              content={<SideBar onClickProfil={this.handelProfile.bind(this)}
+              onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
+              />}
               onClose={() => this.closeDrawer()}
       >
         <Container>
@@ -50,13 +82,13 @@ class Home extends Component {
                     <Text>page 1</Text>
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-chatbubbles-outline" style={styles.styleIcon} /></TabHeading>}>
-                    <Discussion />  
+                    <Discussion socket={this.props.socket} />
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-notifications-outline" style={styles.styleIcon} /></TabHeading>}>
                       <Text>page 3</Text>
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-football-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Text>page 4</Text>
+                      <Equipe />
                   </Tab>
               </Tabs>
           </Container>
@@ -71,4 +103,8 @@ const styles = {
     color: '#616161',
   }
 };
-export default Home;
+const mapStateToProps = ({ homeDiscussion }) => {
+  const { rooms, socket } = homeDiscussion;
+  return { rooms, socket };
+};
+export default connect(mapStateToProps, { getSocket, getRoomUser })(Home);

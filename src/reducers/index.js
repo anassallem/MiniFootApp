@@ -7,6 +7,9 @@ import PlayerNoteFormReducer from './PlayerNoteFormReducer';
 import UpdateProfileUserReducer from './UpdateProfileUserReducer';
 import ListFriendsReducer from './ListFriendsReducer';
 import MyInvitationsReducer from './MyInvitationsReducer';
+import DiscussionReducer from './DiscussionReducer';
+import HomeReducer from './HomeReducer';
+import EquipeReducer from './EquipeReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -16,5 +19,8 @@ export default combineReducers({
   notePlayer: PlayerNoteFormReducer,
   updateUser: UpdateProfileUserReducer,
   friends: ListFriendsReducer,
-  myInvitations: MyInvitationsReducer
+  myInvitations: MyInvitationsReducer,
+  discussionPlayer: DiscussionReducer,
+  homeDiscussion: HomeReducer,
+  equipe: EquipeReducer
 });

@@ -55,3 +55,23 @@ export const GET_MY_FRIENDS = 'get_friends';
 export const LOADING_INVITATION_FRIENDS = 'loading_invitation_Friends';
 export const DELETE_INVITATIONS = 'delete_invitations';
 export const ACCEPT_INVITATIONS = 'accept_invitations';
+
+//Discussion
+export const GET_PLAYER_ONLINE = 'get_player_online';
+export const SOCKET_CHANGED = 'socket_changed';
+export const GET_ALL_DISCUSSION = 'get_all_discussion';
+export const ID_USER_CHANGED = 'id_user_changed';
+//Home
+export const GET_MY_ROOMS = 'get_my_rooms';
+//Equipe
+export const CHANGE_STEP_ONE = 'change_step_one';
+export const CHANGE_STEP_TOW = 'change_step_tow';
+export const EQUIPE_NAME_CHANGED = 'equipe_name_changed';
+export const EQUIPE_VILLE_CHANGED = 'equipe_ville_changed';
+export const EQUIPE_DESCRIPTION_CHANGED = 'equipe_description_changed';
+export const EQUIPE_IMAGE_CHANGED = 'equipe_image_changed';
+export const CREATE_EQUIPE = 'create_equipe';
+export const CREATE_EQUIPE_SUCCESS = 'create_equipe_success';
+export const CREATE_EQUIPE_FAIL = 'create_equipe_fail';
+export const FETCH_TEAMS = 'fetch_teams';
+export const LOADING_TEAMS = 'loading_teams';

@@ -1,4 +1,3 @@
-import { AsyncStorage } from 'react-native';
 import { getUser, getUserSkills, uploadImageUser, getRelationshipUser, removeFriends, deleteInvitationFriend, addInvitation, confirmInvitationsUser } from './api/UserApi';
 import { URL } from './api/config';
 import {

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { ScrollView, TouchableWithoutFeedback, View, LayoutAnimation, Alert, Modal, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { Text, Header, Right, Body, Title, Thumbnail } from 'native-base';
+import { Text, Header, Right, Body, Title, Thumbnail, Icon } from 'native-base';
 import { userUpdate, phoneChanged, updateUserProfil, onchangeCardInfo, onchangeCardCarac, onchangeCardPassword,
         passwordUpdateChanged, updateUserPassword, confirmNewPassword, updateUserPost, joueurUpdate
        } from '../actions';
@@ -158,30 +158,33 @@ handelPoste(value) {
                 <Thumbnail source={{ uri: uriImg }} style={styleUserImage} />
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardInfo()} >
                 <View style={styleViewCardSection} >
-                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60, borderRadius: 5 }}>
                     <Text style={titleStyle}>
-                       Infromations générales
+                       Informations
                     </Text>
+                    <Icon name='ios-arrow-down-outline' style={styles.styleIcon} />
                   </CardSection>
                     {this.changeCardInfo()}
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardCarac()} >
                 <View style={styleViewCardSection}>
-                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60, borderRadius: 5 }}>
                     <Text style={titleStyle}>
                       Caractéristique de joueur
                     </Text>
+                    <Icon name='ios-arrow-down-outline' style={styles.styleIcon} />
                   </CardSection>
                     {this.changeCardCarac()}
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={() => this.props.onchangeCardPassword()} >
                 <View style={styleViewCardSection}>
-                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60 }}>
+                  <CardSection style={{ backgroundColor: '#FFFFFF', height: 60, borderRadius: 5 }}>
                     <Text style={titleStyle}>
                       Changer de mot de passe
                     </Text>
+                    <Icon name='ios-arrow-down-outline' style={styles.styleIcon} />
                   </CardSection>
                     {this.changeCardPassword()}
                 </View>
@@ -197,14 +200,17 @@ const styles = {
     margin: 10
   },
   titleStyle: {
-    fontSize: 18,
+    fontSize: 14,
     paddingLeft: 15,
-    paddingTop: 15
+    color: '#424242'
   },
   styleViewCardSection: {
+    zIndex: 1,
     marginBottom: 10,
     flex: 1,
     flexDirection: 'column',
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   errorTextStyle: {
     fontSize: 14,
@@ -220,24 +226,29 @@ const styles = {
      justifyContent: 'center'
  },
  containerLoadingModal: {
-     backgroundColor: '#FFFFFF',
-     flexDirection: 'row',
-     alignItems: 'center',
-     justifyContent: 'center',
-     padding: 30,
-     marginLeft: 30,
-     marginRight: 30
+    backgroundColor: '#FFFFFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 30,
+    marginLeft: 30,
+    marginRight: 30
  },
  styleUserImage: {
-  width: 100,
-  height: 100,
-  marginTop: 30,
-  borderRadius: 50,
-  borderWidth: 2,
-  borderColor: '#FFFFFF',
-  justifyContent: 'center',
-  alignSelf: 'center',
-  marginBottom: 10
+    zIndex: 2,
+    width: 80,
+    height: 80,
+    marginTop: 10,
+    borderRadius: 40,
+    borderWidth: 2,
+    borderColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: -40
+ },
+ styleIcon: {
+    color: '#424242',
+    marginRight: 10
  }
 };
 const mapStateToProps = ({ updateUser }) => {

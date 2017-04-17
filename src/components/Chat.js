@@ -1,44 +1,147 @@
 import React, { Component } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, Send, Composer, LoadEarlier } from 'react-native-gifted-chat';
+import { View } from 'react-native';
+import { URL } from '../actions/api/config';
+import { loadMessagesRoom, setRoomToVue } from '../actions/api/RoomsApi';
 
 class Chat extends Component {
   constructor(props) {
     super(props);
-    this.state = { messages: [] };
+    this.state = { messages: [],
+                   loadEarlier: true,
+                   isLoadingEarlier: false,
+                   page: 0,
+                };
     this.onSend = this.onSend.bind(this);
+    this.onLoadEarlier = this.onLoadEarlier.bind(this);
+    this._isMounted = false;
   }
+
   componentWillMount() {
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: 'Hello developer',
-          createdAt: new Date(Date.UTC(2016, 7, 30, 17, 20, 0)),
-          user: {
-            _id: 2,
-            name: 'React Native',
-            avatar: 'https://facebook.github.io/react/img/logo_og.png',
-          },
-        },
-      ],
+    this._isMounted = true;
+    loadMessagesRoom(this.props.room._id, this.state.page).then((res) => {
+        if (res.length > 0) {
+            res.forEach((message) => {
+                message.user.avatar = `${URL}/users/upload/${message.user.avatar}`;
+            });
+            this.setState((previousState) => {
+                return {
+                    messages: GiftedChat.prepend(previousState.messages, res),
+                    page: previousState.page + 1
+                };
+            });
+        } else {
+            this.setState({ loadEarlier: false });
+        }
+    }, (err) => {
+      console.log(err);
     });
   }
+
+  componentDidMount() {
+    this.props.mySocket.on(this.props.room._id, (data) => {
+     const newUser = { _id: this.props.user.idUser, name: `${this.props.user.firstname} ${this.props.user.lastname}`, avatar: this.props.user.photo };
+      setRoomToVue(this.props.room._id, newUser).then((res) => {
+         data.user.avatar = `${URL}/users/upload/${data.user.avatar}`;
+         setTimeout(() => {
+         this.setState((previousState) => {
+           return {
+             messages: GiftedChat.append(previousState.messages, data)
+           };
+         });
+         }, 1000);
+      });
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+
   onSend(messages = []) {
+      messages.forEach((message) => {
+          message.idRoom = this.props.room._id;
+          this.props.mySocket.emit(this.props.room._id, message);
+      });
     this.setState((previousState) => {
       return {
-        messages: GiftedChat.append(previousState.messages, messages),
+        messages: GiftedChat.append(previousState.messages, messages)
       };
     });
   }
-  render() {
+
+  onLoadEarlier() {
+    this.setState({ isLoadingEarlier: true });
+    setTimeout(() => {
+         if (this._isMounted === true) {
+            loadMessagesRoom(this.props.room._id, this.state.page).then((res) => {
+                if (res.length > 0) {
+                    res.forEach((message) => {
+                         message.user.avatar = `${URL}/users/upload/${message.user.avatar}`;
+                    });
+                    this.setState((previousState) => {
+                        return {
+                          messages: GiftedChat.prepend(previousState.messages, res),
+                          isLoadingEarlier: false,
+                          loadEarlier: true,
+                          page: previousState.page + 1
+                        };
+                      });
+                } else {
+                    this.setState({ isLoadingEarlier: false, loadEarlier: false });
+                }
+            }, (err) => {
+              console.log(err);
+            });
+        }
+    }, 1000);
+  }
+
+  renderBubble(props) {
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={this.onSend}
-        user={{
-          _id: 1,
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          left: {
+            backgroundColor: '#f0f0f0',
+          }
         }}
       />
+    );
+  }
+  renderSend(props) {
+    return <Send {...props} label={'Envoyer'} />;
+  }
+  renderComposer(props) {
+    return <Composer {...props} placeholder={'Tapez votre message'} />;
+  }
+  renderLoadEarlier(props) {
+    return <LoadEarlier {...props} label='charger vos messages' />;
+  }
+  render() {
+    const { idUser, firstname, lastname, photo } = this.props.user;
+    return (
+        <View style={{ flex: 1, marginTop: 56 }}>
+                <GiftedChat
+                  messages={this.state.messages}
+                  onSend={this.onSend}
+                  isLoadingEarlier={this.state.isLoadingEarlier}
+                  onLoadEarlier={this.onLoadEarlier}
+                  loadEarlier={this.state.loadEarlier}
+                  renderBubble={this.renderBubble}
+                  renderSend={this.renderSend}
+                  renderComposer={this.renderComposer}
+                  renderLoadEarlier={this.renderLoadEarlier}
+                  user={{
+                    _id: idUser,
+                    name: `${firstname} ${lastname}`,
+                    avatar: photo,
+                  }}
+                />
+        </View>
+
     );
   }
 }

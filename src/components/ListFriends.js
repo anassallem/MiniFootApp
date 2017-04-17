@@ -17,15 +17,19 @@ class ListFriends extends Component {
   render() {
     return (
       <View>
-        <SwitchSegment onClickSwitch={this.handelSwitch.bind(this)} switcher={this.props.switcher} />
-        <ScrollView>
+        <SwitchSegment style={styles.styleSwitcher} onClickSwitch={this.handelSwitch.bind(this)}
+            switcher={this.props.switcher} leftButton={'Mes amis'} rightButton={'Mes Invitations'}
+        />
           {this.renderPage()}
-        </ScrollView>
       </View>
     );
   }
 }
-
+const styles = {
+    styleSwitcher: {
+        marginTop: 54
+    }
+};
 const mapStateToProps = ({ friends }) => {
   const { players, switcher } = friends;
   return { players, switcher };
