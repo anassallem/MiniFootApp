@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, Image } from 'react-native';
+import { View, Text, TouchableNativeFeedback, Image, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
-import { InputTextAuth } from './common';
-import { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged, changeImageEquipe } from '../actions';
+import { InputTextAuth, Spinner } from './common';
+import { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged,
+         changeImageEquipe, createEquipe, setMessageRegisterError, getUserById
+       } from '../actions';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
 
 class CreateEquipeStepOne extends Component {
+  componentDidMount() {
+
+}
+
   onEquipeNameChanged(text) {
     this.props.equipeNameChanged(text);
   }
@@ -17,6 +23,27 @@ class CreateEquipeStepOne extends Component {
   onEquipeDescriptionChanged(text) {
     this.props.equipeDescriptionChanged(text);
   }
+
+  onButtonPressCreate() {
+    const { name, ville, description, testName, testVille, testDescription,
+          } = this.props;
+    if ((testName === true) &&
+        (testVille === true) &&
+        (testDescription === true)) {
+          try {
+              AsyncStorage.getItem('user').then((value) => {
+                  const user = JSON.parse(value);
+                  const equipe = { name, ville, description, createdBy: user.user._id };
+                  this.props.createEquipe(equipe, this.props.data);
+              }).done();
+          } catch (e) {
+              console.log('caught error', e);
+    }
+    } else {
+      this.props.setMessageRegisterError('Verifiez vos champs');
+    }
+  }
+
   onClickImage() {
     ImagePicker.showImagePicker(null, (response) => {
        if (response.didCancel) {
@@ -24,7 +51,7 @@ class CreateEquipeStepOne extends Component {
        } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
        } else {
-        this.props.changeImageEquipe(response.uri);
+        this.props.changeImageEquipe(response.uri, response);
        }
      });
   }
@@ -34,6 +61,21 @@ class CreateEquipeStepOne extends Component {
     }
     return <Image source={{ uri: this.props.logo }} style={styles.styleEquipeImage} />;
   }
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    }
+    return (
+      <TouchableNativeFeedback onPress={this.onButtonPressCreate.bind(this)}>
+       <View style={styles.buttonStyle}>
+         <Text style={styles.textButtonStyle}>
+           Créer équipe
+         </Text>
+       </View>
+   </TouchableNativeFeedback>
+    );
+  }
+
   render() {
       return (
           <View style={styles.mainContainer}>
@@ -62,13 +104,10 @@ class CreateEquipeStepOne extends Component {
                     testInput={this.props.testDescription}
                     icon={'ios-albums-outline'}
                   />
-             <TouchableNativeFeedback onPress={this.props.buttonPress}>
-                 <View style={styles.buttonStyle}>
-                   <Text style={styles.textButtonStyle}>
-                     Créer équipe
-                   </Text>
-                 </View>
-             </TouchableNativeFeedback>
+                  {this.renderButton()}
+                  <Text style={styles.errorMessageStyle} >
+                      {this.props.error}
+                  </Text>
             </View>
          </View>
       );
@@ -114,8 +153,11 @@ const styles = {
 };
 
 const mapStateToProps = ({ equipe }) => {
-  const { steps, name, ville, description, logo, testName, testVille, testDescription } = equipe;
-  return { steps, name, ville, description, logo, testName, testVille, testDescription };
+  const { steps, name, ville, description, logo, testName, testVille, testDescription, loading, error, data } = equipe;
+  return { steps, name, ville, description, logo, testName, testVille, testDescription, loading, error, data };
 };
 
-export default connect(mapStateToProps, { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged, changeImageEquipe })(CreateEquipeStepOne);
+export default connect(mapStateToProps,
+  { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged,
+    changeImageEquipe, createEquipe, setMessageRegisterError, getUserById
+})(CreateEquipeStepOne);
