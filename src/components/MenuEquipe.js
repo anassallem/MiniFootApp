@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
+import { Actions } from 'react-native-router-flux';
 import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
+import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
 
 class MenuEquipe extends Component {
-    
+
+    onPressEquipe() {
+        Actions.profileEquipe({ idEquipe: this.props.team._id, title: this.props.team.name });
+    }
+
     onPressFormation() {
 
     }
@@ -19,52 +25,58 @@ class MenuEquipe extends Component {
 
     }
 
-    onPressQuitEquipe() {
-
+    renderImageEquipe() {
+        if (this.props.team.logo !== undefined) {
+            const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
+            return <Image source={{ uri: logoUri }} style={styles.logoStyle} />;
+        }
+        return <Image source={logoEquipe} style={styles.logoStyle} />;
     }
 
     render() {
         return (
             <View style={styles.mainContainer}>
-               <View style={styles.rowLogoStyle}>
-                   <Image source={logoEquipe} style={styles.logoStyle} />
-                   <View style={styles.containerText}>
-                       <Text style={styles.styleText}>Equipe</Text>
-                       <Text style={styles.styleMinText}>Voir profile equipe</Text>
+               <TouchableNativeFeedback onPress={this.onPressEquipe.bind(this)}>
+                   <View style={styles.rowLogoStyle}>
+                       {this.renderImageEquipe()}
+                       <View style={styles.containerText}>
+                           <Text style={styles.styleText}>{this.props.team.name}</Text>
+                           <Text style={styles.styleMinText}>Voir profile equipe</Text>
+                       </View>
                    </View>
-               </View>
-               <View style={styles.rowStyle}>
-                   <TouchableNativeFeedback onPress={this.onPressFormation.bind(this)}>
-                       <View style={[styles.containerIcon, { backgroundColor: '#00796B' }]}>
-                           <Icon name='ios-git-network-outline' style={styles.styleIcon} />
-                       </View>
-                       <Text style={styles.styleText}>Formation</Text>
-                   </TouchableNativeFeedback>
-               </View>
-               <View style={styles.rowStyle}>
-                   <TouchableNativeFeedback onPress={this.onPressMembreEquipe.bind(this)}>
-                       <View style={[styles.containerIcon, { backgroundColor: '#E64A19' }]}>
-                           <Icon name='ios-people-outline' style={styles.styleIcon} />
-                       </View>
-                       <Text style={styles.styleText}>Membres d'équipe</Text>
-                   </TouchableNativeFeedback>
-               </View>
-               <View style={styles.rowStyle}>
-                   <TouchableNativeFeedback onPress={this.onPressRename.bind(this)}>
-                       <View style={[styles.containerIcon, { backgroundColor: '#00ACC1' }]}>
-                           <Icon name='ios-contacts-outline' style={styles.styleIcon} />
-                       </View>
-                       <Text style={styles.styleText}>Nommer sous capitaine</Text>
-                   </TouchableNativeFeedback>
-               </View>
-               <View style={styles.rowStyle}>
-                   <TouchableNativeFeedback onPress={this.onPressQuitEquipe.bind(this)}>
-                       <View style={[styles.containerIcon, { backgroundColor: '#757575' }]}>
-                           <Icon name='ios-log-out-outline' style={styles.styleIcon} />
-                       </View>
-                       <Text style={styles.styleText}>Quitter l'équipe</Text>
-                   </TouchableNativeFeedback>
-               </View>
+               </TouchableNativeFeedback>
+               <TouchableNativeFeedback onPress={this.onPressFormation.bind(this)}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#00796B' }]}>
+                               <Icon name='ios-git-network-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Formation</Text>
+                   </View>
+               </TouchableNativeFeedback>
+               <TouchableNativeFeedback onPress={this.onPressMembreEquipe.bind(this)}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#E64A19' }]}>
+                               <Icon name='ios-people-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Membres d'équipe</Text>
+                   </View>
+               </TouchableNativeFeedback>
+               <TouchableNativeFeedback onPress={this.onPressRename.bind(this)}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#00ACC1' }]}>
+                               <Icon name='ios-contacts-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Nommer joueur sous capitaine</Text>
+                   </View>
+               </TouchableNativeFeedback>
+               <TouchableNativeFeedback onPress={this.props.buttonPressQuit}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#757575' }]}>
+                               <Icon name='ios-log-out-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Quitter l'équipe</Text>
+                   </View>
+               </TouchableNativeFeedback>
            </View>
         );
     }
@@ -126,8 +138,8 @@ const styles = {
 
 
 const mapStateToProps = ({ equipe }) => {
-  const { steps } = equipe;
-  return { steps };
+  const { team } = equipe;
+  return { team };
 };
 
 export default connect(mapStateToProps, null)(MenuEquipe);

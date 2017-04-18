@@ -10,9 +10,6 @@ import { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged,
 const logoEquipe = require('./assets/logoEquipe.jpg');
 
 class CreateEquipeStepOne extends Component {
-  componentDidMount() {
-
-}
 
   onEquipeNameChanged(text) {
     this.props.equipeNameChanged(text);

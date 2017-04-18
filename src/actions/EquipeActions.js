@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { createTeam } from './api/EquipeApi';
 import {
   CHANGE_STEP_ONE,
@@ -9,15 +10,16 @@ import {
   CREATE_EQUIPE,
   CREATE_EQUIPE_SUCCESS,
   CREATE_EQUIPE_FAIL,
+  INITIAL_STATE_EQUIPE
 } from './types';
 
 export const createEquipe = (equipe, data) => {
   return (dispatch) => {
     dispatch({ type: CREATE_EQUIPE });
     createTeam(equipe, data).then((res) => {
-      console.log(res);
       if (res.success === true) {
-        createEquipeSuccess(dispatch, res);
+        setCache(res.message);
+        createEquipeSuccess(dispatch, res.message);
       } else if (res.success === false) {
         createEquipeFail(dispatch);
       }
@@ -28,18 +30,26 @@ export const createEquipe = (equipe, data) => {
     };
 };
 
-const createEquipeFail = (dispatch, message) => {
+const createEquipeFail = (dispatch) => {
   dispatch({
-    type: CREATE_EQUIPE_FAIL,
-    payload: message
+    type: CREATE_EQUIPE_FAIL
   });
 };
 
-const createEquipeSuccess = (dispatch) => {
+const createEquipeSuccess = (dispatch, equipe) => {
   dispatch({
     type: CREATE_EQUIPE_SUCCESS,
+    payload: equipe
   });
 };
+
+function setCache(equipe) {
+  try {
+     AsyncStorage.setItem('equipe', JSON.stringify(equipe));
+    } catch (error) {
+      console.log(error);
+    }
+}
 
 export const equipeNameChanged = (text) => {
   const valid = validateEmpty(text);
@@ -47,6 +57,12 @@ export const equipeNameChanged = (text) => {
     type: EQUIPE_NAME_CHANGED,
     payload: text,
     validate: valid
+  };
+};
+
+export const initialState = () => {
+  return {
+    type: INITIAL_STATE_EQUIPE
   };
 };
 
@@ -82,10 +98,11 @@ export const changeStepOne = () => {
   };
 };
 
-export const changeStepTow = () => {
-  return {
-    type: CHANGE_STEP_TOW
-  };
+export const changeStepTow = (equipe) => {
+    return {
+      type: CHANGE_STEP_TOW,
+      payload: equipe
+    };
 };
 
 function validateEmpty(text) {

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
 import { URL, CONFIG } from './config';
 
 export const createTeam = (equipe, photo) => {
@@ -20,14 +19,11 @@ export const createTeam = (equipe, photo) => {
                 method: 'post',
                 body: data
               }, (e) => {
-                const progress = e.loaded / e.total;
+                //const progress = e.loaded / e.total;
               }).then((response) => {
-                var team = response._response.message;
-                AsyncStorage.setItem('equipe', JSON.stringify(team));
                 return JSON.parse(response._response);
               }, (e) => console.log(e));
         } else {
-          AsyncStorage.setItem('equipe', JSON.stringify(res.data.message));
           return res.data;
         }
     }, (res) => {
@@ -47,5 +43,15 @@ const futch = (url, opts = {}, onProgress) => {
         if (xhr.upload && onProgress)
             xhr.upload.onprogress = onProgress; // event.loaded / event.total * 100 ; //event.lengthComputable
         xhr.send(opts.body);
+    });
+};
+
+export const getTeamByID = (idEquipe) => {
+    const requestURL = `${URL}/equipe/${idEquipe}`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
     });
 };
