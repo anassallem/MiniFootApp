@@ -3,6 +3,7 @@ import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, Scrol
 import { Icon, Button, Header, Right, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 import { getTeam } from '../actions';
+import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
 //const imgUser = require('./assets/userdefault.png');
@@ -74,12 +75,20 @@ class ProfileEquipe extends Component {
                     <Text style={styles.nameEquipeMatchStyle}>{match.equipeTow}</Text>
                 </View>);
     }
+    renderPhotoEquipe() {
+        console.log(this.props.team);
+        if (this.props.team !== null && this.props.team.logo !== undefined) {
+            const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
+            return <Image source={{ uri: logoUri }} style={styles.styleLogo} />;
+        }
+        return <Image source={logoEquipe} style={styles.styleLogo} />;
+    }
     renderProfileEquipe() {
         if (this.props.refresh === false) {
             return (
                 <View>
                 <View style={styles.containerTop}>
-                    <Image source={logoEquipe} style={styles.styleLogo} />
+                    {this.renderPhotoEquipe()}
                     <Text style={styles.styleNameEquipe}>Name Equipe</Text>
                     <Text numberOfLines={3} style={styles.styleDescription}>
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -184,9 +193,7 @@ const styles = {
     },
     styleLogo: {
         width: 80,
-        height: 80,
-        borderWidth: 2,
-        borderColor: '#EEEEEE'
+        height: 80
     },
     styleNameEquipe: {
         fontSize: 16,
