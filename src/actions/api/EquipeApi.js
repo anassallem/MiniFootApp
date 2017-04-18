@@ -49,3 +49,13 @@ const futch = (url, opts = {}, onProgress) => {
         xhr.send(opts.body);
     });
 };
+
+export const getTeams = (text) => {
+    const requestURL = `${URL}/equipe?name=${text}`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};

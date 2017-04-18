@@ -7,7 +7,7 @@ import { URL } from '../../actions/api/config';
 class ItemTeam extends Component {
     onPressButton() {
         const { team } = this.props;
-        Actions.searchEquipeProfile({ team, title: `${team.name}` });
+        Actions.searchTeamProfile({ team, title: `${team.name}` });
     }
     render() {
         const { name, logo } = this.props.team;

@@ -75,3 +75,4 @@ export const CREATE_EQUIPE_SUCCESS = 'create_equipe_success';
 export const CREATE_EQUIPE_FAIL = 'create_equipe_fail';
 export const FETCH_TEAMS = 'fetch_teams';
 export const LOADING_TEAMS = 'loading_teams';
+export const SEARCH_TEAM = 'search_team';

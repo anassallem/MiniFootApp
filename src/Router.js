@@ -13,6 +13,8 @@ import UpdateProfilUser from './components/UpdateProfilUser';
 import ListFriends from './components/ListFriends';
 import Chat from './components/Chat';
 import ProfileEquipe from './components/ProfileEquipe';
+import SearchTeam from './components/SearchTeam';
+import SearchTeamProfile from './components/SearchTeamProfile';
 
 const icon = require('./components/assets/back.png');
 
@@ -47,6 +49,10 @@ class RouterComponent extends Component {
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="profileEquipe" component={ProfileEquipe} hideNavBar />
+              <Scene key="searchTeam" component={SearchTeam} hideNavBar />
+              <Scene key="searchTeamProfile" component={SearchTeamProfile} hideNavBar={false}
+                  navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
            </Scene>
         </Router>
         );

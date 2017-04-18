@@ -10,6 +10,7 @@ import MyInvitationsReducer from './MyInvitationsReducer';
 import DiscussionReducer from './DiscussionReducer';
 import HomeReducer from './HomeReducer';
 import EquipeReducer from './EquipeReducer';
+import SearchTeamReducer from './SearchTeamReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
   myInvitations: MyInvitationsReducer,
   discussionPlayer: DiscussionReducer,
   homeDiscussion: HomeReducer,
-  equipe: EquipeReducer
+  equipe: EquipeReducer,
+  searchTeam: SearchTeamReducer
 });
