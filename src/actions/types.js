@@ -64,6 +64,7 @@ export const ID_USER_CHANGED = 'id_user_changed';
 //Home
 export const GET_MY_ROOMS = 'get_my_rooms';
 //Equipe
+export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';
 export const CHANGE_STEP_TOW = 'change_step_tow';
 export const EQUIPE_NAME_CHANGED = 'equipe_name_changed';
@@ -77,6 +78,7 @@ export const FETCH_TEAMS = 'fetch_teams';
 export const LOADING_TEAMS = 'loading_teams';
 export const SEARCH_TEAM = 'search_team';
 export const INITIAL_STATE_EQUIPE = 'initial_state_equipe';
+export const START_LOAD_MENU_EQUIPE = 'start_load_menu_equipe';
 //profile Equipe
 export const GET_TEAM_BY_ID = 'get_team_by_user';
 export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
@@ -84,3 +86,6 @@ export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
 export const TEAM_UPDATE = 'team_update';
 export const UPDATE_TEAM_PROFIL = 'update_team_profil';
 export const REFRESH_UPDATE_TEAM_START = 'refresh_update_team_start';
+//Membre Equipe
+export const GET_PLAYER_TEAM_BY_ID = 'get_player_team_by_id';
+export const START_REFRESH_MEMBRE_TEAM = 'start_refresh_membre_team';

@@ -12,3 +12,4 @@ export * from './EquipeActions';
 export * from './SearchTeamActions';
 export * from './ProfileEquipeActions';
 export * from './UpdateProfilTeamActions';
+export * from './MembreEquipeActions';

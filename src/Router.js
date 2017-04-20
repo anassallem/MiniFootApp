@@ -16,6 +16,10 @@ import ProfileEquipe from './components/ProfileEquipe';
 import SearchTeam from './components/SearchTeam';
 import SearchTeamProfile from './components/SearchTeamProfile';
 import UpdateProfilTeam from './components/UpdateProfilTeam';
+import MembreEquipe from './components/MembreEquipe';
+import SelectAdjointEquipe from './components/SelectAdjointEquipe';
+import SelectCapitaineEquipe from './components/SelectCapitaineEquipe';
+import ShowTeamPhotos from './components/ShowTeamPhotos';
 
 const icon = require('./components/assets/back.png');
 
@@ -55,6 +59,18 @@ class RouterComponent extends Component {
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
             <Scene key="updateProfilTeam" component={UpdateProfilTeam} title="Modifier Equipe" hideNavBar />
+              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} title="Membres Equipe"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous Capitaine"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+            <Scene key="showTeamPhotos" component={ShowTeamPhotos} hideNavBar={false} title="Photos"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+            />
            </Scene>
         </Router>
         );

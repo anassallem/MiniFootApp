@@ -22,17 +22,13 @@ class CreateEquipeStepOne extends Component {
   }
 
   onButtonPressCreate() {
-    const { name, ville, description, testName, testVille, testDescription,
-          } = this.props;
-    if ((testName === true) &&
-        (testVille === true) &&
-        (testDescription === true)) {
+    const { name, ville, description, testName, testVille, testDescription } = this.props;
+    if ((testName === true) && (testVille === true) && (testDescription === true)) {
           try {
               AsyncStorage.getItem('user').then((value) => {
                   const user = JSON.parse(value);
                   const equipe = { name, adresse: ville, description, createdBy: user.user._id };
-                  console.log(equipe);
-                  this.props.createEquipe(equipe, this.props.data);
+                  this.props.createEquipe(equipe, this.props.data, user);
               }).done();
           } catch (e) {
               console.log('caught error', e);
@@ -133,12 +129,12 @@ const styles = {
        paddingLeft: 50,
        paddingRight: 50,
        marginBottom: 10
-     },
-     textButtonStyle: {
+    },
+    textButtonStyle: {
        color: '#FFFFFF',
        alignSelf: 'center'
-     },
-     styleEquipeImage: {
+    },
+    styleEquipeImage: {
        width: 100,
        height: 100,
        marginTop: 20,
@@ -147,7 +143,11 @@ const styles = {
        borderWidth: 2,
        borderColor: '#BDBDBD',
        alignSelf: 'center'
-      },
+    },
+    errorMessageStyle: {
+       justifyContent: 'center',
+       color: '#FFFFFF'
+    }
 };
 
 const mapStateToProps = ({ equipe }) => {

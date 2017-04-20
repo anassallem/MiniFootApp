@@ -13,6 +13,7 @@ import EquipeReducer from './EquipeReducer';
 import SearchTeamReducer from './SearchTeamReducer';
 import ProfileEquipeReducer from './ProfileEquipeReducer';
 import UpdateProfileTeamReducer from './UpdateProfileTeamReducer';
+import MembreEquipeReducer from './MembreEquipeReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -28,6 +29,7 @@ export default combineReducers({
   equipe: EquipeReducer,
   searchTeam: SearchTeamReducer,
   profileEquipe: ProfileEquipeReducer,
-  updateTeamProfile: UpdateProfileTeamReducer
+  updateTeamProfile: UpdateProfileTeamReducer,
+  membreTeam: MembreEquipeReducer
 
 });
