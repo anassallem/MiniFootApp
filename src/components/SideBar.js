@@ -21,14 +21,15 @@ class SideBar extends Component {
   }
 
   onButtonPress() {
-    this.removeCache('user');
+      try {
+          AsyncStorage.removeItem('user');
+          AsyncStorage.removeItem('equipe');
+       } catch (e) {
+         console.log('caught error', e);
+       }
     Actions.login();
   }
 
-  async removeCache(key) {
-      try { await AsyncStorage.removeItem(key); }
-      catch (e) { console.log('caught error', e); }
-  }
   renderUser() {
       const { backgroundImage, textUserStyle } = styles;
       if (user !== null) {

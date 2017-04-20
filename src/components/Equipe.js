@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
+import { View, AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import CreateEquipe from './CreateEquipe';
 import CreateEquipeStepOne from './CreateEquipeStepOne';
@@ -7,13 +7,15 @@ import MenuEquipe from './MenuEquipe';
 import { changeStepOne, changeStepTow, initialState } from '../actions';
 
 class Equipe extends Component {
+
     componentDidMount() {
         try {
           AsyncStorage.getItem('equipe').then((value) => {
               const equipe = JSON.parse(value);
-              if (equipe !== null) {
-                this.props.changeStepTow(equipe);
-              }
+              AsyncStorage.getItem('user').then((player) => {
+                const user = JSON.parse(player);
+                this.props.changeStepTow(equipe, user);
+              }).done();
           }).done();
         } catch (e) {
           console.log('caught error', e);
@@ -25,28 +27,40 @@ class Equipe extends Component {
     }
     onPressQuitEquipe() {
         try {
-            AsyncStorage.removeItem('equipe');
-            this.props.initialState();
+            AsyncStorage.getItem('user').then((value) => {
+              const user = JSON.parse(value);
+              if (user.user.joueur.type === 'Responsable') {
+                  Alert.alert('Attention', "Vous devez spécifier un responsable d'équipe avant de quitter");
+              } else {
+                  user.user.joueur.type = 'Joueur';
+                  AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
+                      AsyncStorage.getItem('equipe').then((data) => {
+                          const equipe = JSON.parse(data);
+                          this.props.initialState(equipe._id, user.user._id);
+                      }).done();
+                  });
+              }
+          }).done();
         } catch (e) { console.log('caught error', e); }
     }
     renderPage() {
-      const { steps } = this.props;
+      const { steps, user } = this.props;
       switch (steps) {
-        case 0:
-          return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
-        case 1:
-          return <CreateEquipeStepOne buttonPress={this.onButtonPressCreate.bind(this)} />;
-        case 2:
-          return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} />;
-        default:
-          return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
+          case 0:
+            return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
+          case 1:
+            return <CreateEquipeStepOne buttonPress={this.onButtonPressCreate.bind(this)} />;
+          case 2:
+            return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} user={user} />;
+          default:
+            return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
       }
     }
     render() {
         return (
             <View style={styles.mainContainer}>
               {this.renderPage()}
-           </View>
+            </View>
         );
     }
 }
@@ -57,8 +71,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ equipe }) => {
-  const { steps, team } = equipe;
-  return { steps, team };
+  const { steps, team, user, refresh } = equipe;
+  return { steps, team, user, refresh };
 };
 
 export default connect(mapStateToProps, { changeStepOne, changeStepTow, initialState })(Equipe);

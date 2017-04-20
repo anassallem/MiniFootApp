@@ -13,6 +13,9 @@ import UpdateProfilUser from './components/UpdateProfilUser';
 import ListFriends from './components/ListFriends';
 import Chat from './components/Chat';
 import ProfileEquipe from './components/ProfileEquipe';
+import MembreEquipe from './components/MembreEquipe';
+import SelectAdjointEquipe from './components/SelectAdjointEquipe';
+import SelectCapitaineEquipe from './components/SelectCapitaineEquipe';
 
 const icon = require('./components/assets/back.png');
 
@@ -47,6 +50,15 @@ class RouterComponent extends Component {
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="profileEquipe" component={ProfileEquipe} hideNavBar />
+              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} title="Membres Equipe"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous Capitaine"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
            </Scene>
         </Router>
         );

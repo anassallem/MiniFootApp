@@ -55,3 +55,43 @@ export const getTeamByID = (idEquipe) => {
       throw new Error(res);
     });
 };
+
+export const getPlayerTeam = (idEquipe) => {
+    const requestURL = `${URL}/equipe/${idEquipe}/membres`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const deletePlayerTeam = (idEquipe, idJoueur) => {
+    const requestURL = `${URL}/equipe/${idEquipe}/players/${idJoueur}/delete`;
+      return axios.put(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const updateSousCapitaine = (idJoueur) => {
+    const requestURL = `${URL}/equipe/${idJoueur}/rename`;
+      return axios.put(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const updateCapitaine = (idJoueur, idEquipe, idCapitaine) => {
+    const requestURL = `${URL}/equipe/${idEquipe}/capitaine/${idCapitaine}/to/${idJoueur}`;
+      return axios.put(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
