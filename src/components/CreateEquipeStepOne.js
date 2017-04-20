@@ -10,9 +10,6 @@ import { equipeNameChanged, equipeVilleChanged, equipeDescriptionChanged,
 const logoEquipe = require('./assets/logoEquipe.jpg');
 
 class CreateEquipeStepOne extends Component {
-  componentDidMount() {
-
-}
 
   onEquipeNameChanged(text) {
     this.props.equipeNameChanged(text);
@@ -33,7 +30,8 @@ class CreateEquipeStepOne extends Component {
           try {
               AsyncStorage.getItem('user').then((value) => {
                   const user = JSON.parse(value);
-                  const equipe = { name, ville, description, createdBy: user.user._id };
+                  const equipe = { name, adresse: ville, description, createdBy: user.user._id };
+                  console.log(equipe);
                   this.props.createEquipe(equipe, this.props.data);
               }).done();
           } catch (e) {

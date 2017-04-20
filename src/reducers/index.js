@@ -11,6 +11,8 @@ import DiscussionReducer from './DiscussionReducer';
 import HomeReducer from './HomeReducer';
 import EquipeReducer from './EquipeReducer';
 import SearchTeamReducer from './SearchTeamReducer';
+import ProfileEquipeReducer from './ProfileEquipeReducer';
+import UpdateProfileTeamReducer from './UpdateProfileTeamReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -24,5 +26,8 @@ export default combineReducers({
   discussionPlayer: DiscussionReducer,
   homeDiscussion: HomeReducer,
   equipe: EquipeReducer,
-  searchTeam: SearchTeamReducer
+  searchTeam: SearchTeamReducer,
+  profileEquipe: ProfileEquipeReducer,
+  updateTeamProfile: UpdateProfileTeamReducer
+
 });

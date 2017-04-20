@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { AsyncStorage } from 'react-native';
 import { URL, CONFIG } from './config';
 
 export const createTeam = (equipe, photo) => {
@@ -20,14 +19,11 @@ export const createTeam = (equipe, photo) => {
                 method: 'post',
                 body: data
               }, (e) => {
-                const progress = e.loaded / e.total;
+                //const progress = e.loaded / e.total;
               }).then((response) => {
-                var team = response._response.message;
-                AsyncStorage.setItem('equipe', JSON.stringify(team));
                 return JSON.parse(response._response);
               }, (e) => console.log(e));
         } else {
-          AsyncStorage.setItem('equipe', JSON.stringify(res.data.message));
           return res.data;
         }
     }, (res) => {
@@ -50,10 +46,30 @@ const futch = (url, opts = {}, onProgress) => {
     });
 };
 
+
 export const getTeams = (text) => {
     const requestURL = `${URL}/equipe?name=${text}`;
+    return axios.get(requestURL)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};
+
+export const getTeamByID = (idEquipe) => {
+    const requestURL = `${URL}/equipe/${idEquipe}`;
       return axios.get(requestURL)
       .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const updateTeam = (idTeam, team) => {
+    const requestURL = `${URL}/equipe/${idTeam}`;
+      return axios.put(requestURL, team, CONFIG).then((res) => {
         return res.data;
     }, (res) => {
       throw new Error(res);

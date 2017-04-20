@@ -38,11 +38,9 @@ class ProfilForm extends Component {
 
       if (response.didCancel) {
        console.log('User cancelled image picker');
-      }
-      else if (response.error) {
+      } else if (response.error) {
        console.log('ImagePicker Error: ', response.error);
-      }
-      else {
+      } else {
        this.props.changeImage(response.uri, response, true);
       }
     });

@@ -10,3 +10,5 @@ export * from './DiscussionActions';
 export * from './HomeActions';
 export * from './EquipeActions';
 export * from './SearchTeamActions';
+export * from './ProfileEquipeActions';
+export * from './UpdateProfilTeamActions';

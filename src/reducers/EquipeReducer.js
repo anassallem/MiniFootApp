@@ -8,7 +8,8 @@ import {
   CREATE_EQUIPE,
   CREATE_EQUIPE_SUCCESS,
   CREATE_EQUIPE_FAIL,
-  MESSAGE_REGISTER_ERROR_CHANGED
+  MESSAGE_REGISTER_ERROR_CHANGED,
+  INITIAL_STATE_EQUIPE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -23,6 +24,7 @@ const INITIAL_STATE = {
   loading: false,
   error: '',
   data: null,
+  team: null
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -38,7 +40,7 @@ export default (state = INITIAL_STATE, action) => {
     case CREATE_EQUIPE:
           return { ...state, loading: true, error: '' };
     case CREATE_EQUIPE_SUCCESS:
-          return { ...INITIAL_STATE, steps: 3 };
+          return { ...INITIAL_STATE, team: action.payload, steps: 2 };
     case CREATE_EQUIPE_FAIL:
           return { ...state, error: action.payload, loading: false };
     case MESSAGE_REGISTER_ERROR_CHANGED:
@@ -46,7 +48,9 @@ export default (state = INITIAL_STATE, action) => {
     case CHANGE_STEP_ONE:
       return { ...state, steps: 1 };
     case CHANGE_STEP_TOW:
-      return { ...state, steps: 2 };
+      return { ...state, steps: 2, team: action.payload };
+    case INITIAL_STATE_EQUIPE:
+      return { ...INITIAL_STATE };
     default:
       return state;
   }

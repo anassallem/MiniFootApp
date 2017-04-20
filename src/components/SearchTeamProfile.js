@@ -1,53 +1,48 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView } from 'react-native';
+import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView, RefreshControl } from 'react-native';
 import { Icon, Button, Header, Right, Body, Title } from 'native-base';
-//import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { getTeam } from '../actions';
+import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
-const imgUser = require('./assets/userdefault.png');
-//const imgEquipe = require('./assets/imgEquipe.jpg');
+//const imgUser = require('./assets/userdefault.png');
 
 class SearchTeamProfile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { photosEquipe: [{ id: 1, image: logoEquipe }, { id: 2, image: logoEquipe },
-                                      { id: 3, image: logoEquipe }, { id: 4, image: logoEquipe },
-                                      { id: 5, image: logoEquipe }, { id: 6, image: logoEquipe }],
-                       photos: [{ id: 1, name: 'Riadh', image: imgUser }, { id: 2, name: 'Mohamed', image: imgUser },
-                                { id: 3, name: 'Youssef', image: imgUser }, { id: 4, name: 'Nabil', image: imgUser },
-                                { id: 5, name: 'Anas', image: imgUser }, { id: 6, name: 'Salem', image: imgUser },
-                                { id: 7, name: 'Marwan', image: imgUser }, { id: 8, name: 'Fredj', image: imgUser }],
-                       matchs: [{ id: 1, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-                                { id: 2, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-                                { id: 3, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-                                { id: 4, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 }]
-                      };
-    }
 
     componentWillMount() {
-        this.createDataSource(this.state);
-        this.createDataSourcePlayers(this.state);
-        this.createDataSourceMatchs(this.state);
+        this.createDataSource(this.props);
+        this.createDataSourcePlayers(this.props);
+        this.createDataSourceMatchs(this.props);
+    }
+
+    componentDidMount() {
+      this.onRefresh();
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.team);
         this.createDataSource(nextProps);
-        this.createDataSourceMatchs(this.state);
+        this.createDataSourcePlayers(nextProps);
+        this.createDataSourceMatchs(nextProps);
     }
-    onButtonUpdate() {
 
+    onRefresh() {
+      this.props.getTeam(this.props.idEquipe);
     }
+
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
         });
         this.dataSource = ds.cloneWithRows(photosEquipe);
     }
-    createDataSourcePlayers({ photos }) {
+    createDataSourcePlayers({ team }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
         });
-        this.playerDataSource = ds.cloneWithRows(photos);
+        this.playerDataSource = ds.cloneWithRows(team.joueurs);
     }
     createDataSourceMatchs({ matchs }) {
         const ds = new ListView.DataSource({
@@ -58,10 +53,11 @@ class SearchTeamProfile extends Component {
     renderRow(photo) {
         return <Image source={photo.image} style={styles.photoTeamStyle} />;
     }
-    renderRowPlayer(player) {
+    renderRowPlayer(joueur) {
+      const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
         return (<View style={styles.containerPlayerImage}>
-                  <Image source={player.image} style={styles.photoPlayerStyle} />
-                  <Text style={styles.styleTextPhoto}>{player.name}</Text>
+                  <Image source={{ uri: img }} style={styles.photoPlayerStyle} />
+                  <Text style={styles.styleTextPhoto}>{joueur.idJoueur.firstname}</Text>
                 </View>);
     }
     renderRowMatch(match) {
@@ -78,6 +74,79 @@ class SearchTeamProfile extends Component {
                     <Text style={styles.nameEquipeMatchStyle}>{match.equipeTow}</Text>
                 </View>);
     }
+    renderPhotoEquipe() {
+        console.log(this.props.team);
+        if (this.props.team !== null && this.props.team.logo !== undefined) {
+            const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
+            return <Image source={{ uri: logoUri }} style={styles.styleLogo} />;
+        }
+        return <Image source={logoEquipe} style={styles.styleLogo} />;
+    }
+    renderProfileEquipe() {
+        if (this.props.refresh === false) {
+          const { name, description, adresse, date_creation, createdBy } = this.props.team;
+            return (
+                <View>
+                <View style={styles.containerTop}>
+                    {this.renderPhotoEquipe()}
+                    <Text style={styles.styleNameEquipe}>{name}</Text>
+                    <Text numberOfLines={3} style={styles.styleDescription}>
+                      {description}
+                    </Text>
+                    <View style={styles.containerButton}>
+                        <Button iconLeft light bordered style={{ marginRight: 20 }}>
+                            <Icon name='ios-albums-outline' style={styles.styleIconButton} />
+                           <Text>Annonces</Text>
+                       </Button>
+                       <Button iconLeft light bordered>
+                           <Icon name='arrow-forward' style={styles.styleIconButton} />
+                          <Text>Rejoindre</Text>
+                      </Button>
+                    </View>
+                </View>
+                <View style={styles.containerInfo}>
+                    <View style={styles.containerBodyInfo}>
+                        <Icon name='ios-person-outline' style={styles.styleIcon} />
+                        <Text>{createdBy.firstname} {createdBy.lastname}</Text>
+                    </View>
+                    <View style={styles.containerBodyInfo}>
+                        <Icon name='ios-navigate-outline' style={styles.styleIcon} />
+                        <Text>{adresse}</Text>
+                    </View>
+                    <View style={styles.containerBodyInfo}>
+                        <Icon name='ios-calendar-outline' style={styles.styleIcon} />
+                        <Text>{moment(date_creation).format('DD/MM/YYYY')}</Text>
+                    </View>
+                </View>
+                <ListView
+                  enableEmptySections
+                  dataSource={this.dataSource}
+                  renderRow={this.renderRow}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                />
+                <View style={styles.containerPlayersTitle}>
+                    <Text style={styles.styleTextTitle}>Membres d'équipe</Text>
+                </View>
+                <ListView
+                  enableEmptySections
+                  dataSource={this.playerDataSource}
+                  renderRow={this.renderRowPlayer}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                />
+                <View style={styles.containerPlayersTitle}>
+                    <Text style={styles.styleTextTitle}>Matchs joués</Text>
+                </View>
+                <ListView
+                  enableEmptySections
+                  dataSource={this.MatchDataSource}
+                  renderRow={this.renderRowMatch}
+                />
+                </View>
+            );
+        }
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -85,69 +154,18 @@ class SearchTeamProfile extends Component {
                   <Body>
                       <Title>Mon Equipe</Title>
                   </Body>
-                  <Right>
-                      <TouchableNativeFeedback onPress={this.onButtonUpdate.bind(this)}>
-                      <Text style={styles.textHeaderStyle}>Modifier</Text>
-                      </TouchableNativeFeedback>
-                  </Right>
                 </Header>
-                <ScrollView>
-                    <View style={styles.containerTop}>
-                        <Image source={logoEquipe} style={styles.styleLogo} />
-                        <Text style={styles.styleNameEquipe}>Name Equipe</Text>
-                        <Text numberOfLines={3} style={styles.styleDescription}>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </Text>
-                        <View style={styles.containerButton}>
-                            <Button iconLeft light bordered style={{ marginRight: 20 }}>
-                                <Icon name='ios-albums-outline' style={styles.styleIconButton} />
-                               <Text>Annonces</Text>
-                           </Button>
-                           <Button iconLeft light bordered>
-                               <Icon name='arrow-forward' style={styles.styleIconButton} />
-                              <Text>Rejoindre</Text>
-                          </Button>
-                        </View>
-                    </View>
-                    <View style={styles.containerInfo}>
-                        <View style={styles.containerBodyInfo}>
-                            <Icon name='ios-person-outline' style={styles.styleIcon} />
-                            <Text>Riadh Mkhinini</Text>
-                        </View>
-                        <View style={styles.containerBodyInfo}>
-                            <Icon name='ios-navigate-outline' style={styles.styleIcon} />
-                            <Text>Sousse</Text>
-                        </View>
-                        <View style={styles.containerBodyInfo}>
-                            <Icon name='ios-calendar-outline' style={styles.styleIcon} />
-                            <Text>Riadh Mkhinini</Text>
-                        </View>
-                    </View>
-                    <ListView
-                      enableEmptySections
-                      dataSource={this.dataSource}
-                      renderRow={this.renderRow}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                    />
-                    <View style={styles.containerPlayersTitle}>
-                        <Text style={styles.styleTextTitle}>Membres d'équipe</Text>
-                    </View>
-                    <ListView
-                      enableEmptySections
-                      dataSource={this.playerDataSource}
-                      renderRow={this.renderRowPlayer}
-                      horizontal
-                      showsHorizontalScrollIndicator={false}
-                    />
-                    <View style={styles.containerPlayersTitle}>
-                        <Text style={styles.styleTextTitle}>Matchs joués</Text>
-                    </View>
-                    <ListView
-                      enableEmptySections
-                      dataSource={this.MatchDataSource}
-                      renderRow={this.renderRowMatch}
-                    />
+
+                <ScrollView
+                    refreshControl={
+                    <RefreshControl
+                      tintColor='blue'
+                      colors={['#64B5F6', '#2196F3', '#1976D2']}
+                      refreshing={this.props.refresh}
+                      onRefresh={this.onRefresh.bind(this)}
+                    />}
+                >
+                    {this.renderProfileEquipe()}
                 </ScrollView>
            </View>
 
@@ -171,9 +189,7 @@ const styles = {
     },
     styleLogo: {
         width: 80,
-        height: 80,
-        borderWidth: 2,
-        borderColor: '#EEEEEE'
+        height: 80
     },
     styleNameEquipe: {
         fontSize: 16,
@@ -289,4 +305,10 @@ const styles = {
     }
 };
 
-export default SearchTeamProfile;
+
+const mapStateToProps = ({ profileEquipe }) => {
+  const { team, refresh, photosEquipe, photos, matchs } = profileEquipe;
+  return { team, refresh, photosEquipe, photos, matchs };
+};
+
+export default connect(mapStateToProps, { getTeam })(SearchTeamProfile);

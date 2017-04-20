@@ -76,3 +76,11 @@ export const CREATE_EQUIPE_FAIL = 'create_equipe_fail';
 export const FETCH_TEAMS = 'fetch_teams';
 export const LOADING_TEAMS = 'loading_teams';
 export const SEARCH_TEAM = 'search_team';
+export const INITIAL_STATE_EQUIPE = 'initial_state_equipe';
+//profile Equipe
+export const GET_TEAM_BY_ID = 'get_team_by_user';
+export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
+//Update profile Equipe
+export const TEAM_UPDATE = 'team_update';
+export const UPDATE_TEAM_PROFIL = 'update_team_profil';
+export const REFRESH_UPDATE_TEAM_START = 'refresh_update_team_start';
