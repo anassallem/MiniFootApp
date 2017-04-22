@@ -41,7 +41,7 @@ class Home extends Component {
       this.closeDrawer();
   }
   handelEquipe() {
-      Actions.profileEquipe();
+      Actions.searchTeam();
       this.closeDrawer();
   }
   closeDrawer = () => {

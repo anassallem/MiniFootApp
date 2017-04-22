@@ -7,7 +7,15 @@ const logoEquipe = require('../components/assets/logoEquipe.jpg');
 const imgUser = require('../components//assets/userdefault.png');
 
 const INITIAL_STATE = {
-  team: null,
+  team: {
+    name: '',
+    adresse: '',
+    logo: '',
+    description: '',
+    date_creation: '',
+    createdBy: {},
+    joueurs: []  
+  },
   refresh: false,
   photosEquipe: [{ id: 1, image: logoEquipe }, { id: 2, image: logoEquipe },
                                 { id: 3, image: logoEquipe }, { id: 4, image: logoEquipe },

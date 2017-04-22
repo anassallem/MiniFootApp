@@ -46,10 +46,31 @@ const futch = (url, opts = {}, onProgress) => {
     });
 };
 
+
+export const getTeams = (text) => {
+    const requestURL = `${URL}/equipe?name=${text}`;
+    return axios.get(requestURL)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};
+
 export const getTeamByID = (idEquipe) => {
     const requestURL = `${URL}/equipe/${idEquipe}`;
       return axios.get(requestURL)
       .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+
+export const updateTeam = (idTeam, team) => {
+    const requestURL = `${URL}/equipe/${idTeam}`;
+      return axios.put(requestURL, team, CONFIG).then((res) => {
         return res.data;
     }, (res) => {
       throw new Error(res);

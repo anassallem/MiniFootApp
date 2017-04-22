@@ -3,14 +3,13 @@ import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, Scrol
 import { Icon, Button, Header, Right, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { Actions } from 'react-native-router-flux';
 import { getTeam } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
 //const imgUser = require('./assets/userdefault.png');
 
-class ProfileEquipe extends Component {
+class SearchTeamProfile extends Component {
 
     componentWillMount() {
         this.createDataSource(this.props);
@@ -23,6 +22,7 @@ class ProfileEquipe extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.team);
         this.createDataSource(nextProps);
         this.createDataSourcePlayers(nextProps);
         this.createDataSourceMatchs(nextProps);
@@ -30,10 +30,6 @@ class ProfileEquipe extends Component {
 
     onRefresh() {
       this.props.getTeam(this.props.idEquipe);
-    }
-
-    onButtonUpdate() {
-      Actions.updateProfilTeam({ team: this.props.team });
     }
 
     createDataSource({ photosEquipe }) {
@@ -79,6 +75,7 @@ class ProfileEquipe extends Component {
                 </View>);
     }
     renderPhotoEquipe() {
+        console.log(this.props.team);
         if (this.props.team !== null && this.props.team.logo !== undefined) {
             const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
             return <Image source={{ uri: logoUri }} style={styles.styleLogo} />;
@@ -86,15 +83,15 @@ class ProfileEquipe extends Component {
         return <Image source={logoEquipe} style={styles.styleLogo} />;
     }
     renderProfileEquipe() {
-        if (this.props.team !== null && this.props.refresh === false) {
-            const { name, description, adresse, date_creation, createdBy } = this.props.team;
+        if (this.props.refresh === false) {
+          const { name, description, adresse, date_creation, createdBy } = this.props.team;
             return (
                 <View>
                 <View style={styles.containerTop}>
                     {this.renderPhotoEquipe()}
-                    <Text style={styles.styleNameEquipe} >{name}</Text>
+                    <Text style={styles.styleNameEquipe}>{name}</Text>
                     <Text numberOfLines={3} style={styles.styleDescription}>
-                        {description}
+                      {description}
                     </Text>
                     <View style={styles.containerButton}>
                         <Button iconLeft light bordered style={{ marginRight: 20 }}>
@@ -157,12 +154,8 @@ class ProfileEquipe extends Component {
                   <Body>
                       <Title>Mon Equipe</Title>
                   </Body>
-                  <Right>
-                      <TouchableNativeFeedback onPress={this.onButtonUpdate.bind(this)}>
-                      <Text style={styles.textHeaderStyle}>Modifier</Text>
-                      </TouchableNativeFeedback>
-                  </Right>
                 </Header>
+
                 <ScrollView
                     refreshControl={
                     <RefreshControl
@@ -318,4 +311,4 @@ const mapStateToProps = ({ profileEquipe }) => {
   return { team, refresh, photosEquipe, photos, matchs };
 };
 
-export default connect(mapStateToProps, { getTeam })(ProfileEquipe);
+export default connect(mapStateToProps, { getTeam })(SearchTeamProfile);

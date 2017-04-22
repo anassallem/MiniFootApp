@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, ListView } from 'react-native';
 import { Icon, Text, Header, Item, Input, Button } from 'native-base';
-import { fetchTeams, searchChanged } from '../actions';
+import { fetchTeams, searchTeamChanged } from '../actions';
 import { ItemTeam, Spinner } from './common';
 
 class SearchTeam extends Component {
@@ -18,7 +18,7 @@ class SearchTeam extends Component {
 
   onSearchChanged(text) {
      this.props.fetchTeams(text);
-     this.props.searchChanged(text);
+     this.props.searchTeamChanged(text);
   }
 
   createDataSource({ teams }) {
@@ -29,6 +29,7 @@ class SearchTeam extends Component {
   }
 
   renderRow(team) {
+    console.log(team);
     return <ItemTeam team={team} />;
   }
 
@@ -70,4 +71,4 @@ const mapStateToProps = ({ searchTeam }) => {
   const { teams, text, loading } = searchTeam;
   return { teams, text, loading };
 };
-export default connect(mapStateToProps, { fetchTeams, searchChanged })(SearchTeam);
+export default connect(mapStateToProps, { fetchTeams, searchTeamChanged })(SearchTeam);
