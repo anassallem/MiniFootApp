@@ -14,6 +14,7 @@ import ListFriends from './components/ListFriends';
 import Chat from './components/Chat';
 import ProfileEquipe from './components/ProfileEquipe';
 import MembreEquipe from './components/MembreEquipe';
+import AddMembresEquipe from './components/AddMembresEquipe';
 import SelectAdjointEquipe from './components/SelectAdjointEquipe';
 import SelectCapitaineEquipe from './components/SelectCapitaineEquipe';
 
@@ -50,9 +51,8 @@ class RouterComponent extends Component {
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="profileEquipe" component={ProfileEquipe} hideNavBar />
-              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} title="Membres Equipe"
-                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
-              />
+              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} hideNavBar />
+              <Scene key="addMembresEquipe" component={AddMembresEquipe} hideNavBar={false} hideNavBar />
               <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous Capitaine"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />

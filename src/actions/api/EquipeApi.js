@@ -95,3 +95,12 @@ export const updateCapitaine = (idJoueur, idEquipe, idCapitaine) => {
       throw new Error(res);
     });
 };
+
+export const sendNotificationsTeam = (notification, idEquipe) => {
+    const requestURL = `${URL}/notification/${idEquipe}`;
+      return axios.post(requestURL, notification, CONFIG).then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};

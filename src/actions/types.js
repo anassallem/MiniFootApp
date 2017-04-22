@@ -84,3 +84,9 @@ export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
 //Membre Equipe
 export const GET_PLAYER_TEAM_BY_ID = 'get_player_team_by_id';
 export const START_REFRESH_MEMBRE_TEAM = 'start_refresh_membre_team';
+export const GET_ALL_USERS_EQUIPE = 'get_all_user_equipe';
+export const SEARCH_PLAYERS_TEAM_CHANGED = 'search_players_team_changed';
+export const ADD_PLAYER_TO_LIST_TAGS = 'add_player_to_list_tags';
+export const FILTER_PLAYER_LIST_TAGS = 'filter_player_list_tags';
+export const START_LOAD_NOTIFICATION_EQUIPE = 'start_load_notifiaction_equipe';
+export const STOP_LOAD_NOTIFICATION_EQUIPE = 'stop_load_notifiaction_equipe';
