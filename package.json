@@ -22,7 +22,6 @@
     "react-native-router-flux-focus-hook": "github:leifdenby/react-native-router-flux-focus-hook",
     "react-native-star-rating": "^1.0.7",
     "react-native-swipeable": "^0.4.0",
-    "react-native-tag-input": "0.0.14",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",

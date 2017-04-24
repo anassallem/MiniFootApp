@@ -1,0 +1,41 @@
+import {
+  GET_NOTIFICATIONS,
+  START_LOADING_NOTIFICATIONS,
+  DELETE_NOTIFICATIONS,
+  ACCEPT_NOTIFICATIONS
+} from './types';
+import { getNotificationsUser, deleteNotificationUser, acceptNotificationUser } from './api/NotificationApi';
+
+export const getNotifications = (idUser) => {
+  return (dispatch) => {
+    dispatch({ type: START_LOADING_NOTIFICATIONS });
+    getNotificationsUser(idUser).then((res) => {
+      dispatch({ type: GET_NOTIFICATIONS, payload: res });
+      }, (err) => {
+        console.log(err);
+      }
+    );
+    };
+};
+
+export const deleteNotification = (idNotification) => {
+  return (dispatch) => {
+    deleteNotificationUser(idNotification).then((res) => {
+      dispatch({ type: DELETE_NOTIFICATIONS, payload: idNotification });
+      }, (err) => {
+        console.log(err);
+      }
+    );
+    };
+};
+
+export const acceptNotification = (idNotification, notification) => {
+  return (dispatch) => {
+    acceptNotificationUser(idNotification, notification).then((res) => {
+      dispatch({ type: ACCEPT_NOTIFICATIONS, payload: idNotification });
+      }, (err) => {
+        console.log(err);
+      }
+    );
+    };
+};

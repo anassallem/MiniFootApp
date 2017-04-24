@@ -89,8 +89,7 @@ export const initialState = (idEquipe, idJoueur) => {
 function mergeCacheUser(user, type) {
   try {
        user.user.joueur.type = type;
-       AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
-       });
+       AsyncStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.log(error);
     }

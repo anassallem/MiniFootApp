@@ -17,6 +17,7 @@ import SearchTeam from './components/SearchTeam';
 import SearchTeamProfile from './components/SearchTeamProfile';
 import UpdateProfilTeam from './components/UpdateProfilTeam';
 import MembreEquipe from './components/MembreEquipe';
+import AddMembresEquipe from './components/AddMembresEquipe';
 import SelectAdjointEquipe from './components/SelectAdjointEquipe';
 import SelectCapitaineEquipe from './components/SelectCapitaineEquipe';
 import ShowTeamPhotos from './components/ShowTeamPhotos';
@@ -54,20 +55,20 @@ class RouterComponent extends Component {
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="profileEquipe" component={ProfileEquipe} hideNavBar />
+              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} hideNavBar />
+              <Scene key="addMembresEquipe" component={AddMembresEquipe} hideNavBar={false} hideNavBar />
               <Scene key="searchTeam" component={SearchTeam} hideNavBar />
               <Scene key="searchTeamProfile" component={SearchTeamProfile} hideNavBar={false}
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-            <Scene key="updateProfilTeam" component={UpdateProfilTeam} title="Modifier Equipe" hideNavBar />
-              <Scene key="membreEquipe" component={MembreEquipe} hideNavBar={false} title="Membres Equipe"
-                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
-              />
+              <Scene key="updateProfilTeam" component={UpdateProfilTeam} title="Modifier Equipe" hideNavBar />
               <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous Capitaine"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
+
             <Scene key="showTeamPhotos" component={ShowTeamPhotos} title="Photos" hideNavBar />
            </Scene>
         </Router>

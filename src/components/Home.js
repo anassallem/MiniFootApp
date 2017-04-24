@@ -8,12 +8,12 @@ import { connect } from 'react-redux';
 import SideBar from './SideBar';
 import Discussion from './Discussion';
 import Equipe from './Equipe';
+import Notification from './Notification';
 import { URL } from '../actions/api/config';
-import { getSocket, getRoomUser } from '../actions';
+import { getSocket, getRoomUser, initialStateHome } from '../actions';
 
 class Home extends Component {
-  constructor(props) {
-      super(props);
+  componentWillMount() {
       this.socket = io(URL, { jsonp: false });
       this.socket.emit('connection');
       try {
@@ -27,6 +27,7 @@ class Home extends Component {
       }
       this.props.getSocket(this.socket);
   }
+
   componentWillReceiveProps(nextProps) {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
@@ -47,6 +48,16 @@ class Home extends Component {
   handelPhotos() {
       Actions.showTeamPhotos();
       this.closeDrawer();
+    }
+  handelDeconnexion() {
+      try {
+          AsyncStorage.removeItem('user');
+          AsyncStorage.removeItem('equipe');
+          this.props.initialStateHome();
+          Actions.login();
+       } catch (e) {
+         console.log('caught error', e);
+       }
   }
   closeDrawer = () => {
       this.drawer._root.close();
@@ -62,6 +73,7 @@ class Home extends Component {
               content={<SideBar onClickProfil={this.handelProfile.bind(this)}
               onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
               onClickPhotos={this.handelPhotos.bind(this)}
+              onClickDeconnexion={this.handelDeconnexion.bind(this)}
               />}
               onClose={() => this.closeDrawer()}
       >
@@ -90,7 +102,7 @@ class Home extends Component {
                     <Discussion socket={this.props.socket} />
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-notifications-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Text>page 3</Text>
+                      <Notification />
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-football-outline" style={styles.styleIcon} /></TabHeading>}>
                       <Equipe />
@@ -112,4 +124,4 @@ const mapStateToProps = ({ homeDiscussion }) => {
   const { rooms, socket } = homeDiscussion;
   return { rooms, socket };
 };
-export default connect(mapStateToProps, { getSocket, getRoomUser })(Home);
+export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome })(Home);

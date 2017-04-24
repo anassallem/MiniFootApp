@@ -22,7 +22,7 @@ class MenuEquipe extends Component {
     }
 
     onPressMembreEquipe() {
-        Actions.membreEquipe({ idEquipe: this.props.team._id });
+        Actions.membreEquipe({ idEquipe: this.props.team._id, user: this.props.user });
     }
 
     onPressRename() {

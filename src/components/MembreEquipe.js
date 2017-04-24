@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ListView, RefreshControl } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { View, ListView, RefreshControl, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
+import { Text, Header, Right, Body, Title } from 'native-base';
 import MembreTeam from './common/MembreTeam';
 import { getMembresTeam } from '../actions';
-//import { URL } from '../actions/api/config';
 
 class MembreEquipe extends Component {
     componentWillMount() {
@@ -22,6 +23,10 @@ class MembreEquipe extends Component {
       this.props.getMembresTeam(this.props.idEquipe);
     }
 
+    onButtonAddMembreTeam() {
+        Actions.addMembresEquipe();
+    }
+
     createDataSource({ players }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -36,6 +41,16 @@ class MembreEquipe extends Component {
     render() {
         return (
             <View style={styles.mainContainer}>
+                <Header>
+                  <Body>
+                      <Title>Membres Equipe</Title>
+                  </Body>
+                  <Right>
+                      <TouchableWithoutFeedback onPress={this.onButtonAddMembreTeam.bind(this)}>
+                          <Text style={styles.textHeaderStyle}>Inviter</Text>
+                      </TouchableWithoutFeedback>
+                  </Right>
+                </Header>
                 <ListView
                   enableEmptySections
                   dataSource={this.dataSource}
@@ -54,8 +69,10 @@ class MembreEquipe extends Component {
 }
 const styles = {
     mainContainer: {
-        flex: 1,
-        marginTop: 54
+        flex: 1
+    },
+    textHeaderStyle: {
+      color: '#FFFFFF'
     }
 };
 

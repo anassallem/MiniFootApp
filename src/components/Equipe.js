@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage, Alert } from 'react-native';
+import { View, AsyncStorage, Alert, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import CreateEquipe from './CreateEquipe';
 import CreateEquipeStepOne from './CreateEquipeStepOne';
@@ -44,7 +44,13 @@ class Equipe extends Component {
         } catch (e) { console.log('caught error', e); }
     }
     renderPage() {
-      const { steps, user } = this.props;
+      const { steps, user, refresh } = this.props;
+      if (refresh) {
+          return (<View style={{ justifyContent: 'center', flex: 1 }} >
+                    <ActivityIndicator size={'large'} color={['#1565C0']} />
+                  </View>
+                 );
+      }
       switch (steps) {
           case 0:
             return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;

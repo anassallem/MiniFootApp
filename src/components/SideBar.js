@@ -20,16 +20,6 @@ class SideBar extends Component {
       }
   }
 
-  onButtonPress() {
-      try {
-          AsyncStorage.removeItem('user');
-          AsyncStorage.removeItem('equipe');
-       } catch (e) {
-         console.log('caught error', e);
-       }
-    Actions.login();
-  }
-
   renderUser() {
       const { backgroundImage, textUserStyle } = styles;
       if (user !== null) {
@@ -107,7 +97,7 @@ class SideBar extends Component {
                         <Text style={textStyle}>Liste des stades</Text>
                     </Body>
                 </ListItem>
-                <TouchableNativeFeedback onPress={this.onButtonPress.bind(this)}>
+                <TouchableNativeFeedback onPress={() => this.props.onClickDeconnexion()}>
                     <ListItem icon>
                         <Left>
                             <Icon name="md-log-out" style={colorIcon} />
