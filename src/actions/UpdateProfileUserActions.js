@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import { updateUser, updatePassword } from './api/UserApi';
 import {
 USER_UPDATE,
@@ -135,7 +134,6 @@ export const updateUserProfil = (idUser, user) => {
         } else {
           AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
             dispatch({ type: UPDATE_USER_PROFIL });
-            Actions.profil();
           });
         }
       });

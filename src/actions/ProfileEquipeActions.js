@@ -1,7 +1,8 @@
-import { getTeamByID } from './api/EquipeApi';
+import { getTeamByID, getAllPhotosTeam } from './api/EquipeApi';
 import {
   GET_TEAM_BY_ID,
-  START_REFRESH_PROFILE_TEAM
+  START_REFRESH_PROFILE_TEAM,
+  GET_IMAGES_TEAM_PROFIL
 } from './types';
 
 export const getTeam = (idEquipe) => {
@@ -14,4 +15,17 @@ export const getTeam = (idEquipe) => {
       }
     );
     };
+};
+
+export const getImagesTeamProfil = (idEquipe) => {
+  return (dispatch) => {
+    getAllPhotosTeam(idEquipe).then((res) => {
+      if (res.photos.length > 0) {
+          dispatch({ type: GET_IMAGES_TEAM_PROFIL, payload: res.photos });
+      }
+    }, (err) => {
+      console.log(err);
+    }
+    );
+  };
 };

@@ -67,6 +67,15 @@ export const getTeamByID = (idEquipe) => {
     });
 };
 
+ export const getAllPhotosTeam = (idEquipe) => {
+     const requestURL = `${URL}/equipe/${idEquipe}/photos`;
+       return axios.get(requestURL)
+       .then((res) => {
+         return res.data;
+     }, (res) => {
+       throw new Error(res);
+     });
+ };
 
 export const updateTeam = (idTeam, team) => {
     const requestURL = `${URL}/equipe/${idTeam}`;

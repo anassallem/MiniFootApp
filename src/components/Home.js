@@ -49,6 +49,9 @@ class Home extends Component {
       Actions.searchTeam();
       this.closeDrawer();
   }
+  handelPhotos() {
+      this.closeDrawer();
+    }
   handelDeconnexion() {
       try {
           AsyncStorage.removeItem('user');
@@ -72,6 +75,7 @@ class Home extends Component {
               ref={(ref) => { this.drawer = ref; }}
               content={<SideBar onClickProfil={this.handelProfile.bind(this)}
               onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
+              onClickPhotos={this.handelPhotos.bind(this)}
               onClickDeconnexion={this.handelDeconnexion.bind(this)}
               />}
               onClose={() => this.closeDrawer()}

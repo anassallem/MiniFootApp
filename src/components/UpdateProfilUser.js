@@ -8,8 +8,6 @@ import { userUpdate, phoneChanged, updateUserProfil, onchangeCardInfo, onchangeC
        } from '../actions';
 import { CardSection, UpdateUserInfo, UpdateUserPassword, UpdateUserCharacteristic } from './common';
 
-const backgroundImage = require('./assets/drawer.jpg');
-
 class UpdateProfilUser extends Component {
 
   componentWillMount() {

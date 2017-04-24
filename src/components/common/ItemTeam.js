@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableNativeFeedback } from 'react-native';
+import { TouchableNativeFeedback, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Left, Body, ListItem, Thumbnail, Text } from 'native-base';
 import { URL } from '../../actions/api/config';
@@ -7,7 +7,18 @@ import { URL } from '../../actions/api/config';
 class ItemTeam extends Component {
     onPressButton() {
         const { team } = this.props;
-        Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
+        try {
+             AsyncStorage.getItem('user').then((value) => {
+                 const user = JSON.parse(value);
+                 if (user.user.equipe === team._id) {
+                   Actions.profileEquipe({ idEquipe: team._id });
+               } else {
+                   Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
+               }
+             }).done();
+           } catch (e) {
+               console.log('caught error', e);
+           }
     }
     render() {
         const { name, logo } = this.props.team;

@@ -68,9 +68,8 @@ class RouterComponent extends Component {
               <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-              <Scene key="showTeamPhotos" component={ShowTeamPhotos} hideNavBar={false} title="Photos"
-                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
-              />
+
+            <Scene key="showTeamPhotos" component={ShowTeamPhotos} title="Photos" hideNavBar />
            </Scene>
         </Router>
         );

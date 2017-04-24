@@ -11,8 +11,11 @@ class ProfilForm extends Component {
 
     componentDidMount() {
       this.onRefresh();
+      this.props.navigationStateHandler.registerFocusHook(this);
     }
-
+    componentWillUnmount() {
+      this.props.navigationStateHandler.unregisterFocusHook(this);
+    }
     onRefresh() {
       try {
           AsyncStorage.getItem('user').then((value) => {
@@ -31,6 +34,9 @@ class ProfilForm extends Component {
 
     onButtonPressFriends() {
       Actions.listFriends();
+    }
+    handleNavigationSceneFocus() {
+      this.onRefresh();
     }
     handleImage() {
       ImagePicker.showImagePicker(null, (response) => {

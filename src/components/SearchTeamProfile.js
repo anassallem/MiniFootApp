@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView, RefreshControl } from 'react-native';
-import { Icon, Button, Header, Right, Body, Title } from 'native-base';
+import { View, Text, ListView, AsyncStorage, Image, Dimensions, ScrollView, RefreshControl } from 'react-native';
+import { Icon, Button, Header, Body, Title } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTeam } from '../actions';
+import { getTeam, getImagesTeamProfil } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
@@ -22,14 +23,14 @@ class SearchTeamProfile extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.team);
         this.createDataSource(nextProps);
         this.createDataSourcePlayers(nextProps);
         this.createDataSourceMatchs(nextProps);
     }
 
     onRefresh() {
-      this.props.getTeam(this.props.idEquipe);
+       this.props.getTeam(this.props.idEquipe);
+       this.props.getImagesTeamProfil(this.props.idEquipe);
     }
 
     createDataSource({ photosEquipe }) {
@@ -51,7 +52,8 @@ class SearchTeamProfile extends Component {
         this.MatchDataSource = ds.cloneWithRows(matchs);
     }
     renderRow(photo) {
-        return <Image source={photo.image} style={styles.photoTeamStyle} />;
+        const imageTeamProfil = `${URL}/equipe/teamUploads/${photo}`;
+        return <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />;
     }
     renderRowPlayer(joueur) {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
@@ -75,7 +77,6 @@ class SearchTeamProfile extends Component {
                 </View>);
     }
     renderPhotoEquipe() {
-        console.log(this.props.team);
         if (this.props.team !== null && this.props.team.logo !== undefined) {
             const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
             return <Image source={{ uri: logoUri }} style={styles.styleLogo} />;
@@ -311,4 +312,4 @@ const mapStateToProps = ({ profileEquipe }) => {
   return { team, refresh, photosEquipe, photos, matchs };
 };
 
-export default connect(mapStateToProps, { getTeam })(SearchTeamProfile);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil })(SearchTeamProfile);
