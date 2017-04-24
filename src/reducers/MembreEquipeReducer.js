@@ -35,7 +35,7 @@ export default (state = INITIAL_STATE, action) => {
     case START_LOAD_NOTIFICATION_EQUIPE:
       return { ...state, loading: true };
     case STOP_LOAD_NOTIFICATION_EQUIPE:
-      return { ...INITIAL_STATE, loading: false };
+      return { ...state, loading: false, search: '', tags: [], users: [] };
     default:
       return state;
   }

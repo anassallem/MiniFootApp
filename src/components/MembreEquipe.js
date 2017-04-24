@@ -47,7 +47,7 @@ class MembreEquipe extends Component {
                   </Body>
                   <Right>
                       <TouchableWithoutFeedback onPress={this.onButtonAddMembreTeam.bind(this)}>
-                      <Text style={styles.textHeaderStyle}>Inviter</Text>
+                          <Text style={styles.textHeaderStyle}>Inviter</Text>
                       </TouchableWithoutFeedback>
                   </Right>
                 </Header>

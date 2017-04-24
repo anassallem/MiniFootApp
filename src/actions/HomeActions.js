@@ -1,6 +1,7 @@
 import {
   GET_MY_ROOMS,
-  SOCKET_CHANGED
+  SOCKET_CHANGED,
+  INITIAL_STATE_HOME
 } from './types';
 import { getRoomUserById } from './api/RoomsApi';
 
@@ -20,4 +21,8 @@ export const getSocket = (socket) => {
     type: SOCKET_CHANGED,
     payload: socket
   };
+};
+
+export const initialStateHome = () => {
+  return { type: INITIAL_STATE_HOME };
 };

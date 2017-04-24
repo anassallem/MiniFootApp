@@ -8,20 +8,18 @@ import { deletePlayer } from '../../actions';
 
 class MembreTeam extends Component {
     onPressDelete() {
-        const { _id } = this.props.player.idJoueur;
+        const { _id, firstname, lastname } = this.props.player.idJoueur;
         try {
           AsyncStorage.getItem('equipe').then((value) => {
               const equipe = JSON.parse(value);
-              AsyncStorage.getItem('user').then((data) => {
-                  const user = JSON.parse(data);
-                  if (equipe.createdBy === _id) {
-                      Alert.alert('Attention', "Vous ne pouvez pas supprimer le responsable de l'équipe");
-                  } else if (user.user.joueur.type === 'Responsable' || user.user.joueur.type === 'Sous Responsable') {
-                      this.props.deletePlayer(equipe._id, _id);
-                  } else {
-                      Alert.alert('Attention', "Vous n'avez pas le droit du supprimer");
-                  }
-              }).done();
+              if (equipe.createdBy === _id) {
+                  Alert.alert('Attention', "Vous ne pouvez pas supprimer le responsable de l'équipe");
+              } else if (this.props.user.joueur.type === 'Responsable' || this.props.user.joueur.type === 'Sous Responsable') {
+                  Alert.alert('Information', `Vous voulez vraiment supprimer ${firstname} ${lastname} `,
+                  [{ text: 'Confirmer', onPress: () => this.props.deletePlayer(equipe._id, _id) }, { text: 'Annuler', onPress: () => console.log('OK Pressed!') }]);
+              } else {
+                  Alert.alert('Attention', "Vous n'avez pas le droit du supprimer");
+              }
           }).done();
         } catch (e) {
           console.log('caught error', e);
@@ -120,9 +118,10 @@ const styles = {
     }
 };
 
-const mapStateToProps = ({ membreTeam }) => {
+const mapStateToProps = ({ membreTeam, equipe }) => {
   const { players } = membreTeam;
-  return { players };
+  const { user } = equipe;
+  return { players, user };
 };
 
 export default connect(mapStateToProps, { deletePlayer })(MembreTeam);

@@ -53,13 +53,13 @@ class Equipe extends Component {
       }
       switch (steps) {
           case 0:
-          return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
+            return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
           case 1:
-          return <CreateEquipeStepOne buttonPress={this.onButtonPressCreate.bind(this)} />;
+            return <CreateEquipeStepOne buttonPress={this.onButtonPressCreate.bind(this)} />;
           case 2:
-          return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} user={user} />;
+            return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} user={user} />;
           default:
-          return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
+            return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
       }
     }
     render() {

@@ -63,6 +63,7 @@ export const GET_ALL_DISCUSSION = 'get_all_discussion';
 export const ID_USER_CHANGED = 'id_user_changed';
 //Home
 export const GET_MY_ROOMS = 'get_my_rooms';
+export const INITIAL_STATE_HOME = 'initial_state_home';
 //Equipe
 export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';
@@ -95,3 +96,8 @@ export const ADD_PLAYER_TO_LIST_TAGS = 'add_player_to_list_tags';
 export const FILTER_PLAYER_LIST_TAGS = 'filter_player_list_tags';
 export const START_LOAD_NOTIFICATION_EQUIPE = 'start_load_notifiaction_equipe';
 export const STOP_LOAD_NOTIFICATION_EQUIPE = 'stop_load_notifiaction_equipe';
+//notification
+export const GET_NOTIFICATIONS = 'get_notifications';
+export const START_LOADING_NOTIFICATIONS = 'start_loading_notifications';
+export const DELETE_NOTIFICATIONS = 'delete_notifications';
+export const ACCEPT_NOTIFICATIONS = 'accept_notifications';

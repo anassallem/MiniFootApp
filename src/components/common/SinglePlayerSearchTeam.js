@@ -7,19 +7,18 @@ import { addPlayerToListTags } from '../../actions';
 
 class SinglePlayerSearchTeam extends Component {
     onPressButton() {
-        let { tags } = this.props;
-        tags = [this.props.player, ...tags];
-          tags = tags.filter((tag, index, self) => self.findIndex((item) => { return item._id === tag._id; }) === index);
-          //tags = tags.filter((t) => { return (t._id === user.user._id) ? false : true; });
-          let list = [];
-          tags.forEach((item) => {
-             this.props.players.forEach((person) => {
-                if (new String(person.idJoueur._id).valueOf() !== new String(item._id).valueOf()) {
-                  list.push(item);
+          let { tags } = this.props;
+          let valid = 0;
+          this.props.players.forEach((person) => {
+                if (new String(person.idJoueur._id).valueOf() === new String(this.props.player._id).valueOf()) {
+                    valid = 1;
                 }
-              });
           });
-          this.props.addPlayerToListTags(list);
+          if (valid === 0) {
+              tags = [this.props.player, ...tags];
+          }
+          tags = tags.filter((tag, index, self) => self.findIndex((item) => { return item._id === tag._id; }) === index);
+          this.props.addPlayerToListTags(tags);
     }
     render() {
         const { firstname, lastname, email, photo } = this.props.player;
