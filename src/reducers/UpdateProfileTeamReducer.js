@@ -3,7 +3,7 @@ import { TEAM_UPDATE, REFRESH_UPDATE_TEAM_START, UPDATE_TEAM_PROFIL } from '../a
 const INITIAL_STATE = {
   name: '',
   adresse: '',
-  description: '', 
+  description: '',
   refresh: false,
   testName: true,
   testAdresse: true,
@@ -13,7 +13,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case TEAM_UPDATE:
-    console.log(action.payload.prop);
     return { ...state, [action.payload.prop]: action.payload.value, [action.valid.idChamps]: action.valid.validate };
     case REFRESH_UPDATE_TEAM_START:
       return { ...state, refresh: true };

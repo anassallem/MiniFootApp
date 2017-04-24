@@ -14,6 +14,7 @@ import SearchTeamReducer from './SearchTeamReducer';
 import ProfileEquipeReducer from './ProfileEquipeReducer';
 import UpdateProfileTeamReducer from './UpdateProfileTeamReducer';
 import MembreEquipeReducer from './MembreEquipeReducer';
+import ShowTeamPhotosReducer from './ShowTeamPhotosReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -30,6 +31,7 @@ export default combineReducers({
   searchTeam: SearchTeamReducer,
   profileEquipe: ProfileEquipeReducer,
   updateTeamProfile: UpdateProfileTeamReducer,
-  membreTeam: MembreEquipeReducer
+  membreTeam: MembreEquipeReducer,
+  teamPhotos: ShowTeamPhotosReducer
 
 });

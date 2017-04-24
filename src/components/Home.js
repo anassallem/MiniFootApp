@@ -44,6 +44,10 @@ class Home extends Component {
       Actions.searchTeam();
       this.closeDrawer();
   }
+  handelPhotos() {
+      Actions.showTeamPhotos();
+      this.closeDrawer();
+  }
   closeDrawer = () => {
       this.drawer._root.close();
     };
@@ -57,6 +61,7 @@ class Home extends Component {
               ref={(ref) => { this.drawer = ref; }}
               content={<SideBar onClickProfil={this.handelProfile.bind(this)}
               onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
+              onClickPhotos={this.handelPhotos.bind(this)}
               />}
               onClose={() => this.closeDrawer()}
       >

@@ -89,14 +89,16 @@ class SideBar extends Component {
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>
-                <ListItem icon>
-                    <Left>
-                        <Icon name="ios-football-outline" style={colorIcon} />
-                    </Left>
-                    <Body>
-                      <Text style={textStyle}>Mes match</Text>
-                    </Body>
-                </ListItem>
+                <TouchableNativeFeedback onPress={() => this.props.onClickPhotos()}>
+                    <ListItem icon>
+                        <Left>
+                            <Icon name="ios-football-outline" style={colorIcon} />
+                        </Left>
+                        <Body>
+                          <Text style={textStyle}>Mes match</Text>
+                        </Body>
+                    </ListItem>
+                </TouchableNativeFeedback>
                 <ListItem icon>
                     <Left>
                         <Icon name="ios-git-branch-outline" style={colorIcon} />

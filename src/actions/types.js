@@ -89,3 +89,6 @@ export const REFRESH_UPDATE_TEAM_START = 'refresh_update_team_start';
 //Membre Equipe
 export const GET_PLAYER_TEAM_BY_ID = 'get_player_team_by_id';
 export const START_REFRESH_MEMBRE_TEAM = 'start_refresh_membre_team';
+//ShowTeamPhotos
+export const MODAL_VISIBLE = 'modal_visible';
+export const IMAGES_MULTIPLE = 'image_multiple';
