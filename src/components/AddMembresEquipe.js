@@ -26,7 +26,9 @@ class AddMembresEquipe extends Component {
     onPressEnvoyer() {
         AsyncStorage.getItem('equipe').then((value) => {
             const equipe = JSON.parse(value);
-            this.props.envoyerIvitationEquipe(this.props.tags, equipe.name, equipe._id);
+            //this.props.envoyerIvitationEquipe(this.props.tags, equipe.name, equipe._id);
+            const notify = { users: this.props.tags, title: equipe.name, idEquipe: equipe._id };
+            this.props.socket.emit('invitationEquipe', notify);
         }).done();
     }
     onButtonPressDelete(ref, item) {
@@ -186,9 +188,10 @@ const styles = {
 };
 
 
-const mapStateToProps = ({ membreTeam }) => {
+const mapStateToProps = ({ membreTeam, homeDiscussion }) => {
   const { users, search, tags, refresh, loading } = membreTeam;
-  return { users, search, tags, refresh, loading };
+  const { socket } = homeDiscussion;
+  return { users, search, tags, refresh, loading, socket };
 };
 
 export default connect(mapStateToProps, { getAllUserEquipe, searchPalyersTeamChanged, filterListTags, envoyerIvitationEquipe })(AddMembresEquipe);

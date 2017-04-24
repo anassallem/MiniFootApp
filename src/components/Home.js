@@ -13,6 +13,7 @@ import { URL } from '../actions/api/config';
 import { getSocket, getRoomUser, initialStateHome } from '../actions';
 
 class Home extends Component {
+
   componentWillMount() {
       this.socket = io(URL, { jsonp: false });
       this.socket.emit('connection');
@@ -21,13 +22,16 @@ class Home extends Component {
             const user = JSON.parse(value);
             this.socket.emit('add_user', user.user._id);
             this.props.getRoomUser(user.user._id);
+            this.socket.on(user.user._id, (notification) => {
+                console.log(notification);
+            });
         }).done();
       } catch (e) {
         console.log('caught error', e);
       }
       this.props.getSocket(this.socket);
   }
-  
+
   componentWillReceiveProps(nextProps) {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
