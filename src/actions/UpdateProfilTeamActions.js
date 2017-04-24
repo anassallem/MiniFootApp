@@ -1,5 +1,4 @@
 import { AsyncStorage } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import { updateTeam } from './api/EquipeApi';
 import { TEAM_UPDATE, UPDATE_TEAM_PROFIL, REFRESH_UPDATE_TEAM_START } from './types';
 
@@ -35,7 +34,6 @@ export const updateTeamProfil = (idTeam, team) => {
         } else {
           AsyncStorage.mergeItem('team', JSON.stringify(team), () => {
             dispatch({ type: UPDATE_TEAM_PROFIL });
-            Actions.profileEquipe({ idEquipe: idTeam });
           });
         }
       });

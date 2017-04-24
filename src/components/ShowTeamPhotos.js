@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
-
-import { View, Text, TouchableNativeFeedback, Image, Dimensions, Modal, ScrollView, NativeModules } from 'react-native';
+//import ImagePicker from 'react-native-image-crop-picker';
+import { View, TouchableNativeFeedback, Image, Dimensions, Modal, ScrollView } from 'react-native';
 import { Header, Right, Body, Title, Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { setModalVisible, setMultiplePhotos } from '../actions';
-
-var ImagePicker = NativeModules.ImageCropPicker;
+import { setModalVisible, setMultiplePhotos, getPhotosTeam } from '../actions';
+import { URL } from '../actions/api/config';
 
 class ShowTeamPhotos extends Component {
 
-  //<Text style={styles.textStyle} onPress={() => { this.setModalVisible(false); }}> close</Text>
+  componentDidMount() {
+    this.props.getPhotosTeam(this.props.idEquipe);
+  }
+
   onButtonAdd() {
-    ImagePicker.openPicker({
+  /*  ImagePicker.openPicker({
     multiple: true
     }).then(images => {
       this.props.setMultiplePhotos(images);
-    });
+    });*/
   }
 
   onModalVisible(visible, imageKey) {
@@ -40,10 +42,11 @@ class ShowTeamPhotos extends Component {
 
   render() {
     const images = this.props.images.map((val, key) => {
+      const imageTeam = `${URL}/equipe/teamUploads/${val}`;
       return (
-        <TouchableNativeFeedback key={key} onPress={() => { this.onModalVisible(true, key); }}>
+        <TouchableNativeFeedback key={key} onPress={() => { this.onModalVisible(true, imageTeam); }}>
           <View style={styles.imgWrap}>
-                  <Image source={val} style={styles.imageStyle} />
+                  <Image source={{ uri: imageTeam }} style={styles.imageStyle} />
           </View>
         </TouchableNativeFeedback>
       );
@@ -77,7 +80,7 @@ class ShowTeamPhotos extends Component {
                       <Icon name="ios-close-outline" style={{ color: '#fff' }} />
                   </TouchableNativeFeedback>
                 </View>
-                  <Image source={this.props.modalImage} style={styles.imageStyle} />
+                  <Image source={{ uri: this.props.modalImage }} style={styles.imageStyle} />
               </View>
             </Modal>
               {this.renderMultiplePhotos()}
@@ -128,4 +131,4 @@ const mapStateToProps = ({ teamPhotos }) => {
     const { modalVisible, modalImage, images, photos } = teamPhotos;
     return { modalVisible, modalImage, images, photos };
   };
-  export default connect(mapStateToProps, { setModalVisible, setMultiplePhotos })(ShowTeamPhotos);
+  export default connect(mapStateToProps, { setModalVisible, setMultiplePhotos, getPhotosTeam })(ShowTeamPhotos);

@@ -29,7 +29,6 @@ class SearchTeam extends Component {
   }
 
   renderRow(team) {
-    console.log(team);
     return <ItemTeam team={team} />;
   }
 

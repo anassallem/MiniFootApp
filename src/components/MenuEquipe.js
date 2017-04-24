@@ -18,7 +18,7 @@ class MenuEquipe extends Component {
     }
 
     onPressPictures() {
-      Actions.showTeamPhotos();
+      Actions.showTeamPhotos({ idEquipe: this.props.team._id });
     }
 
     onPressMembreEquipe() {

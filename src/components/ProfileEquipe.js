@@ -4,11 +4,10 @@ import { Icon, Button, Header, Right, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Actions } from 'react-native-router-flux';
-import { getTeam } from '../actions';
+import { getTeam, getImagesTeamProfil } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
-//const imgUser = require('./assets/userdefault.png');
 
 class ProfileEquipe extends Component {
 
@@ -20,6 +19,7 @@ class ProfileEquipe extends Component {
 
     componentDidMount() {
       this.onRefresh();
+      this.props.navigationStateHandler.registerFocusHook(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -27,15 +27,20 @@ class ProfileEquipe extends Component {
         this.createDataSourcePlayers(nextProps);
         this.createDataSourceMatchs(nextProps);
     }
-
+    componentWillUnmount() {
+      this.props.navigationStateHandler.unregisterFocusHook(this);
+    }
     onRefresh() {
       this.props.getTeam(this.props.idEquipe);
+      this.props.getImagesTeamProfil(this.props.idEquipe);
     }
 
     onButtonUpdate() {
       Actions.updateProfilTeam({ team: this.props.team });
     }
-
+    handleNavigationSceneFocus() {
+      this.onRefresh();
+    }
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -55,7 +60,8 @@ class ProfileEquipe extends Component {
         this.MatchDataSource = ds.cloneWithRows(matchs);
     }
     renderRow(photo) {
-        return <Image source={photo.image} style={styles.photoTeamStyle} />;
+        const imageTeamProfil = `${URL}/equipe/teamUploads/${photo}`;
+        return <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />;
     }
     renderRowPlayer(joueur) {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
@@ -314,8 +320,8 @@ const styles = {
 
 
 const mapStateToProps = ({ profileEquipe }) => {
-  const { team, refresh, photosEquipe, photos, matchs } = profileEquipe;
-  return { team, refresh, photosEquipe, photos, matchs };
+  const { team, refresh, photosEquipe, matchs } = profileEquipe;
+  return { team, refresh, photosEquipe, matchs };
 };
 
-export default connect(mapStateToProps, { getTeam })(ProfileEquipe);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil })(ProfileEquipe);

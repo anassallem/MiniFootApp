@@ -22,12 +22,8 @@ class SearchPlayerProfile extends Component {
     try {
          AsyncStorage.getItem('user').then((value) => {
              const user = JSON.parse(value);
-             if (user.user._id === player._id) {
-               Actions.profil();
-           } else {
-               this.props.getSkills(player._id);
-               this.props.getRelationship(user.user._id, player._id);
-           }
+             this.props.getSkills(player._id);
+             this.props.getRelationship(user.user._id, player._id);
          }).done();
        } catch (e) {
            console.log('caught error', e);

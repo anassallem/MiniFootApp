@@ -46,7 +46,6 @@ class Home extends Component {
       this.closeDrawer();
   }
   handelPhotos() {
-      Actions.showTeamPhotos();
       this.closeDrawer();
     }
   handelDeconnexion() {
