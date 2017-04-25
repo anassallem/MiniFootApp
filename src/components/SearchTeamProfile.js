@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ListView, AsyncStorage, Image, Dimensions, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, ListView, TouchableNativeFeedback, Image, Dimensions, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
 import { Icon, Button, Header, Body, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
@@ -57,10 +57,28 @@ class SearchTeamProfile extends Component {
     }
     renderRowPlayer(joueur) {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
-        return (<View style={styles.containerPlayerImage}>
-                  <Image source={{ uri: img }} style={styles.photoPlayerStyle} />
-                  <Text style={styles.styleTextPhoto}>{joueur.idJoueur.firstname}</Text>
-                </View>);
+      return (
+            <TouchableNativeFeedback onPress={() => {
+                try {
+                     AsyncStorage.getItem('user').then((value) => {
+                         const user = JSON.parse(value);
+                         if (user.user._id === joueur.idJoueur._id) {
+                           Actions.profil();
+                         } else {
+                              Actions.searchPlayerProfile({ player: joueur.idJoueur, title: `${joueur.idJoueur.firstname} ${joueur.idJoueur.lastname}` });
+                            }
+                      }).done();
+                } catch (e) {
+                   console.log('caught error', e);
+                  }
+            }}
+            >
+            <View style={styles.containerPlayerImage}>
+                <Image source={{ uri: img }} style={styles.photoPlayerStyle} />
+                <Text style={styles.styleTextPhoto}>{joueur.idJoueur.firstname}</Text>
+            </View>
+          </TouchableNativeFeedback>
+        );
     }
     renderRowMatch(match) {
         return (<View style={styles.containerMatchs}>
