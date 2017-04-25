@@ -46,7 +46,6 @@ const futch = (url, opts = {}, onProgress) => {
     });
 };
 
-
 export const getTeams = (text) => {
     const requestURL = `${URL}/equipe?name=${text}`;
     return axios.get(requestURL)
@@ -66,16 +65,6 @@ export const getTeamByID = (idEquipe) => {
       throw new Error(res);
     });
 };
-
- export const getAllPhotosTeam = (idEquipe) => {
-     const requestURL = `${URL}/equipe/${idEquipe}/photos`;
-       return axios.get(requestURL)
-       .then((res) => {
-         return res.data;
-     }, (res) => {
-       throw new Error(res);
-     });
- };
 
 export const updateTeam = (idTeam, team) => {
     const requestURL = `${URL}/equipe/${idTeam}`;
@@ -126,11 +115,11 @@ export const updateCapitaine = (idJoueur, idEquipe, idCapitaine) => {
     });
 };
 
-export const sendNotificationsTeam = (notification, idEquipe) => {
+/*export const sendNotificationsTeam = (notification, idEquipe) => {
     const requestURL = `${URL}/notification/${idEquipe}`;
       return axios.post(requestURL, notification, CONFIG).then((res) => {
         return res.data;
     }, (res) => {
       throw new Error(res);
     });
-};
+};*/

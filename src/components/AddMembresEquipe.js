@@ -26,7 +26,7 @@ class AddMembresEquipe extends Component {
     onPressEnvoyer() {
         AsyncStorage.getItem('equipe').then((value) => {
             const equipe = JSON.parse(value);
-            //this.props.envoyerIvitationEquipe(this.props.tags, equipe.name, equipe._id);
+            this.props.envoyerIvitationEquipe();
             const notify = { users: this.props.tags, title: equipe.name, idEquipe: equipe._id };
             this.props.socket.emit('invitationEquipe', notify);
         }).done();

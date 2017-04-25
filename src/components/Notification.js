@@ -18,7 +18,11 @@ class Notification extends Component {
   componentWillReceiveProps(nextProps) {
     this.createDataSource(nextProps);
   }
-
+  componentDidUpdate(prevProps, prevState) {
+      if (prevProps.notify !== this.props.notify) {
+        this.onRefresh();
+      }
+  }
   onRefresh() {
       try {
           AsyncStorage.getItem('user').then((value) => {
@@ -69,8 +73,9 @@ class Notification extends Component {
     );
   }
 }
-const mapStateToProps = ({ notification }) => {
-  const { notifications, loading } = notification;
-  return { notifications, loading };
+const mapStateToProps = ({ notification, homeDiscussion }) => {
+      const { notifications, loading } = notification;
+      const { notify } = homeDiscussion;
+  return { notifications, loading, notify };
 };
 export default connect(mapStateToProps, { getNotifications })(Notification);

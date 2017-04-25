@@ -1,4 +1,4 @@
-import { getPlayerTeam, deletePlayerTeam, updateSousCapitaine, updateCapitaine, sendNotificationsTeam } from './api/EquipeApi';
+import { getPlayerTeam, deletePlayerTeam, updateSousCapitaine, updateCapitaine } from './api/EquipeApi';
 import { getUsers } from './api/UserApi';
 import {
   GET_PLAYER_TEAM_BY_ID,
@@ -103,20 +103,11 @@ export const getAllUserEquipe = (text, page) => {
       });
   };
 };
-export const envoyerIvitationEquipe = (tags, name, idEquipe) => {
-    let users = [];
-    let tokens = [];
-    tags.forEach((tag) => {
-        users.push(tag._id);
-        tokens.push(tag.token);
-    });
-    const notification = { users, title: name, tokens };
+export const envoyerIvitationEquipe = () => {
     return (dispatch) => {
         dispatch({ type: START_LOAD_NOTIFICATION_EQUIPE });
-        sendNotificationsTeam(notification, idEquipe).then((res) => {
+        setTimeout(() => {
             dispatch({ type: STOP_LOAD_NOTIFICATION_EQUIPE });
-        }, (err) => {
-          console.log(err);
-        });
+        }, 2000);
     };
 };

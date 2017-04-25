@@ -9,6 +9,14 @@ import { changeStepOne, changeStepTow, initialState } from '../actions';
 class Equipe extends Component {
 
     componentDidMount() {
+        this.onRefresh();
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.menu !== this.props.menu) {
+          this.onRefresh();
+        }
+    }
+    onRefresh() {
         try {
           AsyncStorage.getItem('equipe').then((value) => {
               const equipe = JSON.parse(value);
@@ -21,7 +29,6 @@ class Equipe extends Component {
           console.log('caught error', e);
         }
     }
-
     onButtonPressCreate() {
         this.props.changeStepOne();
     }
@@ -29,7 +36,7 @@ class Equipe extends Component {
         try {
             AsyncStorage.getItem('user').then((value) => {
               const user = JSON.parse(value);
-              if (user.user.joueur.type === 'Responsable') {
+              if (this.props.user.joueur.type === 'Responsable') {
                   Alert.alert('Attention', "Vous devez spécifier un responsable d'équipe avant de quitter");
               } else {
                   user.user.joueur.type = 'Joueur';
@@ -76,9 +83,10 @@ const styles = {
     }
 };
 
-const mapStateToProps = ({ equipe }) => {
+const mapStateToProps = ({ equipe, homeDiscussion }) => {
   const { steps, team, user, refresh } = equipe;
-  return { steps, team, user, refresh };
+  const { menu } = homeDiscussion;
+  return { steps, team, user, refresh, menu };
 };
 
 export default connect(mapStateToProps, { changeStepOne, changeStepTow, initialState })(Equipe);

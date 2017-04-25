@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import io from 'socket.io-client/dist/socket.io';
-import { Container, Tab, Tabs, TabHeading, Icon,
-    Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
+import { Container, Tab, Tabs, TabHeading, Icon, Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
 import { connect } from 'react-redux';
 import SideBar from './SideBar';
 import Discussion from './Discussion';
 import Equipe from './Equipe';
 import Notification from './Notification';
 import { URL } from '../actions/api/config';
-import { getSocket, getRoomUser, initialStateHome } from '../actions';
+import { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage } from '../actions';
 
 class Home extends Component {
 
@@ -23,7 +22,8 @@ class Home extends Component {
             this.socket.emit('add_user', user.user._id);
             this.props.getRoomUser(user.user._id);
             this.socket.on(user.user._id, (notification) => {
-                console.log(notification);
+                this.props.changeNumberNotify();
+                this.props.changePage('Notification');
             });
         }).done();
       } catch (e) {
@@ -36,6 +36,7 @@ class Home extends Component {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
     });
+    console.log('menu: ', nextProps.menu);
   }
   handelProfile() {
       Actions.profil();
@@ -68,8 +69,19 @@ class Home extends Component {
   openDrawer = () => {
       this.drawer._root.open();
   };
-
+  handelInitialNumberNotify() {
+      this.props.initialNumberNotifyHome();
+  }
+  renderNumberNotification() {
+      const { numberNotify } = this.props;
+      if (numberNotify !== 0) {
+          return (<View style={styles.styleContainerNotification}>
+                      <Text style={styles.styleNotify}>{numberNotify}</Text>
+                  </View>);
+      }
+  }
   render() {
+      //onPress={() => { this.props.changePage('Notification'); }}
     return (
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
@@ -104,8 +116,11 @@ class Home extends Component {
                   <Tab heading={<TabHeading><Icon name="ios-chatbubbles-outline" style={styles.styleIcon} /></TabHeading>}>
                     <Discussion socket={this.props.socket} />
                   </Tab>
-                  <Tab heading={<TabHeading><Icon name="ios-notifications-outline" style={styles.styleIcon} /></TabHeading>}>
-                      <Notification />
+                  <Tab heading={<TabHeading>
+                              <Icon name="ios-notifications-outline" style={styles.styleIcon} />{this.renderNumberNotification()}
+                          </TabHeading>}
+                  >
+                      <Notification initialNumberNotify={this.handelInitialNumberNotify.bind(this)} />
                   </Tab>
                   <Tab heading={<TabHeading><Icon name="ios-football-outline" style={styles.styleIcon} /></TabHeading>}>
                       <Equipe />
@@ -121,10 +136,24 @@ class Home extends Component {
 const styles = {
   styleIcon: {
     color: '#616161',
+  },
+  styleContainerNotification: {
+    backgroundColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 17,
+    height: 17,
+    borderRadius: 8.5,
+    marginTop: -15,
+    marginLeft: -8
+  },
+  styleNotify: {
+      color: '#FFFFFF',
+      fontSize: 10
   }
 };
 const mapStateToProps = ({ homeDiscussion }) => {
-  const { rooms, socket } = homeDiscussion;
-  return { rooms, socket };
+  const { rooms, socket, numberNotify, notify, menu } = homeDiscussion;
+  return { rooms, socket, numberNotify, notify, menu };
 };
-export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome })(Home);
+export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage })(Home);

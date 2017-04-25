@@ -16,13 +16,13 @@ export const MESSAGE_REGISTER_ERROR_CHANGED = 'message_register_error_changed';
 export const GET_USER = 'get_user';
 export const GET_USER_SKILLS = 'get_user_skills';
 export const REFRESH_START = 'refresh_start';
-
+//search player profil
 export const GET_RELATIONSHIP_USER = 'get_relationship_user';
 export const DELETE_RELATIONSHIP_USER = 'delete_relationship_user';
 export const CANCEL_INVITATION_USER = 'cancel_invitation_user';
 export const ADD_INVITATION_USER = 'add_invitation_user';
 export const CONFIRM_INVITATIONS = 'confirm_invitations';
-
+//search player
 export const SEARCH_CHANGED = 'search_changed';
 export const FETCH_PLAYERS = 'fetch_players';
 export const LOADING_PLAYERS = 'loading_players';
@@ -64,6 +64,9 @@ export const ID_USER_CHANGED = 'id_user_changed';
 //Home
 export const GET_MY_ROOMS = 'get_my_rooms';
 export const INITIAL_STATE_HOME = 'initial_state_home';
+export const CHANGE_NUMBER_NOTIFY_HOME = 'change_number_notify_home';
+export const PAGE_HOME_CHANGED = 'page_home_changed';
+export const MENU_HOME_CHANGED = 'menu_home_changed';
 //Equipe
 export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';

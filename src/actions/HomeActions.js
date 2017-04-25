@@ -1,7 +1,10 @@
 import {
   GET_MY_ROOMS,
   SOCKET_CHANGED,
-  INITIAL_STATE_HOME
+  INITIAL_STATE_HOME,
+  CHANGE_NUMBER_NOTIFY_HOME,
+  PAGE_HOME_CHANGED,
+  MENU_HOME_CHANGED
 } from './types';
 import { getRoomUserById } from './api/RoomsApi';
 
@@ -25,4 +28,15 @@ export const getSocket = (socket) => {
 
 export const initialStateHome = () => {
   return { type: INITIAL_STATE_HOME };
+};
+
+export const changeNumberNotify = () => {
+  return { type: CHANGE_NUMBER_NOTIFY_HOME };
+};
+
+export const changePage = (notify) => {
+  return {
+    type: PAGE_HOME_CHANGED,
+    payload: notify
+  };
 };
