@@ -4,6 +4,8 @@ import { Actions } from 'react-native-router-flux';
 import { Left, Body, ListItem, Thumbnail, Text } from 'native-base';
 import { URL } from '../../actions/api/config';
 
+const logoEquipe = require('../assets/logoEquipe.jpg');
+
 class ItemTeam extends Component {
     onPressButton() {
         const { team } = this.props;
@@ -11,8 +13,8 @@ class ItemTeam extends Component {
              AsyncStorage.getItem('user').then((value) => {
                  const user = JSON.parse(value);
                  if (user.user.equipe === team._id) {
-                   Actions.profileEquipe({ idEquipe: team._id });
-               } else {
+                    Actions.profileEquipe({ idEquipe: team._id });
+                 } else {
                    Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
                }
              }).done();
@@ -20,14 +22,21 @@ class ItemTeam extends Component {
                console.log('caught error', e);
            }
     }
+    renderPhoto() {
+      const { logo } = this.props.team;
+      const uriImg = `${URL}/equipe/teamUploads/${logo}`;
+      if (logo !== undefined) {
+          return <Thumbnail source={{ uri: uriImg }} />;
+      }
+          return <Thumbnail source={logoEquipe} />;
+    }
     render() {
-        const { name, logo } = this.props.team;
-        const uriImg = `${URL}/equipe/teamUploads/${logo}`;
+        const { name } = this.props.team;
         return (
             <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
                 <ListItem avatar>
                     <Left>
-                        <Thumbnail source={{ uri: uriImg }} />
+                        {this.renderPhoto()}
                     </Left>
                     <Body>
                         <Text>{`${name}`}</Text>

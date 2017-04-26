@@ -1,9 +1,10 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Alert, Modal, ActivityIndicator } from 'react-native';
+import { Alert, Modal, ActivityIndicator, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { View, Header, Title, Text, Thumbnail } from 'native-base';
-import { teamUpdate, updateTeamProfil } from '../actions';
+import ImagePicker from 'react-native-image-picker';
+import { View, Header, Title, Text, Thumbnail, Button, Icon } from 'native-base';
+import { teamUpdate, updateTeamProfil, updateImageTeam, uploadImageTeam } from '../actions';
 import { CardSection, InputText, ButtonValid } from './common';
 import { URL } from '../actions/api/config';
 
@@ -12,6 +13,7 @@ const logoEquipe = require('./assets/logoEquipe.jpg');
 class UpdateProfilTeam extends Component {
 
   componentWillMount() {
+        console.log('updateProfile');
     _.each(this.props.team, (value, prop) => {
       this.props.teamUpdate(prop, value);
     });
@@ -27,7 +29,30 @@ onButtonUpdate() {
       Alert.alert('Information', 'Verifier vos champs', [{ text: 'OK', onPress: () => console.log('OK Pressed!') }]);
     }
   }
-
+onClickImage() {
+  ImagePicker.showImagePicker(null, (response) => {
+     if (response.didCancel) {
+      console.log('User cancelled image picker');
+     } else if (response.error) {
+      console.log('ImagePicker Error: ', response.error);
+     } else {
+      this.props.updateImageTeam(response.uri, response, true);
+     }
+   });
+}
+onClickButtonUpload() {
+    this.props.uploadImageTeam(this.props.team._id, this.props.data);
+}
+renderButton() {
+  if (this.props.display === true) {
+    return (<Button iconLeft style={styles.buttonStyle} onPress={this.onClickButtonUpload.bind(this)}>
+                <Icon name='ios-camera-outline' style={styles.colorGray} />
+                <Text style={styles.colorGray}>
+                 Changer photo
+                </Text>
+           </Button>);
+  }
+}
 renderLoading() {
   if (this.props.refresh === true) {
     return (<Modal animationType={'fade'} transparent visible={this.props.refresh} onRequestClose={() => {}}>
@@ -42,8 +67,11 @@ renderLoading() {
   }
 }
 renderPhotoEquipe() {
-    if (this.props.team.logo !== undefined) {
-        const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
+    if (this.props.logo !== undefined) {
+      if (this.props.data !== null) {
+        return <Thumbnail source={{ uri: this.props.logo }} style={styles.styleTeamImage} />;
+      }
+        const logoUri = `${URL}/equipe/teamUploads/${this.props.logo}`;
         return <Thumbnail source={{ uri: logoUri }} style={styles.styleTeamImage} />;
     }
     return <Thumbnail source={logoEquipe} style={styles.styleTeamImage} />;
@@ -60,7 +88,11 @@ renderPhotoEquipe() {
             </Title>
           </Header>
             {this.renderLoading()}
-            {this.renderPhotoEquipe()}
+
+            <TouchableNativeFeedback onPress={this.onClickImage.bind(this)} >
+                {this.renderPhotoEquipe()}
+             </TouchableNativeFeedback>
+             {this.renderButton()}
 
               <CardSection style={{ backgroundColor: '#FFFFFF', height: 50, borderRadius: 5 }}>
                 <Text style={titleStyle}>
@@ -171,11 +203,21 @@ const styles = {
     flexDirection: 'column',
     paddingLeft: 10,
     paddingRight: 10,
+  },
+  buttonStyle: {
+     backgroundColor: '#FFFFFF',
+     alignSelf: 'center',
+     height: 30,
+     marginTop: 10,
+     marginBottom: 10
+  },
+  colorGray: {
+      color: '#616161'
   }
 };
 
 const mapStateToProps = ({ updateTeamProfile }) => {
-  const { name, adresse, description, testName, testAdresse, testDescription, refresh } = updateTeamProfile;
-  return { name, adresse, description, testName, testAdresse, testDescription, refresh };
+  const { name, adresse, description, testName, testAdresse, testDescription, refresh, display, logo, data } = updateTeamProfile;
+  return { name, adresse, description, testName, testAdresse, testDescription, refresh, display, logo, data };
 };
-export default connect(mapStateToProps, { teamUpdate, updateTeamProfil })(UpdateProfilTeam);
+export default connect(mapStateToProps, { teamUpdate, updateTeamProfil, updateImageTeam, uploadImageTeam })(UpdateProfilTeam);

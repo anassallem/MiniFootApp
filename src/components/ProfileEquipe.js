@@ -33,7 +33,6 @@ class ProfileEquipe extends Component {
     onRefresh() {
       this.props.getTeam(this.props.idEquipe);
       this.props.getImagesTeamProfil(this.props.idEquipe);
-      console.log(this.props.getImagesTeamProfil(this.props.idEquipe));
     }
 
     onButtonUpdate() {

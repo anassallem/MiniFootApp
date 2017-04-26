@@ -1,8 +1,10 @@
-import { getTeamByID, getAllPhotosTeam } from './api/EquipeApi';
+import { getTeamByID, getAllPhotosTeam, rejoindreTeam } from './api/EquipeApi';
 import {
   GET_TEAM_BY_ID,
   START_REFRESH_PROFILE_TEAM,
-  GET_IMAGES_TEAM_PROFIL
+  GET_IMAGES_TEAM_PROFIL,
+  REJOINDRE_TEAM,
+  GET_ID_USER
 } from './types';
 
 export const getTeam = (idEquipe) => {
@@ -27,5 +29,25 @@ export const getImagesTeamProfil = (idEquipe) => {
       console.log(err);
     }
     );
+  };
+};
+
+export const addInvitationRejoindre = (idUser, idEquipe) => {
+  console.log(idUser, idEquipe);
+    return (dispatch) => {
+        rejoindreTeam(idUser, idEquipe).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: REJOINDRE_TEAM, payload: res });
+          }
+        });
+    };
+};
+
+export const getIdUser = (idUser) => {
+  return {
+    type: GET_ID_USER,
+    payload: idUser
   };
 };

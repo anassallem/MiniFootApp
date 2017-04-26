@@ -67,6 +67,7 @@ export const INITIAL_STATE_HOME = 'initial_state_home';
 export const CHANGE_NUMBER_NOTIFY_HOME = 'change_number_notify_home';
 export const PAGE_HOME_CHANGED = 'page_home_changed';
 export const MENU_HOME_CHANGED = 'menu_home_changed';
+export const CHANGE_NUMBER_NOTIFY_TEAM = 'change_number_notify_team';
 //Equipe
 export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';
@@ -86,11 +87,15 @@ export const START_LOAD_MENU_EQUIPE = 'start_load_menu_equipe';
 //profile Equipe
 export const GET_TEAM_BY_ID = 'get_team_by_user';
 export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
+export const REJOINDRE_TEAM = 'rejoindre_team';
+export const GET_ID_USER = 'get_id_user';
 //Update profile Equipe
 export const TEAM_UPDATE = 'team_update';
 export const UPDATE_TEAM_PROFIL = 'update_team_profil';
 export const REFRESH_UPDATE_TEAM_START = 'refresh_update_team_start';
 export const GET_IMAGES_TEAM_PROFIL = 'get_image_team_profil';
+export const UPDATE_IMAGE_TEAM_CHANGED = 'update_image_team_changed';
+export const UPLOAD_IMAGE_TEAM = 'upload_image_team';
 //Membre Equipe
 export const GET_PLAYER_TEAM_BY_ID = 'get_player_team_by_id';
 export const START_REFRESH_MEMBRE_TEAM = 'start_refresh_membre_team';
