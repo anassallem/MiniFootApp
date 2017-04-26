@@ -104,7 +104,7 @@ export const addInvitationFriend = (idUser, idFriend, title) => {
           if (err) {
             console.log(err);
           } else {
-              dispatch({ type: ADD_INVITATION_USER, payload: res.data._id });
+              dispatch({ type: ADD_INVITATION_USER, payload: res });
           }
         });
     };

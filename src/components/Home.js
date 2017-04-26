@@ -9,7 +9,7 @@ import Discussion from './Discussion';
 import Equipe from './Equipe';
 import Notification from './Notification';
 import { URL } from '../actions/api/config';
-import { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage } from '../actions';
+import { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe } from '../actions';
 
 class Home extends Component {
 
@@ -24,6 +24,10 @@ class Home extends Component {
             this.socket.on(user.user._id, (notification) => {
                 this.props.changeNumberNotify();
                 this.props.changePage('Notification');
+            });
+            this.socket.on(user.user.equipe, (rejoindre) => {
+              console.log(user.user.equipe, (rejoindre));
+                this.props.changeNumberEquipe();
             });
         }).done();
       } catch (e) {
@@ -79,6 +83,14 @@ class Home extends Component {
                   </View>);
       }
   }
+  renderNumberNotificationTeam() {
+      const { numberNotifyTeam } = this.props;
+      if (numberNotifyTeam !== 0) {
+          return (<View style={styles.styleContainerNotification}>
+                      <Text style={styles.styleNotify}>{numberNotifyTeam}</Text>
+                  </View>);
+      }
+  }
   render() {
       //onPress={() => { this.props.changePage('Notification'); }}
     return (
@@ -121,7 +133,11 @@ class Home extends Component {
                   >
                       <Notification initialNumberNotify={this.handelInitialNumberNotify.bind(this)} />
                   </Tab>
-                  <Tab heading={<TabHeading><Icon name="ios-football-outline" style={styles.styleIcon} /></TabHeading>}>
+                  <Tab heading={<TabHeading>
+                                  <Icon name="ios-football-outline" style={styles.styleIcon} />
+                                  {this.renderNumberNotificationTeam()}
+                                </TabHeading>}
+                  >
                       <Equipe />
                   </Tab>
               </Tabs>
@@ -152,7 +168,7 @@ const styles = {
   }
 };
 const mapStateToProps = ({ homeDiscussion }) => {
-  const { rooms, socket, numberNotify, notify, menu } = homeDiscussion;
-  return { rooms, socket, numberNotify, notify, menu };
+  const { rooms, socket, numberNotify, notify, menu, numberNotifyTeam } = homeDiscussion;
+  return { rooms, socket, numberNotify, notify, menu, numberNotifyTeam };
 };
-export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage })(Home);
+export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe })(Home);

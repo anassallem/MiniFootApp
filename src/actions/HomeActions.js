@@ -4,7 +4,7 @@ import {
   INITIAL_STATE_HOME,
   CHANGE_NUMBER_NOTIFY_HOME,
   PAGE_HOME_CHANGED,
-  MENU_HOME_CHANGED
+  CHANGE_NUMBER_NOTIFY_TEAM
 } from './types';
 import { getRoomUserById } from './api/RoomsApi';
 
@@ -32,6 +32,10 @@ export const initialStateHome = () => {
 
 export const changeNumberNotify = () => {
   return { type: CHANGE_NUMBER_NOTIFY_HOME };
+};
+
+export const changeNumberEquipe = () => {
+  return { type: CHANGE_NUMBER_NOTIFY_TEAM };
 };
 
 export const changePage = (notify) => {

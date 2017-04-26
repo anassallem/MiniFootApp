@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { AsyncStorage } from 'react-native';
 import { URL, CONFIG } from './config';
 
 export const createTeam = (equipe, photo) => {
@@ -31,6 +32,39 @@ export const createTeam = (equipe, photo) => {
     });
 };
 
+export const uploadLogoTeam = (idEquipe, photo) => {
+    const photoURL = `${URL}/equipe/teamUploads/${idEquipe}`;
+      console.log(photo);
+    const x = photo.fileName.split('.');
+    const imageName = `image${Date.now()}.${x[1]}`;
+    const data = new FormData();
+        data.append('name', 'testName');
+        data.append('photo', {
+          uri: photo.uri,
+          type: photo.type,
+          name: imageName
+        });
+      return futch(photoURL, {
+          method: 'post',
+          body: data
+        }, (e) => {
+          const progress = e.loaded / e.total;
+          console.log(progress);
+        }).then((res) => {
+          try {
+               AsyncStorage.getItem('equipe').then((value) => {
+                 const equipe = JSON.parse(value);
+                 equipe.logo = imageName;
+                 AsyncStorage.mergeItem('equipe', JSON.stringify(equipe), () => {
+
+                });
+               }).done();
+           } catch (e) {
+               console.log('caught error', e);
+           }
+        }, (e) => console.log(e));
+};
+
 const futch = (url, opts = {}, onProgress) => {
     console.log(url, opts);
     return new Promise((res, rej) => {
@@ -45,7 +79,6 @@ const futch = (url, opts = {}, onProgress) => {
         xhr.send(opts.body);
     });
 };
-
 export const getTeams = (text) => {
     const requestURL = `${URL}/equipe?name=${text}`;
     return axios.get(requestURL)
@@ -144,6 +177,15 @@ export const updateCapitaine = (idJoueur, idEquipe, idCapitaine) => {
     });
 };
 
+export const rejoindreTeam = (idUser, idEquipe) => {
+    console.log(idUser, idEquipe);
+    const requestURL = `${URL}/from/${idUser}/to/${idEquipe}`;
+      return axios.post(requestURL, CONFIG).then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
 /*export const sendNotificationsTeam = (notification, idEquipe) => {
     const requestURL = `${URL}/notification/${idEquipe}`;
       return axios.post(requestURL, notification, CONFIG).then((res) => {

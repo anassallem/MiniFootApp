@@ -4,13 +4,15 @@ import {
   INITIAL_STATE_HOME,
   CHANGE_NUMBER_NOTIFY_HOME,
   PAGE_HOME_CHANGED,
-  MENU_HOME_CHANGED
+  MENU_HOME_CHANGED,
+  CHANGE_NUMBER_NOTIFY_TEAM
 } from '../actions/types';
 
 const INITIAL_STATE = {
   rooms: [],
   socket: null,
   numberNotify: 0,
+  numberNotifyTeam: 0,
   notify: '',
   menu: ''
 };
@@ -25,6 +27,8 @@ export default (state = INITIAL_STATE, action) => {
         return { ...INITIAL_STATE };
     case CHANGE_NUMBER_NOTIFY_HOME:
         return { ...state, numberNotify: state.numberNotify + 1 };
+    case CHANGE_NUMBER_NOTIFY_TEAM:
+        return { ...state, numberNotifyTeam: state.numberNotifyTeam + 1 };
     case PAGE_HOME_CHANGED:
         return { ...state, notify: action.payload };
     case MENU_HOME_CHANGED:
