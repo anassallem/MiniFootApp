@@ -14,7 +14,7 @@ class MenuEquipe extends Component {
     }
 
     onPressFormation() {
-
+        Actions.formation({ idEquipe: this.props.team._id });
     }
 
     onPressPictures() {

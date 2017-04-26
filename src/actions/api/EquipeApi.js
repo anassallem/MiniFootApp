@@ -55,6 +55,7 @@ export const getTeams = (text) => {
     throw new Error(res);
   });
 };
+
 export const getAllPhotosTeam = (idEquipe) => {
     const requestURL = `${URL}/equipe/${idEquipe}/photos`;
     return axios.get(requestURL)
@@ -84,8 +85,27 @@ export const updateTeam = (idTeam, team) => {
     });
 };
 
+export const saveFormationMyTeam = (idEquipe, players) => {
+    const requestURL = `${URL}/equipe/${idEquipe}/formation`;
+      return axios.put(requestURL, players, CONFIG).then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
 export const getPlayerTeam = (idEquipe) => {
     const requestURL = `${URL}/equipe/${idEquipe}/membres`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const getFormationTeamById = (idEquipe) => {
+    const requestURL = `${URL}/equipe/${idEquipe}/formation`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;

@@ -16,6 +16,8 @@ import UpdateProfileTeamReducer from './UpdateProfileTeamReducer';
 import MembreEquipeReducer from './MembreEquipeReducer';
 import ShowTeamPhotosReducer from './ShowTeamPhotosReducer';
 import NotificationReducer from './NotificationReducer';
+import FormationReducer from './FormationReducer';
+import AddPlayerFormationReducer from './AddPlayerFormationReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -34,5 +36,7 @@ export default combineReducers({
   updateTeamProfile: UpdateProfileTeamReducer,
   membreTeam: MembreEquipeReducer,
   teamPhotos: ShowTeamPhotosReducer,
-  notification: NotificationReducer
+  notification: NotificationReducer,
+  formation: FormationReducer,
+  playersFormation: AddPlayerFormationReducer
 });

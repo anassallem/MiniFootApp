@@ -110,3 +110,16 @@ export const GET_NOTIFICATIONS = 'get_notifications';
 export const START_LOADING_NOTIFICATIONS = 'start_loading_notifications';
 export const DELETE_NOTIFICATIONS = 'delete_notifications';
 export const ACCEPT_NOTIFICATIONS = 'accept_notifications';
+//formation
+export const LOAD_FORMATION = 'load_formation';
+export const CHANGE_VISIBILITY_ZONE_DROP = 'change_visibility_zone_drop';
+export const SET_DROP_ZONE_VALUES = 'set_drop_zone_values';
+export const FILTER_BUBBLES = 'filter_bubbles';
+export const START_LOADING_FORMATION = 'start_loading_formation';
+export const STOP_LOADING_FORMATION = 'stop_loading_formation';
+// add players formation
+export const START_REFRESH_MEMBRE_TEAM_FORMATION = 'start_refresh_membre_team_formation';
+export const GET_PLAYER_TEAM_BY_ID_FORMATION = 'get_player_team_by_id_formation';
+export const FILTER_PLAYER_LIST_TAG_FORMATION = 'filter_player_list_tags_formation';
+export const ADD_PLAYER_TO_LIST_TAGS_FORMATION = 'add_player_to_list_tags_formation';
+export const INITIAL_STATE_FORMATION = 'initial_state_formation';

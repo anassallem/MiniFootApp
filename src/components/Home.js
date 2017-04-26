@@ -36,7 +36,6 @@ class Home extends Component {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
     });
-    console.log('menu: ', nextProps.menu);
   }
   handelProfile() {
       Actions.profil();

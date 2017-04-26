@@ -15,3 +15,5 @@ export * from './UpdateProfilTeamActions';
 export * from './MembreEquipeActions';
 export * from './ShowTeamPhotosActions';
 export * from './NotificationActions';
+export * from './FormationActions';
+export * from './AddPlayerFormationActions';
