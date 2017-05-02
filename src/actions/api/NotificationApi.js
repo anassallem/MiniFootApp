@@ -30,3 +30,33 @@ export const acceptNotificationUser = (idNotification, notification) => {
     throw new Error(res);
   });
 };
+
+export const getNotificationsRejoindre = (idEquipe) => {
+    const requestURL = `${URL}/notification/${idEquipe}/invitationsRejoindre`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const refuseNotificationRejoindre = (idRejoindreTeam) => {
+    const requestURL = `${URL}/notification/${idRejoindreTeam}`;
+      return axios.delete(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+  };
+
+export const acceptNotificationRejoindre = (idRejoindreTeam, notificationRejoindre) => {
+  const requestURL = `${URL}/notification/${idRejoindreTeam}/accept`;
+    return axios.put(requestURL, notificationRejoindre)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};

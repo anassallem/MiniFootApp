@@ -257,33 +257,12 @@ const mapStateToProps = ({ updateUser }) => {
         age, taille, testAge, testTaille, testPoid, poid, poste, refresh
       } = updateUser;
 
-  return { firstname,
-           lastname,
-           adresse,
-           email,
-           city,
-           phone,
-           changeCardInfo,
-           changeCardCarac,
-           changeCardPassword,
-           password,
-           testPassword,
-           passwordConfirm,
-           validPassword,
-           loading,
-           testFirstName,
-           testLastName,
-           testEmail,
-           testAdresse,
-           testCity,
-           testPhone,
-           age,
-           taille,
-           poid,
+  return { firstname, lastname, adresse, email, city, phone,changeCardInfo, changeCardCarac,
+           changeCardPassword,password, testPassword, passwordConfirm,validPassword,loading,
+           testFirstName,testLastName,testEmail,testAdresse,testCity,testPhone,age,taille,poid,
            poste, testAge, testTaille, testPoid, refresh
           };
 };
-
 export default connect(mapStateToProps,
      { userUpdate,
       phoneChanged,
@@ -296,5 +275,4 @@ export default connect(mapStateToProps,
       updateUserPassword,
       updateUserPost,
       joueurUpdate
-
      })(UpdateProfilUser);

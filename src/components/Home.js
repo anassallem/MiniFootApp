@@ -26,8 +26,9 @@ class Home extends Component {
                 this.props.changePage('Notification');
             });
             this.socket.on(user.user.equipe, (rejoindre) => {
-              console.log(user.user.equipe, (rejoindre));
+              if (!(user.user._id)) {
                 this.props.changeNumberEquipe();
+              }
             });
         }).done();
       } catch (e) {

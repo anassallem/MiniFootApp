@@ -24,6 +24,9 @@ class MenuEquipe extends Component {
     onPressMembreEquipe() {
         Actions.membreEquipe({ idEquipe: this.props.team._id, user: this.props.user });
     }
+    onPressListRejoindre() {
+        Actions.notificationRejoindreTeam({ idEquipe: this.props.team._id });
+    }
 
     onPressRename() {
         Actions.selectAdjoint({ idEquipe: this.props.team._id });
@@ -100,6 +103,14 @@ class MenuEquipe extends Component {
                                <Icon name='ios-images-outline' style={styles.styleIcon} />
                            </View>
                            <Text style={styles.styleText}>Photos d'équipe</Text>
+                   </View>
+               </TouchableNativeFeedback>
+               <TouchableNativeFeedback onPress={this.onPressListRejoindre.bind(this)}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#E64A19' }]}>
+                               <Icon name='ios-people-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Liste des invitations</Text>
                    </View>
                </TouchableNativeFeedback>
                {this.renderRenameSousCapitaine()}

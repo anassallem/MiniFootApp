@@ -5,39 +5,41 @@ import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import { Button, Left, Body, ListItem, Thumbnail, Text } from 'native-base';
 import { URL } from '../../actions/api/config';
-import { deleteNotification, acceptNotification } from '../../actions';
+import { refuseRejoindreTeam, acceptRejoindreTeam } from '../../actions';
 
-const logoEquipe = require('../assets/logoEquipe.jpg');
+const imagePlayer = require('../assets/logoEquipe.jpg');
 
-class ItemPlayerNotification extends Component {
+class ItemTeamNotificationRejoindre extends Component {
   onClickName() {
-      const { from } = this.props.notification.rejoin;
+      const { from } = this.props.notificationRejoindre;
       Actions.searchPlayerProfile({ player: from, title: `${from.firstname} ${from.lastname}` });
   }
 
   onClickAccept() {
-      const { _id, rejoin } = this.props.notification;
-      this.props.acceptNotification(_id, { idUser: rejoin.to, idEquipe: rejoin.from._id });
+      const { from, to, _id } = this.props.notificationRejoindre;
+      this.props.acceptRejoindreTeam(_id, { idEquipe: to, idUser: from._id });
   }
 
   onClickReject() {
-      this.props.deleteNotification(this.props.notification._id);
+      this.props.refuseRejoindreTeam(this.props.notificationRejoindre._id);
   }
-  renderImage() {
-      const { from } = this.props.notification.rejoin;
-      if (from.logo !== undefined) {
-          const uriImg = `${URL}/equipe/teamUploads/${from.logo}`;
+  renderImagePlayer() {
+      const { from } = this.props.notificationRejoindre;
+      if (from.photo !== undefined) {
+          const uriImg = `${URL}/users/upload/${from.photo}`;
           return <Thumbnail source={{ uri: uriImg }} />;
       }
-      return <Thumbnail source={logoEquipe} />;
+      return <Thumbnail source={imagePlayer} />;
   }
+
   renderBodyNotification() {
-      if (this.props.notification.rejoin.accepted) {
-          return <Text style={styles.styleText}>{"Vous acceptez l'invitation de rejoindre l'équipe"}</Text>;
+      const { from } = this.props.notificationRejoindre;
+      if (this.props.notificationRejoindre.accepted) {
+          return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${from.firstname} ${from.lastname} pour rejoindre l'équipe`}</Text>;
       }
       return (
           <View>
-              <Text style={styles.styleText}>Vous a envoyé une invitation de rejoindre son équipe</Text>
+              <Text style={styles.styleText}>Vous avez une invitation de rejoindre votre équipe</Text>
               <View style={styles.containerButtons}>
                   <Button bordered success style={styles.styleButton} onPress={this.onClickAccept.bind(this)}>
                       <Text>Accepter</Text>
@@ -49,18 +51,19 @@ class ItemPlayerNotification extends Component {
           </View>
       );
   }
+
   render() {
-      const { notification } = this.props;
+      const { notificationRejoindre } = this.props;
       return (
         <ListItem avatar>
             <Left>
-                {this.renderImage()}
+                {this.renderImagePlayer()}
             </Left>
             <Body>
                 <TouchableNativeFeedback onPress={this.onClickName.bind(this)}>
                     <View>
-                        <Text style={styles.styleTextPlayer}>{notification.rejoin.from.name}</Text>
-                        <Text style={styles.styleTextDate}>{moment(notification.createdAt).format('DD-MM-YYYY h:mm')}</Text>
+                        <Text style={styles.styleTextPlayer}>{`${notificationRejoindre.from.firstname} ${notificationRejoindre.from.lastname}`}</Text>
+                        <Text style={styles.styleTextDate}>{moment(notificationRejoindre.createdAt).format('DD-MM-YYYY h:mm')}</Text>
                     </View>
                 </TouchableNativeFeedback>
                 {this.renderBodyNotification()}
@@ -90,9 +93,9 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ notification }) => {
-  const { notifications } = notification;
-  return { notifications };
+const mapStateToProps = ({ notificationRejoindreTeam }) => {
+  const { notificationsRejoindre } = notificationRejoindreTeam;
+  return { notificationsRejoindre };
 };
 
-export default connect(mapStateToProps, { deleteNotification, acceptNotification })(ItemPlayerNotification);
+export default connect(mapStateToProps, { refuseRejoindreTeam, acceptRejoindreTeam })(ItemTeamNotificationRejoindre);

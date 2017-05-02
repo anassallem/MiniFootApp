@@ -1,10 +1,11 @@
-import { getTeamByID, getAllPhotosTeam, rejoindreTeam } from './api/EquipeApi';
+import { getTeamByID, getAllPhotosTeam, getPlayerInTeam, deleteRejoindreTeam } from './api/EquipeApi';
 import {
   GET_TEAM_BY_ID,
   START_REFRESH_PROFILE_TEAM,
   GET_IMAGES_TEAM_PROFIL,
   REJOINDRE_TEAM,
-  GET_ID_USER
+  GET_ID_USER,
+  CANCEL_REJOINDRE_TEAM
 } from './types';
 
 export const getTeam = (idEquipe) => {
@@ -31,17 +32,15 @@ export const getImagesTeamProfil = (idEquipe) => {
     );
   };
 };
-
-export const addInvitationRejoindre = (idUser, idEquipe) => {
-  console.log(idUser, idEquipe);
-    return (dispatch) => {
-        rejoindreTeam(idUser, idEquipe).then((res, err) => {
-          if (err) {
-            console.log(err);
-          } else {
-              dispatch({ type: REJOINDRE_TEAM, payload: res });
-          }
-        });
+export const getPlayerBelongsTeam = (idUser, idEquipe) => {
+  return (dispatch) => {
+    getPlayerInTeam(idUser, idEquipe).then((res) => {
+      console.log(res);
+      dispatch({ type: REJOINDRE_TEAM, payload: res });
+      }, (err) => {
+        console.log(err);
+      }
+    );
     };
 };
 
@@ -50,4 +49,16 @@ export const getIdUser = (idUser) => {
     type: GET_ID_USER,
     payload: idUser
   };
+};
+
+export const cancelRejoindreTeam = (idRejoindreTeam) => {
+    return (dispatch) => {
+        deleteRejoindreTeam(idRejoindreTeam).then((res, err) => {
+          if (err) {
+            console.log(err);
+          } else {
+              dispatch({ type: CANCEL_REJOINDRE_TEAM, payload: res });
+          }
+        });
+    };
 };

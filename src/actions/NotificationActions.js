@@ -11,6 +11,7 @@ export const getNotifications = (idUser) => {
   return (dispatch) => {
     dispatch({ type: START_LOADING_NOTIFICATIONS });
     getNotificationsUser(idUser).then((res) => {
+      console.log(res);
       dispatch({ type: GET_NOTIFICATIONS, payload: res });
       }, (err) => {
         console.log(err);

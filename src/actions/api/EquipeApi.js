@@ -186,6 +186,27 @@ export const rejoindreTeam = (idUser, idEquipe) => {
       throw new Error(res);
     });
 };
+
+export const getPlayerInTeam = (idUser, idEquipe) => {
+    console.log(idUser, idEquipe);
+    const requestURL = `${URL}/notification/${idUser}/playerBelongsTeam/${idEquipe}`;
+      return axios.get(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
+
+export const deleteRejoindreTeam = (idRejoindreTeam) => {
+    const requestURL = `${URL}/notification/${idRejoindreTeam}`;
+      return axios.delete(requestURL)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+  };
 /*export const sendNotificationsTeam = (notification, idEquipe) => {
     const requestURL = `${URL}/notification/${idEquipe}`;
       return axios.post(requestURL, notification, CONFIG).then((res) => {

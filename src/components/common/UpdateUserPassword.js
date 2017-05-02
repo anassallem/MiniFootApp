@@ -40,7 +40,7 @@ onPasswordConfirmChange(passwordConfirm) {
                   onChangeText={this.onPasswordChange.bind(this)}
                   value={this.props.password}
                   testInput={this.props.testPassword}
-                  icon={'md-finger-print'}
+                  icon={'ios-lock-outline'}
                 />
              </CardSection>
             <CardSection>
