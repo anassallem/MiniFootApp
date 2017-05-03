@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Dimensions, TouchableNativeFeedback, AsyncStorage } from 'react-native';
+import { TouchableNativeFeedback, AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Container, Thumbnail, Text, Content,
      ListItem, Left, Right, Icon, Body } from 'native-base';
@@ -114,14 +114,14 @@ class SideBar extends Component {
   }
 }
 
-const { width } = Dimensions.get('window');
+//const { height } = Dimensions.get('window');
 const styles = {
   backgroundImage: {
     flex: 1,
     backgroundColor: 'transparent',
-    width,
+    width: null,
     justifyContent: 'flex-end',
-    padding: 20
+    padding: 20,
   },
   containerNavigation: {
     flex: 2,

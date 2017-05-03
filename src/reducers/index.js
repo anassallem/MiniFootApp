@@ -20,6 +20,7 @@ import FormationReducer from './FormationReducer';
 import AddPlayerFormationReducer from './AddPlayerFormationReducer';
 import CreateAdvertMatchReducer from './CreateAdvertMatchReducer';
 import ListAdvertsReducer from './ListAdvertsReducer';
+import NotificationRejoindreReducer from './NotificationRejoindreReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -42,5 +43,6 @@ export default combineReducers({
   formation: FormationReducer,
   playersFormation: AddPlayerFormationReducer,
   createAdvert: CreateAdvertMatchReducer,
-  listAdverts: ListAdvertsReducer
+  listAdverts: ListAdvertsReducer,
+  notificationRejoindreTeam: NotificationRejoindreReducer
 });

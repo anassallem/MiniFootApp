@@ -19,3 +19,4 @@ export * from './FormationActions';
 export * from './AddPlayerFormationActions';
 export * from './CreateAdvertMatchActions';
 export * from './ListAdvertsActions';
+export * from './NotificationRejoindreActions';

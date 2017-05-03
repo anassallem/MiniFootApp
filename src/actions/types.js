@@ -91,6 +91,13 @@ export const GET_TEAM_BY_ID = 'get_team_by_user';
 export const START_REFRESH_PROFILE_TEAM = 'start_refresh_profile_team';
 export const REJOINDRE_TEAM = 'rejoindre_team';
 export const GET_ID_USER = 'get_id_user';
+export const CANCEL_REJOINDRE_TEAM = 'cancel_rejoindre_team';
+export const CHANGE_MODAL_VISIBLE = 'change_modal_visible';
+//notifications rejoindre team
+export const GET_NOTIFICATIONS_REJOINDRE_TEAM = 'get_notifications_rejoindre_team';
+export const LOADING_NOTIFICATIONS_REJOINDRE_TEAM = 'loading_notifications_rejoindre_team';
+export const DELETE_NOTIFICATIONS_REJOINDRE_TEAM = 'delete_notifications_rejoindre_team';
+export const ACCEPT_NOTIFICATIONS_REJOINDRE_TEAM = 'accept_notifications_rejoindre_team';
 //Update profile Equipe
 export const TEAM_UPDATE = 'team_update';
 export const UPDATE_TEAM_PROFIL = 'update_team_profil';

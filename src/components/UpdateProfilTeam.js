@@ -48,7 +48,7 @@ renderButton() {
     return (<Button iconLeft style={styles.buttonStyle} onPress={this.onClickButtonUpload.bind(this)}>
                 <Icon name='ios-camera-outline' style={styles.colorGray} />
                 <Text style={styles.colorGray}>
-                 Changer photo
+                 Changer
                 </Text>
            </Button>);
   }
@@ -78,7 +78,7 @@ renderPhotoEquipe() {
 }
 
   render() {
-    const { errorTextStyle, titleStyle } = styles;
+    const { errorTextStyle, titleStyle, styleViewCardSection } = styles;
       const { name, adresse, description } = this.props;
     return (
         <View style={{ flex: 1, backgroundColor: '#01579B' }}>
@@ -93,7 +93,7 @@ renderPhotoEquipe() {
                 {this.renderPhotoEquipe()}
              </TouchableNativeFeedback>
              {this.renderButton()}
-
+               <View style={styleViewCardSection}>
               <CardSection style={{ backgroundColor: '#FFFFFF', height: 50, borderRadius: 5 }}>
                 <Text style={titleStyle}>
                   Informations de l'équipe
@@ -148,11 +148,12 @@ renderPhotoEquipe() {
              </Text>
            </CardSection>
 
-           <CardSection style={{ marginTop: 20 }}>
+           <CardSection>
              <ButtonValid onPress={this.onButtonUpdate.bind(this)}>
                Enregistrer
              </ButtonValid>
            </CardSection>
+           </View>
         </View>
 
     );
@@ -175,7 +176,7 @@ const styles = {
      borderColor: '#FFFFFF',
      justifyContent: 'center',
      alignSelf: 'center',
-     marginBottom: -10
+     marginBottom: -15
   },
   containerLoadingStyle: {
       position: 'relative',
@@ -208,7 +209,7 @@ const styles = {
      backgroundColor: '#FFFFFF',
      alignSelf: 'center',
      height: 30,
-     marginTop: 10,
+     marginTop: 20,
      marginBottom: 10
   },
   colorGray: {

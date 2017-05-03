@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { Text } from 'native-base';
@@ -15,6 +15,8 @@ import {
        setMessageRegisterError
  } from '../actions';
 import { SButton, Spinner, InputTextAuth } from './common';
+
+const background = require('./assets/register_backround.jpg');
 
 class RegisterForm extends Component {
 
@@ -55,7 +57,7 @@ class RegisterForm extends Component {
       (testAdresse === true)) {
     this.props.createUser(user);
   } else {
-    this.props.setMessageRegisterError('Verifiez vos champs');
+    this.props.setMessageRegisterError('Veuillez vérifier vos champs');
   }
  }
 
@@ -72,9 +74,10 @@ class RegisterForm extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0277BD' }}>
+      <View style={{ flex: 1 }}>
+        <Image source={background} square style={styles.backgroundImage} >
          <ScrollView>
-          <View style={{ margin: 40 }}>
+          <View style={{ marginTop: 40, marginLeft: 20, marginRight: 20 }}>
             <Text style={styles.textStyle}> Créer un compte </Text>
               <InputTextAuth
                 placeholder="Saisir votre nom"
@@ -122,7 +125,7 @@ class RegisterForm extends Component {
                 onChangeText={this.onPasswordChange.bind(this)}
                 value={this.props.password}
                 testInput={this.props.testPassword}
-                icon={'md-finger-print'}
+                icon={'ios-lock-outline'}
               />
               <Text style={styles.errorTextStyle}>
                 {this.props.testPassword === false ?
@@ -149,16 +152,22 @@ class RegisterForm extends Component {
                   style={styles.registerTextStyle}
                   onPress={this.onTextPress.bind(this)}
               >
-                  I have an account
+                  J'ai déjà un compte
               </Text>
           </View>
          </ScrollView>
+       </Image>
       </View>
     );
   }
 }
 
 const styles = {
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    backgroundColor: 'transparent',
+  },
   errorTextStyle: {
     fontSize: 14,
     color: '#000000',
@@ -166,15 +175,16 @@ const styles = {
     marginBottom: 10
   },
   registerTextStyle: {
-    fontSize: 14,
+    fontSize: 16,
     alignSelf: 'center',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginBottom: 30
   },
   textStyle: {
     fontSize: 22,
     alignSelf: 'center',
     color: '#FFFFFF',
-    marginBottom: 15
+    marginBottom: 25
   },
   errorMessageStyle: {
     fontSize: 14,

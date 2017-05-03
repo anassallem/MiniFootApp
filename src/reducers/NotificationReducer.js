@@ -24,7 +24,7 @@ export default (state = INITIAL_STATE, action) => {
          if (notification._id === action.payload) {
              notification.rejoin.accepted = true;
          }
-      })
+      });
       return { ...state, notifications: clone };
      }
     default:

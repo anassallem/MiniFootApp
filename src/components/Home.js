@@ -28,10 +28,11 @@ class Home extends Component {
                 this.props.changePage('Notification');
             });
             this.socket.on(user.user.equipe, (rejoindre) => {
+              if (!(user.user._id)) {
                 this.props.changeNumberEquipe();
+              }
             });
             this.socket.on('new_advert', (advert) => {
-                console.log(advert);
                 this.props.changeNumberAdverts();
             });
         }).done();

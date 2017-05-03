@@ -4,7 +4,7 @@ import { Icon, Button, Header, Body, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTeam, getImagesTeamProfil, addInvitationRejoindre, getIdUser } from '../actions';
+import { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
@@ -35,6 +35,7 @@ class SearchTeamProfile extends Component {
             AsyncStorage.getItem('user').then((value) => {
                 const user = JSON.parse(value);
                 this.props.getIdUser(user.user.equipe);
+                this.props.getPlayerBelongsTeam(user.user._id, this.props.idEquipe);
             }).done();
           } catch (e) {
               console.log('caught error', e);
@@ -45,17 +46,19 @@ class SearchTeamProfile extends Component {
       try {
            AsyncStorage.getItem('user').then((value) => {
                const user = JSON.parse(value);
-               const idUser = user.user._id;
-               const idEquipe = this.props.idEquipe;
-               const rejoin = { idUser, idEquipe };
-               console.log(rejoin);
-                this.props.socket.emit('rejoindreTeam', rejoin);
-            //   this.props.addInvitationRejoindre();
+               const rejoin = { idUser: user.user._id, idEquipe: this.props.idEquipe };
+               this.props.socket.emit('rejoindreTeam', rejoin);
+               this.onRefresh();
            }).done();
          } catch (e) {
              console.log('caught error', e);
          }
     }
+    onCancelRejoindreTeam() {
+      const { playerRejoindreTeam } = this.props;
+      this.props.cancelRejoindreTeam(playerRejoindreTeam.data._id);
+    }
+
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -125,14 +128,24 @@ class SearchTeamProfile extends Component {
         return <Image source={logoEquipe} style={styles.styleLogo} />;
     }
     renderButtonRejoindre() {
-                if (this.props.idUser !== this.props.idEquipe) {
-                  return (
-                      <Button iconLeft light bordered onPress={this.onRejoindreTeam.bind(this)}>
-                          <Icon name='arrow-forward' style={styles.styleIconButton} />
-                         <Text>Rejoindre</Text>
-                     </Button>
-                   );
-                }
+      const { playerRejoindreTeam } = this.props;
+      console.log(this.props.test);
+      if (this.props.test !== true) {
+        if (this.props.idUser !== this.props.idEquipe && playerRejoindreTeam.success === false) {
+          return (
+              <Button iconLeft light bordered onPress={this.onRejoindreTeam.bind(this)}>
+                  <Icon name='arrow-forward' style={styles.styleIconButton} />
+                 <Text>Rejoindre</Text>
+             </Button>
+           );
+         }
+          return (
+              <Button iconLeft light bordered onPress={this.onCancelRejoindreTeam.bind(this)}>
+                  <Icon name='arrow-forward' style={styles.styleIconButton} />
+                 <Text>Annuler invitation</Text>
+             </Button>
+           );
+      }
     }
     renderProfileEquipe() {
         if (this.props.refresh === false) {
@@ -356,9 +369,9 @@ const styles = {
 
 
 const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
-  const { team, refresh, photosEquipe, photos, matchs, idUser } = profileEquipe;
+  const { team, refresh, photosEquipe, photos, matchs, idUser, playerRejoindreTeam } = profileEquipe;
   const { socket } = homeDiscussion;
-  return { team, refresh, photosEquipe, photos, matchs, idUser, socket };
+  return { team, refresh, photosEquipe, photos, matchs, idUser, socket, playerRejoindreTeam };
 };
 
-export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, addInvitationRejoindre, getIdUser })(SearchTeamProfile);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam })(SearchTeamProfile);

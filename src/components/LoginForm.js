@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged, loginUser, loadUser, tokenChanged, setMessageError } from '../actions';
 import { InputTextAuth, SButton, Spinner } from './common';
+
+const background = require('./assets/login_backround.jpg');
 
 class LoginForm extends Component {
 
@@ -45,7 +47,7 @@ class LoginForm extends Component {
     if ((testEmail === true) || (testPassword === true)) {
         this.props.loginUser(user);
     } else {
-        this.props.setMessageError('Verifiez vos champs');
+        this.props.setMessageError('Veuillez vérifier vos champs');
     }
   }
 
@@ -66,10 +68,12 @@ class LoginForm extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#0277BD' }}>
-          <View style={{ margin: 40 }}>
+      <View style={{ flex: 1 }}>
+        <Image source={background} square style={styles.backgroundImage} >
+          <View style={{ flex: 1 }} />
+          <View style={{ marginLeft: 20, marginRight: 20 }}>
             <InputTextAuth
-              placeholder="Enter E-mail"
+              placeholder="Adresse e-mail"
               onChangeText={this.onEmailChange.bind(this)}
               value={this.props.email}
               testInput={this.props.testEmail}
@@ -77,7 +81,7 @@ class LoginForm extends Component {
             />
             <InputTextAuth
               secureTextEntry
-              placeholder="Enter Password"
+              placeholder="Mot de passe"
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}
               testInput={this.props.testPassword}
@@ -88,19 +92,26 @@ class LoginForm extends Component {
                 {this.props.error}
             </Text>
             <Text style={styles.registerTextStyle} onPress={this.onTextPress.bind(this)}>
-                DON'T HAVE AN ACCOUNT? SIGN UP
+                S'INSCRIRE
             </Text>
         </View>
+      </Image>
     </View>
     );
   }
 }
 
 const styles = {
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    backgroundColor: 'transparent',
+  },
   registerTextStyle: {
-    fontSize: 14,
+    fontSize: 16,
     alignSelf: 'center',
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    marginBottom: 40
   },
   errorTextStyle: {
     fontSize: 14,

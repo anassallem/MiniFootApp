@@ -65,6 +65,7 @@ export const uploadImage = (idUser, photo) => {
 export const getRelationship = (idUser, idFriend) => {
     return (dispatch) => {
         getRelationshipUser(idUser, idFriend).then((res, err) => {
+          console.log(res);
           if (err) {
             console.log(err);
           } else {

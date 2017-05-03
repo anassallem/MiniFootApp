@@ -38,6 +38,7 @@ class ProfileEquipe extends Component {
     onButtonUpdate() {
       Actions.updateProfilTeam({ team: this.props.team });
     }
+    
     handleNavigationSceneFocus() {
       this.onRefresh();
     }
@@ -125,10 +126,6 @@ class ProfileEquipe extends Component {
                             <Icon name='ios-albums-outline' style={styles.styleIconButton} />
                            <Text>Annonces</Text>
                        </Button>
-                       <Button iconLeft light bordered>
-                           <Icon name='arrow-forward' style={styles.styleIconButton} />
-                          <Text>Rejoindre</Text>
-                      </Button>
                     </View>
                 </View>
                 <View style={styles.containerInfo}>
