@@ -23,6 +23,7 @@ import SelectCapitaineEquipe from './components/SelectCapitaineEquipe';
 import ShowTeamPhotos from './components/ShowTeamPhotos';
 import Formation from './components/Formation';
 import AddPlayersFormation from './components/AddPlayersFormation';
+import CreateAdvertMatch from './components/CreateAdvertMatch';
 
 const icon = require('./components/assets/back.png');
 
@@ -70,6 +71,7 @@ class RouterComponent extends Component {
               <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
+              <Scene key="createAdvert" component={CreateAdvertMatch} />
               <Scene key="formation" component={Formation} hideNavBar />
               <Scene key="addPlayersFormation" component={AddPlayersFormation} hideNavBar />
               <Scene key="showTeamPhotos" component={ShowTeamPhotos} title="Photos" hideNavBar />

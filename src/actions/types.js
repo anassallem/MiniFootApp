@@ -62,12 +62,14 @@ export const SOCKET_CHANGED = 'socket_changed';
 export const GET_ALL_DISCUSSION = 'get_all_discussion';
 export const ID_USER_CHANGED = 'id_user_changed';
 //Home
+export const GET_USER_CACHE = 'get_user_cache';
 export const GET_MY_ROOMS = 'get_my_rooms';
 export const INITIAL_STATE_HOME = 'initial_state_home';
 export const CHANGE_NUMBER_NOTIFY_HOME = 'change_number_notify_home';
 export const PAGE_HOME_CHANGED = 'page_home_changed';
 export const MENU_HOME_CHANGED = 'menu_home_changed';
 export const CHANGE_NUMBER_NOTIFY_TEAM = 'change_number_notify_team';
+export const CHANGE_NUMBER_NOTIFY_ADVERTS = 'change_number_notify_adverts';
 //Equipe
 export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';
@@ -122,9 +124,23 @@ export const SET_DROP_ZONE_VALUES = 'set_drop_zone_values';
 export const FILTER_BUBBLES = 'filter_bubbles';
 export const START_LOADING_FORMATION = 'start_loading_formation';
 export const STOP_LOADING_FORMATION = 'stop_loading_formation';
+export const SET_IMAGE_ZONE_VALUES = 'set_image_zone_values';
+export const CHANGE_TOP_FORMATION = 'change_top_formation';
+export const CHANGE_CENTER_FORMATION = 'change_center_formation';
+export const CHANGE_BOTTOM_FORMATION = 'change_bottom_formation';
 // add players formation
 export const START_REFRESH_MEMBRE_TEAM_FORMATION = 'start_refresh_membre_team_formation';
 export const GET_PLAYER_TEAM_BY_ID_FORMATION = 'get_player_team_by_id_formation';
 export const FILTER_PLAYER_LIST_TAG_FORMATION = 'filter_player_list_tags_formation';
 export const ADD_PLAYER_TO_LIST_TAGS_FORMATION = 'add_player_to_list_tags_formation';
 export const INITIAL_STATE_FORMATION = 'initial_state_formation';
+// create advert
+export const EQUIPE_DESCRIPTION_ADVERT_CHANGED = 'equipe_description_advert_changed';
+export const CHECKBOX_CHANGED = 'checkbox_changed';
+export const START_ADD_NEW_ADVERT = 'start_add_new_advert';
+export const INITIAL_ADD_NEW_ADVERT = 'initial_add_new_advert';
+//adverts
+export const LOAD_LIST_ADVERTS = 'load_list_adverts';
+export const START_REFRESHING_ADVERTS = 'start_refreshing_adverts';
+export const LOAD_LIST_ADVERTS_BEGIN = 'load_list_adverts_begin';
+export const STOP_REFRESHING_ADVERTS = 'stop_refreshing_adverts';

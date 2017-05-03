@@ -13,7 +13,7 @@ import { Header, Right, Body, Title, Left } from 'native-base';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { ItemDraggable } from './common';
-import { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam } from '../actions';
+import { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam, setImageZone, changeFormation } from '../actions';
 
 const iconDelete = require('./assets/deleteIcon.png');
 const imageTerrain = require('./assets/terrain.png');
@@ -26,7 +26,7 @@ class Formation extends Component {
       Actions.addPlayersFormation({ idEquipe: this.props.idEquipe });
   }
   onPressSaveFormation() {
-      this.props.saveFormationTeam(this.props.idEquipe, this.props.bubbles)
+      this.props.saveFormationTeam(this.props.idEquipe, this.props.bubbles);
   }
   onVisibilityZoneDrop(value, gesture, id) {
     this.props.changeVisibilityDropZone(value);
@@ -39,15 +39,29 @@ class Formation extends Component {
   setDropZoneValues(event) {
       this.props.setDropZone(event);
   }
-
+  setImageZoneValues(event) {
+      this.props.setImageZone(event);
+  }
   isDropZone(gesture) {
        const { dropZoneValues } = this.props;
        return gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height + 50;
   }
-
+  handelChangeFormation(idBubble, top, center, bottom) {
+      if (top === 1) {
+          this.props.changeFormation(idBubble, 'TOP');
+      } else if (center === 1) {
+          this.props.changeFormation(idBubble, 'CENTER');
+      } else if (bottom === 1) {
+          this.props.changeFormation(idBubble, 'BOTTOM');
+      }
+  }
   renderBubbles() {
+      const { imageZoneValues } = this.props;
     return this.props.bubbles.map((bubble) => {
-      return <ItemDraggable key={bubble.idJoueur._id} bubble={bubble} handleVisibility={this.onVisibilityZoneDrop.bind(this)} />;
+      return (<ItemDraggable key={bubble.idJoueur._id} bubble={bubble} imageZoneValues={imageZoneValues}
+                handleVisibility={this.onVisibilityZoneDrop.bind(this)} changeFormationTeam={this.handelChangeFormation.bind(this)}
+              />
+             );
     });
   }
 
@@ -75,6 +89,7 @@ class Formation extends Component {
      }
    }
   render() {
+      const { top, center, bottom } = this.props;
       return (
           <View style={styles.mainContainer}>
               <Header>
@@ -86,7 +101,7 @@ class Formation extends Component {
                       </TouchableWithoutFeedback>
                   </Left>
                 <Body style={{ alignItems: 'center' }}>
-                    <Title>Formation</Title>
+                    <Title>{`${top}-${center}-${bottom}`}</Title>
                 </Body>
                 <Right>
                     <TouchableWithoutFeedback onPress={this.onPressSaveFormation.bind(this)}>
@@ -96,7 +111,7 @@ class Formation extends Component {
                     </TouchableWithoutFeedback>
                 </Right>
               </Header>
-              <Image source={imageTerrain} style={styles.styleContainerImage}>
+              <Image source={imageTerrain} onLayout={this.setImageZoneValues.bind(this)} style={styles.styleContainerImage}>
                   {this.renderDropZone()}
                   <View style={styles.draggableContainer}>
                       {this.renderLoading()}
@@ -161,8 +176,8 @@ let styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ formation }) => {
-  const { bubbles, visibilityZoneDrop, dropZoneValues, loading } = formation;
-  return { bubbles, visibilityZoneDrop, dropZoneValues, loading };
+  const { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom } = formation;
+  return { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom };
 };
 
-export default connect(mapStateToProps, { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam })(Formation);
+export default connect(mapStateToProps, { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam, setImageZone, changeFormation })(Formation);

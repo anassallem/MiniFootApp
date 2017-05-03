@@ -28,7 +28,8 @@ class AddPlayersFormation extends Component {
                 idJoueur: { _id: item._id, firstname: item.firstname, joueur: item.joueur, photo: item.photo },
                 pan: new Animated.ValueXY(),
                 showDraggable: true,
-                _id: item._id
+                _id: item._id,
+                position: { top: 1, center: 0, bottom: 0 }
             });
         });
         Actions.formation({ type: ActionConst.REPLACE, idEquipe: this.props.idEquipe, tags: newTags });

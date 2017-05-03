@@ -31,6 +31,9 @@ class MenuEquipe extends Component {
     onPressRenameCapitaine() {
         Actions.selectCapitaine({ idEquipe: this.props.team._id });
     }
+    onPressCreateAdvertMatch() {
+        Actions.createAdvert({ team: this.props.team });
+    }
     renderImageEquipe() {
         if (this.props.team.logo !== undefined) {
             const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
@@ -47,6 +50,20 @@ class MenuEquipe extends Component {
                                 <Icon name='ios-contacts-outline' style={styles.styleIcon} />
                             </View>
                             <Text style={styles.styleText}>Nommer sous responsable d'équipe</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            );
+        }
+    }
+    renderCreateAdvertMatch() {
+        if (this.props.user.joueur.type !== 'Joueur') {
+            return (
+                <TouchableNativeFeedback onPress={this.onPressCreateAdvertMatch.bind(this)}>
+                    <View style={styles.rowStyle}>
+                            <View style={[styles.containerIcon, { backgroundColor: '#E91E63' }]}>
+                                <Icon name='ios-create-outline' style={styles.styleIcon} />
+                            </View>
+                            <Text style={styles.styleText}>Créer une annonce du match</Text>
                     </View>
                 </TouchableNativeFeedback>
             );
@@ -104,6 +121,7 @@ class MenuEquipe extends Component {
                </TouchableNativeFeedback>
                {this.renderRenameSousCapitaine()}
                {this.renderRenameCapitaine()}
+               {this.renderCreateAdvertMatch()}
                <TouchableNativeFeedback onPress={this.props.buttonPressQuit}>
                    <View style={styles.rowStyle}>
                            <View style={[styles.containerIcon, { backgroundColor: '#757575' }]}>
