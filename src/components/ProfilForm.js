@@ -5,11 +5,12 @@ import { Actions } from 'react-native-router-flux';
 import { ScrollView, RefreshControl, View, Modal, AsyncStorage, ActivityIndicator, TouchableNativeFeedback } from 'react-native';
 import { Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getUserById, getSkills, changeImage, uploadImage } from '../actions';
+import { getUserById, getSkills, changeImage, uploadImage, closeModal } from '../actions';
 
 class ProfilForm extends Component {
-
     componentDidMount() {
+      //close modal for click interssted page ListAdverts
+      this.props.closeModal();
       this.onRefresh();
       this.props.navigationStateHandler.registerFocusHook(this);
     }
@@ -202,4 +203,4 @@ const mapStateToProps = ({ userProfile }) => {
   return { user, skills, photo, show, loading, refresh };
 };
 
-export default connect(mapStateToProps, { getUserById, getSkills, changeImage, uploadImage })(ProfilForm);
+export default connect(mapStateToProps, { getUserById, getSkills, changeImage, uploadImage, closeModal })(ProfilForm);

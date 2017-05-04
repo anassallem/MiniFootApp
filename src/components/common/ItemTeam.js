@@ -15,7 +15,6 @@ class ItemTeam extends Component {
                  if (user.user.equipe === team._id) {
                     Actions.profileEquipe({ idEquipe: team._id });
                  } else if (user.user.equipe === undefined) {
-                   console.log(user);
                    Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
                  } else {
                     Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}`, test: true });
