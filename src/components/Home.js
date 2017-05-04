@@ -10,6 +10,7 @@ import Equipe from './Equipe';
 import Notification from './Notification';
 import ListAdverts from './ListAdverts';
 import { URL } from '../actions/api/config';
+import { Headers } from './common';
 import { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe, changeNumberAdverts } from '../actions';
 
 class Home extends Component {
@@ -110,8 +111,13 @@ class Home extends Component {
           return <ListAdverts user={this.props.user} />;
       }
   }
+  handelSearch() {
+      Actions.searchPlayer();
+  }
+  handelDrawer() {
+      this.openDrawer();
+  }
   render() {
-      //onPress={() => { this.props.changePage('Notification'); }}
     return (
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
@@ -123,21 +129,7 @@ class Home extends Component {
               onClose={() => this.closeDrawer()}
       >
         <Container>
-          <Header hasTabs searchBar rounded>
-              <Left>
-                <Button transparent onPress={() => this.openDrawer()}>
-                    <Icon name='menu' />
-                </Button>
-              </Left>
-              <Body>
-                  <Title>Header</Title>
-              </Body>
-              <Right>
-                  <Button transparent onPress={() => Actions.searchPlayer()}>
-                      <Icon name='md-search' />
-                  </Button>
-              </Right>
-          </Header>
+            <Headers onPressSearch={this.handelSearch.bind(this)} openDrawer={this.handelDrawer.bind(this)} />
           <Container>
               <Tabs>
                   <Tab heading={<TabHeading>

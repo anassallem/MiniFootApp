@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import { Actions } from 'react-native-router-flux';
 import { TouchableNativeFeedback, View, Dimensions } from 'react-native';
 import { CardItem, Body, Card, Text, Left, Icon, Thumbnail } from 'native-base';
 import { connect } from 'react-redux';
-//import {  } from '../actions';
+import { deleteInterrested, addNewInterrested, getListInteressted } from '../../actions';
 import { URL } from '../../actions/api/config';
 
 const logo = require('../assets/logoEquipe.jpg');
 
 class SingleItemAdvert extends Component {
     onPressButton() {
+        this.props.getListInteressted(this.props.advert._id);
     }
-    clickInteressted() {
-
+    onPressTeam() {
+        const { user, advert } = this.props;
+         if (user.equipe === advert.createdBy._id) {
+            Actions.profileEquipe({ idEquipe: advert.createdBy._id });
+         } else if (user.equipe === undefined) {
+           Actions.searchTeamProfile({ idEquipe: advert.createdBy._id, title: `${advert.createdBy.name}` });
+         } else {
+            Actions.searchTeamProfile({ idEquipe: advert.createdBy._id, title: `${advert.createdBy.name}`, test: true });
+         }
+    }
+    clickAddInteressted() {
+        this.props.addNewInterrested(this.props.advert._id, this.props.user._id);
+    }
+    clickDeleteInteressted() {
+        this.props.deleteInterrested(this.props.advert._id, this.props.user._id);
     }
     renderListDisponibility() {
         return this.props.advert.disponibility.map((item) => {
@@ -24,9 +39,16 @@ class SingleItemAdvert extends Component {
         });
     }
     renderInterested() {
-        if (this.props.testInterested) {
+        if (this.props.loadInterrested) {
+            return (<View style={{ flexDirection: 'row' }}>
+                        <Icon active name="ios-football-outline" style={styles.styleIconClicked} />
+                        <Text style={styles.styleTextClicked}>envoyer...</Text>
+                    </View>
+            );
+        }
+        if (this.props.advert.testInterested) {
             return (
-                <TouchableNativeFeedback onPress={this.clickInteressted.bind(this)}>
+                <TouchableNativeFeedback onPress={this.clickDeleteInteressted.bind(this)}>
                     <View style={{ flexDirection: 'row' }}>
                         <Icon active name="ios-football-outline" style={styles.styleIconClicked} />
                         <Text style={styles.styleTextClicked}>intéresser</Text>
@@ -35,7 +57,7 @@ class SingleItemAdvert extends Component {
             );
         }
         return (
-            <TouchableNativeFeedback onPress={this.clickInteressted.bind(this)}>
+            <TouchableNativeFeedback onPress={this.clickAddInteressted.bind(this)}>
                 <View style={{ flexDirection: 'row' }}>
                     <Icon active name="ios-football-outline" style={styles.styleIconNopClicked} />
                     <Text style={styles.styleTextNopClicked}>intéresser</Text>
@@ -50,15 +72,16 @@ class SingleItemAdvert extends Component {
         return <Thumbnail square source={logo} />;
     }
     render() {
-        const { createdBy, description, createdAt, interested } = this.props.advert;
+        const { createdBy, description, createdAt, countInterested } = this.props.advert;
         return (
-            <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
                 <Card>
                    <CardItem>
                        <Left>
                          {this.renderLogoTeam()}
                          <Body>
-                             <Text>{createdBy.name}</Text>
+                             <TouchableNativeFeedback onPress={this.onPressTeam.bind(this)}>
+                                 <Text style={styles.styleNameTeam}>{createdBy.name}</Text>
+                             </TouchableNativeFeedback>
                              <Text note>{moment(createdAt).fromNow()}</Text>
                          </Body>
                        </Left>
@@ -73,23 +96,22 @@ class SingleItemAdvert extends Component {
                        </View>
                    </CardItem>
                    <CardItem style={styles.styleContainerFooter}>
-
                      <View style={styles.styleFooter}>
                          {this.renderInterested()}
-                         <View style={styles.styleNbrInterested}>
-                             <Text style={{ marginRight: 8, marginLeft: 8 }}>{interested.length}</Text>
-                             <Icon active name="ios-football-outline" style={{ fontSize: 18 }} />
-                         </View>
+                        <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
+                             <View style={styles.styleNbrInterested}>
+                                 <Text style={{ marginRight: 8, marginLeft: 8 }}>{countInterested}</Text>
+                                 <Icon active name="ios-football-outline" style={{ fontSize: 18 }} />
+                             </View>
+                        </TouchableNativeFeedback>
                      </View>
                    </CardItem>
                 </Card>
-            </TouchableNativeFeedback>
         );
     }
 }
 
 const { width } = Dimensions.get('window');
-
 const styles = {
     styleContainerFooter: {
         backgroundColor: '#FAFAFA',
@@ -99,6 +121,9 @@ const styles = {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between'
+    },
+    styleNameTeam: {
+        color: '#0D47A1'
     },
     styleNbrInterested: {
         flexDirection: 'row',
@@ -164,11 +189,8 @@ const styles = {
         color: '#9E9E9E'
     }
 };
-
-
 const mapStateToProps = ({ listAdverts }) => {
-  const { interss } = listAdverts;
-  return { interss };
+    const { loadInterrested } = listAdverts;
+    return { loadInterrested };
 };
-export default SingleItemAdvert;
-//export default connect(mapStateToProps, {  })(SingleItemAdvert);
+export default connect(mapStateToProps, { deleteInterrested, addNewInterrested, getListInteressted })(SingleItemAdvert);

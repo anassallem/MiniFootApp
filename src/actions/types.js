@@ -152,6 +152,11 @@ export const LOAD_LIST_ADVERTS = 'load_list_adverts';
 export const START_REFRESHING_ADVERTS = 'start_refreshing_adverts';
 export const LOAD_LIST_ADVERTS_BEGIN = 'load_list_adverts_begin';
 export const STOP_REFRESHING_ADVERTS = 'stop_refreshing_adverts';
+export const START_POST_INTERESSTED_ADVERTS = 'start_post_interessted_adverts';
+export const STOP_POST_INTERESSTED_ADVERTS = 'stop_post_interessted_adverts';
+export const START_GET_LIST_INTERESSTED_ADVERTS = 'start_get_list_interessted_adverts';
+export const STOP_GET_LIST_INTERESSTED_ADVERTS = 'stop_get_list_interessted_adverts';
+export const CLOSE_MODAL_ADVERT = 'close_modal_advert';
 //MyPublications
 export const LOAD_LIST_PUBLICATIONS = 'load_list_publications';
 export const LOAD_LIST_PUBLICATIONS_BEGIN = 'load_list_publications_begin';

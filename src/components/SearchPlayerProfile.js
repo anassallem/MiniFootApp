@@ -4,12 +4,13 @@ import { Actions } from 'react-native-router-flux';
 import { View, AsyncStorage, ScrollView, RefreshControl, TouchableNativeFeedback } from 'react-native';
 import { Icon, Text } from 'native-base';
 import { UserCharacteristic, UserSkills, UserInfo } from './common';
-import { getSkills, getRelationship, deleteFriend, cancelInvitationFriend, addInvitationFriend, confirmInvitations } from '../actions';
+import { getSkills, getRelationship, deleteFriend, cancelInvitationFriend, addInvitationFriend, confirmInvitations, closeModal } from '../actions';
 import { URL } from '../actions/api/config';
 
 class SearchPlayerProfile extends Component {
-
   componentDidMount() {
+    //close modal for click interssted page ListAdverts
+    this.props.closeModal();
     this.onRefresh();
     this.props.navigationStateHandler.registerFocusHook(this);
   }
@@ -160,4 +161,4 @@ const mapStateToProps = ({ userProfile }) => {
   const { skills, relationship, refresh } = userProfile;
   return { skills, relationship, refresh };
 };
-export default connect(mapStateToProps, { getSkills, getRelationship, deleteFriend, cancelInvitationFriend, addInvitationFriend, confirmInvitations })(SearchPlayerProfile);
+export default connect(mapStateToProps, { getSkills, getRelationship, deleteFriend, cancelInvitationFriend, addInvitationFriend, confirmInvitations, closeModal })(SearchPlayerProfile);

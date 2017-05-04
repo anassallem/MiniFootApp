@@ -1,9 +1,14 @@
-import { getadverts } from './api/AdvertApi';
+import { getadverts, addInterrestedAdverts, deleteInterrestedAdverts, getListInteresstedAdvert } from './api/AdvertApi';
 import {
   LOAD_LIST_ADVERTS,
   LOAD_LIST_ADVERTS_BEGIN,
   START_REFRESHING_ADVERTS,
-  STOP_REFRESHING_ADVERTS
+  STOP_REFRESHING_ADVERTS,
+  START_POST_INTERESSTED_ADVERTS,
+  STOP_POST_INTERESSTED_ADVERTS,
+  START_GET_LIST_INTERESSTED_ADVERTS,
+  STOP_GET_LIST_INTERESSTED_ADVERTS,
+  CLOSE_MODAL_ADVERT
 } from './types';
 
 
@@ -18,6 +23,7 @@ export const getListAdverts = (page, idUser) => {
                  } else {
                      item.testInterested = true;
                  }
+                 item.countInterested = item.interested.length;
               });
               dispatch({ type: LOAD_LIST_ADVERTS, payload: res });
           } else {
@@ -38,10 +44,47 @@ export const initialListAdverts = (idUser) => {
              } else {
                  item.testInterested = true;
              }
+             item.countInterested = item.interested.length;
           });
           dispatch({ type: LOAD_LIST_ADVERTS_BEGIN, payload: res });
       }, (err) => {
           console.log(err);
       });
+  };
+};
+export const addNewInterrested = (idAdvert, idUser) => {
+  return (dispatch) => {
+      dispatch({ type: START_POST_INTERESSTED_ADVERTS, payload: idAdvert, reverse: true, idUser });
+      addInterrestedAdverts(idAdvert, idUser).then((res) => {
+          dispatch({ type: STOP_POST_INTERESSTED_ADVERTS });
+      }, (err) => {
+          console.log(err);
+      });
+  };
+};
+export const deleteInterrested = (idAdvert, idUser) => {
+  return (dispatch) => {
+      dispatch({ type: START_POST_INTERESSTED_ADVERTS, payload: idAdvert, reverse: false, idUser });
+      deleteInterrestedAdverts(idAdvert, idUser).then((res) => {
+          dispatch({ type: STOP_POST_INTERESSTED_ADVERTS });
+      }, (err) => {
+          console.log(err);
+      });
+  };
+};
+export const getListInteressted = (idAdvert) => {
+  return (dispatch) => {
+      dispatch({ type: START_GET_LIST_INTERESSTED_ADVERTS });
+      getListInteresstedAdvert(idAdvert).then((res) => {
+          dispatch({ type: STOP_GET_LIST_INTERESSTED_ADVERTS, payload: res.interested });
+      }, (err) => {
+          console.log(err);
+      });
+  };
+};
+export const closeModal = () => {
+    console.log('closeModal');
+  return {
+    type: CLOSE_MODAL_ADVERT
   };
 };
