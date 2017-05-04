@@ -4,9 +4,18 @@ import {
   INITIAL_STATE_HOME,
   CHANGE_NUMBER_NOTIFY_HOME,
   PAGE_HOME_CHANGED,
-  CHANGE_NUMBER_NOTIFY_TEAM
+  CHANGE_NUMBER_NOTIFY_TEAM,
+  CHANGE_NUMBER_NOTIFY_ADVERTS,
+  GET_USER_CACHE
 } from './types';
 import { getRoomUserById } from './api/RoomsApi';
+
+export const getUserCache = (user) => {
+    return {
+      type: GET_USER_CACHE,
+      payload: user.user
+    };
+};
 
 export const getRoomUser = (idUser) => {
   return (dispatch) => {
@@ -37,7 +46,9 @@ export const changeNumberNotify = () => {
 export const changeNumberEquipe = () => {
   return { type: CHANGE_NUMBER_NOTIFY_TEAM };
 };
-
+export const changeNumberAdverts = () => {
+  return { type: CHANGE_NUMBER_NOTIFY_ADVERTS };
+};
 export const changePage = (notify) => {
   return {
     type: PAGE_HOME_CHANGED,

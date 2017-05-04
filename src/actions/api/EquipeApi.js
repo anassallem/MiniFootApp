@@ -207,6 +207,7 @@ export const deleteRejoindreTeam = (idRejoindreTeam) => {
       throw new Error(res);
     });
   };
+
 /*export const sendNotificationsTeam = (notification, idEquipe) => {
     const requestURL = `${URL}/notification/${idEquipe}`;
       return axios.post(requestURL, notification, CONFIG).then((res) => {

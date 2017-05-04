@@ -58,6 +58,9 @@ class SearchTeamProfile extends Component {
       const { playerRejoindreTeam } = this.props;
       this.props.cancelRejoindreTeam(playerRejoindreTeam.data._id);
     }
+    onPressAnnonces() {
+        Actions.myPublications({ team: this.props.team });
+    }
 
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
@@ -159,7 +162,7 @@ class SearchTeamProfile extends Component {
                       {description}
                     </Text>
                     <View style={styles.containerButton}>
-                        <Button iconLeft light bordered style={{ marginRight: 20 }}>
+                        <Button iconLeft light bordered style={{ marginRight: 20 }} onPress={this.onPressAnnonces.bind(this)}>
                             <Icon name='ios-albums-outline' style={styles.styleIconButton} />
                            <Text>Annonces</Text>
                        </Button>

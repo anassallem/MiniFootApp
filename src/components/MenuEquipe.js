@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
-import { View, Text, Image, TouchableNativeFeedback } from 'react-native';
+import { View, Text, Image, TouchableNativeFeedback, ScrollView } from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { URL } from '../actions/api/config';
@@ -34,6 +34,12 @@ class MenuEquipe extends Component {
     onPressRenameCapitaine() {
         Actions.selectCapitaine({ idEquipe: this.props.team._id });
     }
+    onPressCreateAdvertMatch() {
+        Actions.createAdvert({ team: this.props.team });
+    }
+    onPressPublication() {
+      Actions.myPublications({ team: this.props.team });
+    }
     renderImageEquipe() {
         if (this.props.team.logo !== undefined) {
             const logoUri = `${URL}/equipe/teamUploads/${this.props.team.logo}`;
@@ -41,6 +47,14 @@ class MenuEquipe extends Component {
         }
         return <Image source={logoEquipe} style={styles.logoStyle} />;
     }
+    renderNumberNotificationTeam() {
+        const { numberNotifyTeam } = this.props;
+        if (numberNotifyTeam !== 0) {
+            return (<View style={styles.styleContainerNotification}>
+                        <Text style={styles.styleNotify}>{numberNotifyTeam}</Text>
+                    </View>);
+        }
+      }
     renderRenameSousCapitaine() {
         if (this.props.user.joueur.type !== 'Joueur') {
             return (
@@ -50,6 +64,20 @@ class MenuEquipe extends Component {
                                 <Icon name='ios-contacts-outline' style={styles.styleIcon} />
                             </View>
                             <Text style={styles.styleText}>Nommer sous responsable d'équipe</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            );
+        }
+    }
+    renderCreateAdvertMatch() {
+        if (this.props.user.joueur.type !== 'Joueur') {
+            return (
+                <TouchableNativeFeedback onPress={this.onPressCreateAdvertMatch.bind(this)}>
+                    <View style={styles.rowStyle}>
+                            <View style={[styles.containerIcon, { backgroundColor: '#E91E63' }]}>
+                                <Icon name='ios-create-outline' style={styles.styleIcon} />
+                            </View>
+                            <Text style={styles.styleText}>Créer une annonce du match</Text>
                     </View>
                 </TouchableNativeFeedback>
             );
@@ -71,6 +99,7 @@ class MenuEquipe extends Component {
     }
     render() {
         return (
+          <ScrollView>
             <View style={styles.mainContainer}>
                <TouchableNativeFeedback onPress={this.onPressEquipe.bind(this)}>
                    <View style={styles.rowLogoStyle}>
@@ -107,14 +136,24 @@ class MenuEquipe extends Component {
                </TouchableNativeFeedback>
                <TouchableNativeFeedback onPress={this.onPressListRejoindre.bind(this)}>
                    <View style={styles.rowStyle}>
-                           <View style={[styles.containerIcon, { backgroundColor: '#E64A19' }]}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#C0CA33' }]}>
                                <Icon name='ios-people-outline' style={styles.styleIcon} />
                            </View>
                            <Text style={styles.styleText}>Liste des invitations</Text>
+                           {this.renderNumberNotificationTeam()}
                    </View>
                </TouchableNativeFeedback>
                {this.renderRenameSousCapitaine()}
                {this.renderRenameCapitaine()}
+               {this.renderCreateAdvertMatch()}
+               <TouchableNativeFeedback onPress={this.onPressPublication.bind(this)}>
+                   <View style={styles.rowStyle}>
+                           <View style={[styles.containerIcon, { backgroundColor: '#01579B' }]}>
+                               <Icon name='ios-document-outline' style={styles.styleIcon} />
+                           </View>
+                           <Text style={styles.styleText}>Mes publications</Text>
+                   </View>
+               </TouchableNativeFeedback>
                <TouchableNativeFeedback onPress={this.props.buttonPressQuit}>
                    <View style={styles.rowStyle}>
                            <View style={[styles.containerIcon, { backgroundColor: '#757575' }]}>
@@ -124,6 +163,7 @@ class MenuEquipe extends Component {
                    </View>
                </TouchableNativeFeedback>
            </View>
+         </ScrollView>
         );
     }
 }
@@ -164,8 +204,7 @@ const styles = {
         borderRadius: 3,
         width: 20,
         height: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection: 'column',
         margin: 10
     },
     styleText: {
@@ -179,13 +218,26 @@ const styles = {
     styleIcon: {
         fontSize: 16,
         color: '#FFFFFF'
+    },
+    styleContainerNotification: {
+      backgroundColor: 'red',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: 17,
+      height: 17,
+      borderRadius: 8.5,
+    },
+    styleNotify: {
+        color: '#FFFFFF',
+        fontSize: 10
     }
 };
 
 
-const mapStateToProps = ({ equipe }) => {
+const mapStateToProps = ({ equipe, homeDiscussion }) => {
   const { team } = equipe;
-  return { team };
+  const { numberNotifyTeam } = homeDiscussion;
+  return { team, numberNotifyTeam };
 };
 
 export default connect(mapStateToProps, null)(MenuEquipe);

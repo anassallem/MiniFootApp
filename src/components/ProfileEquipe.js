@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
+import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView,
+         RefreshControl, AsyncStorage, Modal } from 'react-native';
 import { Icon, Button, Header, Right, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Actions } from 'react-native-router-flux';
-import { getTeam, getImagesTeamProfil } from '../actions';
+import { getTeam, getImagesTeamProfil, changeModalVisibleImage } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
@@ -16,12 +17,10 @@ class ProfileEquipe extends Component {
         this.createDataSourcePlayers(this.props);
         this.createDataSourceMatchs(this.props);
     }
-
     componentDidMount() {
       this.onRefresh();
       this.props.navigationStateHandler.registerFocusHook(this);
     }
-
     componentWillReceiveProps(nextProps) {
         this.createDataSource(nextProps);
         this.createDataSourcePlayers(nextProps);
@@ -30,18 +29,25 @@ class ProfileEquipe extends Component {
     componentWillUnmount() {
       this.props.navigationStateHandler.unregisterFocusHook(this);
     }
+
     onRefresh() {
       this.props.getTeam(this.props.idEquipe);
       this.props.getImagesTeamProfil(this.props.idEquipe);
     }
-
     onButtonUpdate() {
       Actions.updateProfilTeam({ team: this.props.team });
     }
-    
+    onPressAnnonces() {
+        Actions.myPublications({ team: this.props.team });
+    }
+    onChangeModal(image, y) {
+      this.props.changeModalVisibleImage(image);
+    }
+
     handleNavigationSceneFocus() {
       this.onRefresh();
     }
+
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -62,7 +68,11 @@ class ProfileEquipe extends Component {
     }
     renderRow(photo) {
         const imageTeamProfil = `${URL}/equipe/teamUploads/${photo}`;
-        return <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />;
+        return (
+          <TouchableNativeFeedback onPress={this.onChangeModal.bind(this, imageTeamProfil)}>
+              <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />
+          </TouchableNativeFeedback>
+        );
     }
     renderRowPlayer(joueur) {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
@@ -122,7 +132,7 @@ class ProfileEquipe extends Component {
                         {description}
                     </Text>
                     <View style={styles.containerButton}>
-                        <Button iconLeft light bordered style={{ marginRight: 20 }}>
+                        <Button iconLeft light bordered style={{ marginRight: 20 }} onPress={this.onPressAnnonces.bind(this)}>
                             <Icon name='ios-albums-outline' style={styles.styleIconButton} />
                            <Text>Annonces</Text>
                        </Button>
@@ -145,7 +155,7 @@ class ProfileEquipe extends Component {
                 <ListView
                   enableEmptySections
                   dataSource={this.dataSource}
-                  renderRow={this.renderRow}
+                  renderRow={this.renderRow.bind(this)}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 />
@@ -171,6 +181,28 @@ class ProfileEquipe extends Component {
             );
         }
     }
+    renderModal() {
+      if (this.props.image !== null) {
+        return (
+          <Modal
+            style={styles.modalStyle}
+            animationType={'fade'}
+            transparent
+            visible={this.props.modalVisible}
+            onRequestClose={() => {}}
+          >
+            <View style={styles.modalStyle}>
+              <View style={styles.textStyle}>
+                <TouchableNativeFeedback onPress={this.onChangeModal.bind(this, null)}>
+                    <Icon name="ios-close-outline" style={{ color: '#fff' }} />
+                </TouchableNativeFeedback>
+              </View>
+                <Image source={{ uri: this.props.image }} style={styles.imageStyle} />
+            </View>
+          </Modal>
+        );
+      }
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -193,6 +225,7 @@ class ProfileEquipe extends Component {
                       onRefresh={this.onRefresh.bind(this)}
                     />}
                 >
+                    {this.renderModal()}
                     {this.renderProfileEquipe()}
                 </ScrollView>
            </View>
@@ -330,13 +363,27 @@ const styles = {
         margin: 5,
         color: '#434343',
         fontSize: 10
+    },
+    modalStyle: {
+        flex: 1,
+        padding: 30,
+        backgroundColor: 'rgba(0,0,0, 0.9)'
+    },
+    textStyle: {
+      height: 50,
+      paddingLeft: 280,
+    },
+    imageStyle: {
+      flex: 1,
+      width: null,
+      alignSelf: 'stretch',
     }
 };
 
 
 const mapStateToProps = ({ profileEquipe }) => {
-  const { team, refresh, photosEquipe, matchs } = profileEquipe;
-  return { team, refresh, photosEquipe, matchs };
+  const { team, refresh, photosEquipe, matchs, modalVisible, image } = profileEquipe;
+  return { team, refresh, photosEquipe, matchs, modalVisible, image };
 };
 
-export default connect(mapStateToProps, { getTeam, getImagesTeamProfil })(ProfileEquipe);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, changeModalVisibleImage })(ProfileEquipe);

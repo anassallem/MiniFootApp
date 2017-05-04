@@ -4,11 +4,11 @@ import {
   GET_IMAGES_TEAM_PROFIL,
   GET_ID_USER,
   REJOINDRE_TEAM,
-  CANCEL_REJOINDRE_TEAM
+  CANCEL_REJOINDRE_TEAM,
+  CHANGE_MODAL_VISIBLE_IMAGE
 } from '../actions/types';
 
 const logoEquipe = require('../components/assets/logoEquipe.jpg');
-const imgUser = require('../components//assets/userdefault.png');
 
 const INITIAL_STATE = {
   team: {
@@ -27,8 +27,9 @@ const INITIAL_STATE = {
           { id: 2, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
           { id: 3, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
           { id: 4, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 }],
-  playerRejoindreTeam: { success: false, data: {} }
-
+  playerRejoindreTeam: { success: false, data: {} },
+  modalVisible: false,
+  image: null
 };
 
 
@@ -46,6 +47,8 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, playerRejoindreTeam: action.payload };
     case CANCEL_REJOINDRE_TEAM:
         return { ...state, playerRejoindreTeam: { ...state.playerRejoindreTeam, success: false } };
+    case CHANGE_MODAL_VISIBLE_IMAGE:
+        return { ...state, modalVisible: !state.modalVisible, image: action.payload };
     default:
       return state;
   }

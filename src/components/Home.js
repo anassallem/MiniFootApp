@@ -8,8 +8,9 @@ import SideBar from './SideBar';
 import Discussion from './Discussion';
 import Equipe from './Equipe';
 import Notification from './Notification';
+import ListAdverts from './ListAdverts';
 import { URL } from '../actions/api/config';
-import { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe } from '../actions';
+import { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe, changeNumberAdverts } from '../actions';
 
 class Home extends Component {
 
@@ -19,6 +20,7 @@ class Home extends Component {
       try {
         AsyncStorage.getItem('user').then((value) => {
             const user = JSON.parse(value);
+            this.props.getUserCache(user);
             this.socket.emit('add_user', user.user._id);
             this.props.getRoomUser(user.user._id);
             this.socket.on(user.user._id, (notification) => {
@@ -29,6 +31,9 @@ class Home extends Component {
               if (!(user.user._id)) {
                 this.props.changeNumberEquipe();
               }
+            });
+            this.socket.on('new_advert', (advert) => {
+                this.props.changeNumberAdverts();
             });
         }).done();
       } catch (e) {
@@ -76,6 +81,14 @@ class Home extends Component {
   handelInitialNumberNotify() {
       this.props.initialNumberNotifyHome();
   }
+  renderNumberNotificationAdverts() {
+      const { numberNotifyAdverts } = this.props;
+      if (numberNotifyAdverts !== 0) {
+          return (<View style={styles.styleContainerNotification}>
+                      <Text style={styles.styleNotify}>{numberNotifyAdverts}</Text>
+                  </View>);
+      }
+  }
   renderNumberNotification() {
       const { numberNotify } = this.props;
       if (numberNotify !== 0) {
@@ -90,6 +103,11 @@ class Home extends Component {
           return (<View style={styles.styleContainerNotification}>
                       <Text style={styles.styleNotify}>{numberNotifyTeam}</Text>
                   </View>);
+      }
+  }
+  renderListAdverts() {
+      if (this.props.user !== null) {
+          return <ListAdverts user={this.props.user} />;
       }
   }
   render() {
@@ -122,18 +140,26 @@ class Home extends Component {
           </Header>
           <Container>
               <Tabs>
-                  <Tab heading={<TabHeading><Icon name="ios-keypad-outline" style={styles.styleIcon} /></TabHeading>}>
-                    <Text>page 1</Text>
+                  <Tab heading={<TabHeading>
+                                    <Icon name="ios-keypad-outline" style={styles.styleIcon} />
+                                    {this.renderNumberNotificationAdverts()}
+                                </TabHeading>}
+                  >
+                    {this.renderListAdverts()}
                   </Tab>
+
                   <Tab heading={<TabHeading><Icon name="ios-chatbubbles-outline" style={styles.styleIcon} /></TabHeading>}>
                     <Discussion socket={this.props.socket} />
                   </Tab>
+
                   <Tab heading={<TabHeading>
-                              <Icon name="ios-notifications-outline" style={styles.styleIcon} />{this.renderNumberNotification()}
-                          </TabHeading>}
+                                    <Icon name="ios-notifications-outline" style={styles.styleIcon} />
+                                    {this.renderNumberNotification()}
+                                </TabHeading>}
                   >
                       <Notification initialNumberNotify={this.handelInitialNumberNotify.bind(this)} />
                   </Tab>
+
                   <Tab heading={<TabHeading>
                                   <Icon name="ios-football-outline" style={styles.styleIcon} />
                                   {this.renderNumberNotificationTeam()}
@@ -169,7 +195,7 @@ const styles = {
   }
 };
 const mapStateToProps = ({ homeDiscussion }) => {
-  const { rooms, socket, numberNotify, notify, menu, numberNotifyTeam } = homeDiscussion;
-  return { rooms, socket, numberNotify, notify, menu, numberNotifyTeam };
+  const { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts } = homeDiscussion;
+  return { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts };
 };
-export default connect(mapStateToProps, { getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe })(Home);
+export default connect(mapStateToProps, { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe, changeNumberAdverts })(Home);

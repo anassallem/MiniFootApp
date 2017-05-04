@@ -17,4 +17,7 @@ export * from './ShowTeamPhotosActions';
 export * from './NotificationActions';
 export * from './FormationActions';
 export * from './AddPlayerFormationActions';
+export * from './CreateAdvertMatchActions';
+export * from './ListAdvertsActions';
 export * from './NotificationRejoindreActions';
+export * from './MyPublicationsActions';

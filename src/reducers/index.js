@@ -18,7 +18,10 @@ import ShowTeamPhotosReducer from './ShowTeamPhotosReducer';
 import NotificationReducer from './NotificationReducer';
 import FormationReducer from './FormationReducer';
 import AddPlayerFormationReducer from './AddPlayerFormationReducer';
+import CreateAdvertMatchReducer from './CreateAdvertMatchReducer';
+import ListAdvertsReducer from './ListAdvertsReducer';
 import NotificationRejoindreReducer from './NotificationRejoindreReducer';
+import MyPublicationsReducer from './MyPublicationsReducer';
 
 export default combineReducers({
   auth: AuthReducer,
@@ -40,5 +43,8 @@ export default combineReducers({
   notification: NotificationReducer,
   formation: FormationReducer,
   playersFormation: AddPlayerFormationReducer,
-  notificationRejoindreTeam: NotificationRejoindreReducer
+  createAdvert: CreateAdvertMatchReducer,
+  listAdverts: ListAdvertsReducer,
+  notificationRejoindreTeam: NotificationRejoindreReducer,
+  myPublications: MyPublicationsReducer,
 });

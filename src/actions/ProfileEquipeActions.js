@@ -5,7 +5,8 @@ import {
   GET_IMAGES_TEAM_PROFIL,
   REJOINDRE_TEAM,
   GET_ID_USER,
-  CANCEL_REJOINDRE_TEAM
+  CANCEL_REJOINDRE_TEAM,
+  CHANGE_MODAL_VISIBLE_IMAGE
 } from './types';
 
 export const getTeam = (idEquipe) => {
@@ -61,4 +62,10 @@ export const cancelRejoindreTeam = (idRejoindreTeam) => {
           }
         });
     };
+};
+export const changeModalVisibleImage = (image) => {
+  return {
+    type: CHANGE_MODAL_VISIBLE_IMAGE,
+    payload: image
+  };
 };

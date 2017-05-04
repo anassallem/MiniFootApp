@@ -13,5 +13,6 @@ export * from './UpdateUserPassword';
 export * from './UpdateUserCharacteristic';
 export * from './SwitchSegment';
 export * from './ItemTeam';
-export * from './SinglePlayerSearchTeam';
+//export * from './SinglePlayerSearchTeam';
 export * from './ItemDraggable';
+export * from './Checkbox';

@@ -16,10 +16,11 @@ class ItemDraggable extends Component {
     this.state = {
         showDraggable: this.props.bubble.showDraggable,
         pan: this.props.bubble.pan,
-        bounceValue: new Animated.Value(1)
+        bounceValue: new Animated.Value(1),
     };
   }
   componentWillMount() {
+      var that = this;
     this.panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderMove: Animated.event([null, {
@@ -34,10 +35,21 @@ class ItemDraggable extends Component {
           Animated.spring(this.state.bounceValue, { toValue: 1.2, friction: 3 }).start();
         },
         onPanResponderRelease: (e, gesture) => {
-            this.state.pan.flattenOffset();
+            const { imageZoneValues } = this.props;
             this.props.handleVisibility(false, gesture, this.props.bubble._id);
+            this.state.pan.flattenOffset();
             this.state.bounceValue.setValue(1);
             Animated.spring(this.state.bounceValue, { toValue: 1.1, friction: 3 }).start();
+            if (imageZoneValues !== null) {
+                const partie = (imageZoneValues.height / 3) - 50;
+                if ((gesture.moveY > partie) && (gesture.moveY < (partie * 2))) {
+                    that.props.changeFormationTeam(this.props.bubble.idJoueur._id, 1, 0, 0);
+                } else if ((gesture.moveY > (partie * 2)) && (gesture.moveY < (partie * 3))) {
+                    that.props.changeFormationTeam(this.props.bubble.idJoueur._id, 0, 1, 0);
+                } else {
+                    that.props.changeFormationTeam(this.props.bubble.idJoueur._id, 0, 0, 1);
+                }
+            }
         }
     });
   }
