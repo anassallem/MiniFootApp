@@ -99,6 +99,8 @@ export const GET_NOTIFICATIONS_REJOINDRE_TEAM = 'get_notifications_rejoindre_tea
 export const LOADING_NOTIFICATIONS_REJOINDRE_TEAM = 'loading_notifications_rejoindre_team';
 export const DELETE_NOTIFICATIONS_REJOINDRE_TEAM = 'delete_notifications_rejoindre_team';
 export const ACCEPT_NOTIFICATIONS_REJOINDRE_TEAM = 'accept_notifications_rejoindre_team';
+export const REJECT_MATCH = 'reject_match';
+export const ACCEPTED_MATCH = 'accepted_match';
 //Update profile Equipe
 export const TEAM_UPDATE = 'team_update';
 export const UPDATE_TEAM_PROFIL = 'update_team_profil';
@@ -162,3 +164,46 @@ export const LOAD_LIST_PUBLICATIONS = 'load_list_publications';
 export const LOAD_LIST_PUBLICATIONS_BEGIN = 'load_list_publications_begin';
 export const START_REFRESHING_PUBLICATIONS = 'start_refreshing_publications';
 export const STOP_REFRESHING_PUBLICATIONS = 'stop_refreshing_publications';
+//create match
+export const SWITCH_MODAL_CHANGED = 'switch_modal_changed';
+export const TEAM_ADVERSAIRE_CHANGED = 'team_adversaire_changed';
+export const START_LOAD_CREATE_MATCH = 'start_load_create_match';
+export const INITIAL_STATE_CREATE_MATCH = 'initial_state_create_match';
+export const SWITCH_MODAL_STADE_CHANGED = 'switch_modal_stade_changed';
+export const START_LOAD_SEARSH_STADE = 'start_load_search_stade';
+export const STOP_LOAD_SEARSH_STADE = 'stop_load_search_stade';
+export const STADE_CHANGED = 'stade_changed';
+export const SEARCH_STADE_CHANGED = 'search_stade_changed';
+// mes match
+export const START_GET_MES_MATCHS_EQUIPE = 'start_get_mes_matchs_equipe';
+export const STOP_GET_MES_MATCHS_EQUIPE = 'stop_get_mes_matchs_equipe';
+export const STOP_GET_MES_MATCHS_EQUIPE_LOAD = 'stop_get_mes_matchs_equipe_load';
+export const DELETE_MATCH_BY_ID = 'delete_match_by_id';
+export const ACCEPT_MATCH_BY_ID = 'accept_match_by_id';
+export const CHANGE_MODAL_SCORE = 'change_modal_score';
+export const SCORE_ONE_CHANGED = 'score_one_changed';
+export const SCORE_TWO_CHANGED = 'score_tow_changed';
+// search list stades
+export const SEARCH_LIST_STADE_CHANGED = 'search_list_stade_changed';
+export const START_LOAD_SEARSH_LIST_STADE = 'start_load_search_list_stade';
+export const STOP_LOAD_SEARSH_LIST_STADE = 'stop_load_search_list_stade';
+//profile stades
+export const PROFILE_STADE_OPEN_MODAL = 'profile_stade_open_modal';
+export const ADD_LIKE_TO_STADE = 'add_like_to_stade';
+export const VERIF_LIKE_TO_STADE = 'verif_like_to_stade';
+export const DELETE_LIKE_TO_STADE = 'delete_like_to_stade';
+//reserver stade
+export const GET_MATCHS_STADE = 'get_match_stade';
+export const START_GET_MATCHS_STADE = 'start_get_match_stade';
+export const CHANGE_MODAL_RESERVER_STADE = 'change_modal_reserver_stade';
+export const DATE_CHANGED = 'date_changed';
+export const CHANGE_MODAL_DATE_STADE = 'change_modal_date_stade';
+export const MESSAGE_RESERVER_CHANGED = 'message_reserver_changed';
+export const START_ENVOYER_MATCHS_STADE = 'start_envoyer_matchs_stade';
+export const STOP_ENVOYER_MATCHS_STADE = 'stop_envoyer_matchs_stade';
+export const HIDE_MODAL_CHARGEMENT = 'hide_modal_chargement';
+export const ADD_SCORE_TO_MATCH = 'add_score_to_match';
+// matchs
+export const START_GET_MES_MATCHS_MY_EQUIPE = 'start_get_mes_matchs_my_equipe';
+export const STOP_GET_MES_MATCHS_MY_EQUIPE = 'stop_get_mes_matchs_my_equipe';
+export const STOP_GET_MES_MATCHS_MY_EQUIPE_LOAD = 'stop_get_mes_matchs_my_equipe_load';

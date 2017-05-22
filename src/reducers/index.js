@@ -22,6 +22,13 @@ import CreateAdvertMatchReducer from './CreateAdvertMatchReducer';
 import ListAdvertsReducer from './ListAdvertsReducer';
 import NotificationRejoindreReducer from './NotificationRejoindreReducer';
 import MyPublicationsReducer from './MyPublicationsReducer';
+import CreateMatchReducer from './CreateMatchReducer';
+import MesMatchsReducer from './MesMatchsReducer';
+import SearchStadesReducer from './SearchStadesReducer';
+import ProfileStadeReducer from './ProfileStadeReducer';
+import ReserverStadeReducer from './ReserverStadeReducer';
+import MatchsReducer from './MatchsReducer';
+
 
 export default combineReducers({
   auth: AuthReducer,
@@ -47,4 +54,10 @@ export default combineReducers({
   listAdverts: ListAdvertsReducer,
   notificationRejoindreTeam: NotificationRejoindreReducer,
   myPublications: MyPublicationsReducer,
+  createMatch: CreateMatchReducer,
+  mesMatchs: MesMatchsReducer,
+  searchStades: SearchStadesReducer,
+  profileStade: ProfileStadeReducer,
+  reserverStade: ReserverStadeReducer,
+  matchs: MatchsReducer
 });

@@ -26,6 +26,12 @@ import AddPlayersFormation from './components/AddPlayersFormation';
 import CreateAdvertMatch from './components/CreateAdvertMatch';
 import NotificationRejoindreTeam from './components/NotificationRejoindreTeam';
 import MyPublications from './components/MyPublications';
+import MesMatchs from './components/MesMatchs';
+import CreateMatch from './components/CreateMatch';
+import SearchStades from './components/SearchStades';
+import ProfileStade from './components/ProfileStade';
+import ReserverStade from './components/ReserverStade';
+import Matchs from './components/Matchs';
 
 const icon = require('./components/assets/back.png');
 
@@ -80,9 +86,21 @@ class RouterComponent extends Component {
               <Scene key="notificationRejoindreTeam" component={NotificationRejoindreTeam} hideNavBar={false} title="Invitations"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-            <Scene key="myPublications" component={MyPublications} hideNavBar={false} title="Mes Publications"
+              <Scene key="myPublications" component={MyPublications} hideNavBar={false} title="Mes Publications"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
-            />
+              />
+              <Scene key="mesMatchs" component={MesMatchs} hideNavBar={false} title="Mes Matchs" hideNavBar />
+              <Scene key="createMatch" component={CreateMatch} hideNavBar={false} hideNavBar />
+              <Scene key="searchStades" component={SearchStades} hideNavBar />
+              <Scene key="profileStade" component={ProfileStade} hideNavBar={false} title="profile"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="reserverStade" component={ReserverStade} hideNavBar={false} title="profile"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="matchs" component={Matchs} hideNavBar={false} title="Mes matchs"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
            </Scene>
         </Router>
         );

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ListView } from 'react-native';
+import { View, ListView, ActivityIndicator } from 'react-native';
 import { Icon, Text, Header, Item, Input, Button } from 'native-base';
-import { fetchTeams, searchTeamChanged } from '../actions';
-import { ItemTeam, Spinner } from './common';
+import { fetchListStades, searchListStadesChanged } from '../actions';
+import { ItemStade } from './common';
 
-class SearchTeam extends Component {
+class SearchStades extends Component {
 
   componentWillMount() {
-    this.props.fetchTeams(this.props.text);
+    this.props.fetchListStades(this.props.text);
     this.createDataSource(this.props);
   }
 
@@ -17,24 +17,24 @@ class SearchTeam extends Component {
   }
 
   onSearchChanged(text) {
-     this.props.fetchTeams(text);
-     this.props.searchTeamChanged(text);
+     this.props.fetchListStades(text);
+     this.props.searchListStadesChanged(text);
   }
 
-  createDataSource({ teams }) {
+  createDataSource({ stades }) {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
-    this.dataSource = ds.cloneWithRows(teams);
+    this.dataSource = ds.cloneWithRows(stades);
   }
 
-  renderRow(team) {
-       return <ItemTeam team={team} />;
+  renderRow(stade) {
+       return <ItemStade stade={stade} />;
   }
 
   renderList() {
      if (this.props.loading) {
-       return <Spinner size="large" />;
+       return <ActivityIndicator size="large" color={['#1565C0']} />;
      }
      return (
        <ListView
@@ -42,7 +42,7 @@ class SearchTeam extends Component {
          dataSource={this.dataSource}
          renderRow={this.renderRow.bind(this)}
          pageSize={10}
-         onEndReached={() => { console.log('fired'); }}
+         style={{ marginTop: 5 }}
        />
      );
    }
@@ -53,8 +53,8 @@ class SearchTeam extends Component {
           <Header searchBar rounded>
               <Item>
                   <Icon name="search" />
-                  <Input placeholder="Search" onChangeText={this.onSearchChanged.bind(this)} />
-                  <Icon active name="people" />
+                  <Input placeholder="Rechercher..." onChangeText={this.onSearchChanged.bind(this)} />
+                  <Icon active name="ios-git-branch-outline" />
               </Item>
               <Button transparent>
                   <Text>Search</Text>
@@ -66,8 +66,8 @@ class SearchTeam extends Component {
   }
 }
 
-const mapStateToProps = ({ searchTeam }) => {
-  const { teams, text, loading } = searchTeam;
-  return { teams, text, loading };
+const mapStateToProps = ({ searchStades }) => {
+  const { stades, text, loading } = searchStades;
+  return { stades, text, loading };
 };
-export default connect(mapStateToProps, { fetchTeams, searchTeamChanged })(SearchTeam);
+export default connect(mapStateToProps, { fetchListStades, searchListStadesChanged })(SearchStades);

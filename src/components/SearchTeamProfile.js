@@ -4,7 +4,7 @@ import { Icon, Button, Header, Body, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam } from '../actions';
+import { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
@@ -46,9 +46,9 @@ class SearchTeamProfile extends Component {
       try {
            AsyncStorage.getItem('user').then((value) => {
                const user = JSON.parse(value);
-               const rejoin = { idUser: user.user._id, idEquipe: this.props.idEquipe };
+               const rejoin = { idUser: user.user._id, idEquipe: this.props.idEquipe, type: 'Rejoindre' };
                this.props.socket.emit('rejoindreTeam', rejoin);
-               this.onRefresh();
+               this.props.getPlayerBelongsTeam(user.user._id, this.props.idEquipe);
            }).done();
          } catch (e) {
              console.log('caught error', e);
@@ -131,10 +131,8 @@ class SearchTeamProfile extends Component {
         return <Image source={logoEquipe} style={styles.styleLogo} />;
     }
     renderButtonRejoindre() {
-      const { playerRejoindreTeam } = this.props;
-      console.log(this.props.test);
       if (this.props.test !== true) {
-        if (this.props.idUser !== this.props.idEquipe && playerRejoindreTeam.success === false) {
+        if (this.props.etat === 0) {
           return (
               <Button iconLeft light bordered onPress={this.onRejoindreTeam.bind(this)}>
                   <Icon name='arrow-forward' style={styles.styleIconButton} />
@@ -372,9 +370,9 @@ const styles = {
 
 
 const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
-  const { team, refresh, photosEquipe, photos, matchs, idUser, playerRejoindreTeam } = profileEquipe;
+  const { team, refresh, photosEquipe, photos, matchs, idUser, playerRejoindreTeam, etat } = profileEquipe;
   const { socket } = homeDiscussion;
-  return { team, refresh, photosEquipe, photos, matchs, idUser, socket, playerRejoindreTeam };
+  return { team, refresh, photosEquipe, photos, matchs, idUser, socket, playerRejoindreTeam, etat };
 };
 
-export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam })(SearchTeamProfile);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam })(SearchTeamProfile);

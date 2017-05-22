@@ -27,11 +27,11 @@ const INITIAL_STATE = {
           { id: 2, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
           { id: 3, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
           { id: 4, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 }],
-  playerRejoindreTeam: { success: false, data: {} },
+  playerRejoindreTeam: null,
+  etat: 0,
   modalVisible: false,
   image: null
 };
-
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -44,9 +44,9 @@ export default (state = INITIAL_STATE, action) => {
     case GET_ID_USER:
         return { ...state, idUser: action.payload };
     case REJOINDRE_TEAM:
-        return { ...state, playerRejoindreTeam: action.payload };
+        return { ...state, playerRejoindreTeam: action.payload, etat: 1 };
     case CANCEL_REJOINDRE_TEAM:
-        return { ...state, playerRejoindreTeam: { ...state.playerRejoindreTeam, success: false } };
+        return { ...state, etat: 0 };
     case CHANGE_MODAL_VISIBLE_IMAGE:
         return { ...state, modalVisible: !state.modalVisible, image: action.payload };
     default:

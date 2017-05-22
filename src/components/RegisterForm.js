@@ -16,7 +16,7 @@ import {
  } from '../actions';
 import { SButton, Spinner, InputTextAuth } from './common';
 
-const background = require('./assets/register_backround.jpg');
+const background = require('./assets/inscrit.jpg');
 
 class RegisterForm extends Component {
 

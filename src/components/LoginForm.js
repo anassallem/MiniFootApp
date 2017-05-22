@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged, loginUser, loadUser, tokenChanged, setMessageError } from '../actions';
 import { InputTextAuth, SButton, Spinner } from './common';
 
-const background = require('./assets/login_backround.jpg');
+const background = require('./assets/login.png');
 
 class LoginForm extends Component {
 

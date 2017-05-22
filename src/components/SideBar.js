@@ -79,7 +79,7 @@ class SideBar extends Component {
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>
-                <TouchableNativeFeedback onPress={() => this.props.onClickPhotos()}>
+                <TouchableNativeFeedback onPress={() => this.props.onClickMatchs()}>
                     <ListItem icon>
                         <Left>
                             <Icon name="ios-football-outline" style={colorIcon} />
@@ -89,14 +89,16 @@ class SideBar extends Component {
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>
-                <ListItem icon>
-                    <Left>
-                        <Icon name="ios-git-branch-outline" style={colorIcon} />
-                    </Left>
-                    <Body>
-                        <Text style={textStyle}>Liste des stades</Text>
-                    </Body>
-                </ListItem>
+                <TouchableNativeFeedback onPress={() => this.props.onClickListStades()}>
+                    <ListItem icon>
+                        <Left>
+                            <Icon name="ios-git-branch-outline" style={colorIcon} />
+                        </Left>
+                        <Body>
+                            <Text style={textStyle}>Liste des stades</Text>
+                        </Body>
+                    </ListItem>
+                </TouchableNativeFeedback>
                 <TouchableNativeFeedback onPress={() => this.props.onClickDeconnexion()}>
                     <ListItem icon>
                         <Left>

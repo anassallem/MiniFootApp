@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Actions } from 'react-native-router-flux';
 import { AsyncStorage, View } from 'react-native';
 import io from 'socket.io-client/dist/socket.io';
-import { Container, Tab, Tabs, TabHeading, Icon, Text, Button, Header, Right, Left, Body, Title, Drawer } from 'native-base';
+import { Container, Tab, Tabs, TabHeading, Icon, Text, Drawer } from 'native-base';
 import { connect } from 'react-redux';
 import SideBar from './SideBar';
 import Discussion from './Discussion';
@@ -29,7 +29,7 @@ class Home extends Component {
                 this.props.changePage('Notification');
             });
             this.socket.on(user.user.equipe, (rejoindre) => {
-              if (!(user.user._id)) {
+              if (user.user._id !== rejoindre.joinTeam.from) {
                 this.props.changeNumberEquipe();
               }
             });
@@ -60,9 +60,14 @@ class Home extends Component {
       Actions.searchTeam();
       this.closeDrawer();
   }
-  handelPhotos() {
+  handleMatchs() {
+      Actions.matchs();
       this.closeDrawer();
-    }
+  }
+  handleListStade() {
+      Actions.searchStades();
+      this.closeDrawer();
+  }
   handelDeconnexion() {
       try {
           AsyncStorage.removeItem('user');
@@ -123,7 +128,8 @@ class Home extends Component {
               ref={(ref) => { this.drawer = ref; }}
               content={<SideBar onClickProfil={this.handelProfile.bind(this)}
               onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
-              onClickPhotos={this.handelPhotos.bind(this)}
+              onClickMatchs={this.handleMatchs.bind(this)}
+              onClickListStades={this.handleListStade.bind(this)}
               onClickDeconnexion={this.handelDeconnexion.bind(this)}
               />}
               onClose={() => this.closeDrawer()}

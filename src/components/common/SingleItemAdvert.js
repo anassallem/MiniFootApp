@@ -67,15 +67,15 @@ class SingleItemAdvert extends Component {
     }
     renderLogoTeam() {
         if (this.props.advert.createdBy.logo !== undefined) {
-            return <Thumbnail square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.createdBy.logo}` }} />;
+            return <Thumbnail style={{ width: 50, height: 50 }} square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.createdBy.logo}` }} />;
         }
-        return <Thumbnail square source={logo} />;
+        return <Thumbnail style={{ width: 50, height: 50 }} square source={logo} />;
     }
     render() {
         const { createdBy, description, createdAt, countInterested } = this.props.advert;
         return (
                 <Card>
-                   <CardItem>
+                   <CardItem style={{ borderLeftWidth: 10, borderLeftColor: '#00BCD4' }}>
                        <Left>
                          {this.renderLogoTeam()}
                          <Body>
@@ -161,7 +161,9 @@ const styles = {
     },
     styleContainerBody: {
         flexDirection: 'column',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        borderLeftWidth: 10,
+        borderLeftColor: '#00BCD4'
     },
     styleDisponibility: {
         borderColor: '#E0E0E0',

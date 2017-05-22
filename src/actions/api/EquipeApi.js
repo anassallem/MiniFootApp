@@ -188,7 +188,6 @@ export const rejoindreTeam = (idUser, idEquipe) => {
 };
 
 export const getPlayerInTeam = (idUser, idEquipe) => {
-    console.log(idUser, idEquipe);
     const requestURL = `${URL}/notification/${idUser}/playerBelongsTeam/${idEquipe}`;
       return axios.get(requestURL)
       .then((res) => {

@@ -17,3 +17,6 @@ export * from './ItemTeam';
 export * from './ItemDraggable';
 export * from './Checkbox';
 export * from './Headers';
+export * from './SingleItemMatch';
+export * from './ItemStade';
+export * from './SingleMatch';

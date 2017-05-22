@@ -6,7 +6,8 @@ import {
   REJOINDRE_TEAM,
   GET_ID_USER,
   CANCEL_REJOINDRE_TEAM,
-  CHANGE_MODAL_VISIBLE_IMAGE
+  CHANGE_MODAL_VISIBLE_IMAGE,
+  ENVOYER_REJOINDRE_TEAM
 } from './types';
 
 export const getTeam = (idEquipe) => {
@@ -37,7 +38,9 @@ export const getPlayerBelongsTeam = (idUser, idEquipe) => {
   return (dispatch) => {
     getPlayerInTeam(idUser, idEquipe).then((res) => {
       console.log(res);
-      dispatch({ type: REJOINDRE_TEAM, payload: res });
+      if (res.data !== null) {
+          dispatch({ type: REJOINDRE_TEAM, payload: res });
+      }
       }, (err) => {
         console.log(err);
       }
@@ -63,6 +66,7 @@ export const cancelRejoindreTeam = (idRejoindreTeam) => {
         });
     };
 };
+
 export const changeModalVisibleImage = (image) => {
   return {
     type: CHANGE_MODAL_VISIBLE_IMAGE,

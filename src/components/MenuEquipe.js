@@ -12,22 +12,18 @@ class MenuEquipe extends Component {
     onPressEquipe() {
         Actions.profileEquipe({ idEquipe: this.props.team._id, title: this.props.team.name });
     }
-
     onPressFormation() {
         Actions.formation({ idEquipe: this.props.team._id });
     }
-
     onPressPictures() {
-      Actions.showTeamPhotos({ idEquipe: this.props.team._id });
+        Actions.showTeamPhotos({ idEquipe: this.props.team._id });
     }
-
     onPressMembreEquipe() {
         Actions.membreEquipe({ idEquipe: this.props.team._id, user: this.props.user });
     }
     onPressListRejoindre() {
         Actions.notificationRejoindreTeam({ idEquipe: this.props.team._id });
     }
-
     onPressRename() {
         Actions.selectAdjoint({ idEquipe: this.props.team._id });
     }
@@ -36,6 +32,9 @@ class MenuEquipe extends Component {
     }
     onPressCreateAdvertMatch() {
         Actions.createAdvert({ team: this.props.team });
+    }
+    onPressCreateMatch() {
+        Actions.mesMatchs({ team: this.props.team });
     }
     onPressPublication() {
       Actions.myPublications({ team: this.props.team });
@@ -54,7 +53,7 @@ class MenuEquipe extends Component {
                         <Text style={styles.styleNotify}>{numberNotifyTeam}</Text>
                     </View>);
         }
-      }
+    }
     renderRenameSousCapitaine() {
         if (this.props.user.joueur.type !== 'Joueur') {
             return (
@@ -78,6 +77,20 @@ class MenuEquipe extends Component {
                                 <Icon name='ios-create-outline' style={styles.styleIcon} />
                             </View>
                             <Text style={styles.styleText}>Créer une annonce du match</Text>
+                    </View>
+                </TouchableNativeFeedback>
+            );
+        }
+    }
+    renderCreateMatch() {
+        if (this.props.user.joueur.type !== 'Joueur') {
+            return (
+                <TouchableNativeFeedback onPress={this.onPressCreateMatch.bind(this)}>
+                    <View style={styles.rowStyle}>
+                            <View style={[styles.containerIcon, { backgroundColor: '#4CAF50' }]}>
+                                <Icon name='ios-create-outline' style={styles.styleIcon} />
+                            </View>
+                            <Text style={styles.styleText}>Créer un match</Text>
                     </View>
                 </TouchableNativeFeedback>
             );
@@ -146,6 +159,7 @@ class MenuEquipe extends Component {
                {this.renderRenameSousCapitaine()}
                {this.renderRenameCapitaine()}
                {this.renderCreateAdvertMatch()}
+               {this.renderCreateMatch()}
                <TouchableNativeFeedback onPress={this.onPressPublication.bind(this)}>
                    <View style={styles.rowStyle}>
                            <View style={[styles.containerIcon, { backgroundColor: '#01579B' }]}>
@@ -205,6 +219,8 @@ const styles = {
         width: 20,
         height: 20,
         flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
         margin: 10
     },
     styleText: {

@@ -10,19 +10,19 @@ class ItemTeam extends Component {
     onPressButton() {
         const { team } = this.props;
         try {
-             AsyncStorage.getItem('user').then((value) => {
-                 const user = JSON.parse(value);
-                 if (user.user.equipe === team._id) {
+            AsyncStorage.getItem('user').then((value) => {
+                const user = JSON.parse(value);
+                if (user.user.equipe === team._id) {
                     Actions.profileEquipe({ idEquipe: team._id });
-                 } else if (user.user.equipe === undefined) {
-                   Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
-                 } else {
+                } else if (user.user.equipe === undefined) {
+                    Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}` });
+                } else {
                     Actions.searchTeamProfile({ idEquipe: team._id, title: `${team.name}`, test: true });
-                 }
-             }).done();
-           } catch (e) {
-               console.log('caught error', e);
-           }
+                }
+            }).done();
+        } catch (e) {
+            console.log('caught error', e);
+        }
     }
     renderPhoto() {
       const { logo } = this.props.team;

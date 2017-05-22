@@ -2,9 +2,12 @@ import {
    GET_NOTIFICATIONS_REJOINDRE_TEAM,
    LOADING_NOTIFICATIONS_REJOINDRE_TEAM,
    DELETE_NOTIFICATIONS_REJOINDRE_TEAM,
-   ACCEPT_NOTIFICATIONS_REJOINDRE_TEAM
+   ACCEPT_NOTIFICATIONS_REJOINDRE_TEAM,
+   REJECT_MATCH,
+   ACCEPTED_MATCH
  } from './types';
 import { getNotificationsRejoindre, refuseNotificationRejoindre, acceptNotificationRejoindre } from './api/NotificationApi';
+import { deleteMacth, acceptMatch } from './api/MatchApi';
 
 export const getNotificationRejoindreTeam = (idEquipe) => {
   return (dispatch) => {
@@ -37,6 +40,24 @@ export const refuseRejoindreTeam = (idRejoindreTeam) => {
           } else {
               dispatch({ type: DELETE_NOTIFICATIONS_REJOINDRE_TEAM, payload: idRejoindreTeam });
           }
+        });
+    };
+};
+export const rejectMatch = (idMatch, idRejoindre) => {
+    return (dispatch) => {
+        deleteMacth(idMatch).then((res) => {
+          dispatch({ type: REJECT_MATCH, payload: idRejoindre });
+        }, (err) => {
+            console.log(err);
+        });
+    };
+};
+export const acceptedMatch = (idMatch, idRejoindre) => {
+    return (dispatch) => {
+        acceptMatch(idMatch).then((res) => {
+            dispatch({ type: ACCEPTED_MATCH, payload: idRejoindre });
+        }, (err) => {
+            console.log(err);
         });
     };
 };

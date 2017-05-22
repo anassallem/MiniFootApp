@@ -5,66 +5,115 @@ import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
 import { Button, Left, Body, ListItem, Thumbnail, Text } from 'native-base';
 import { URL } from '../../actions/api/config';
-import { refuseRejoindreTeam, acceptRejoindreTeam } from '../../actions';
+import { refuseRejoindreTeam, acceptRejoindreTeam, acceptedMatch, rejectMatch } from '../../actions';
 
-const imagePlayer = require('../assets/logoEquipe.jpg');
+const logoEquipe = require('../assets/logoEquipe.jpg');
 
 class ItemTeamNotificationRejoindre extends Component {
   onClickName() {
-      const { from } = this.props.notificationRejoindre;
-      Actions.searchPlayerProfile({ player: from, title: `${from.firstname} ${from.lastname}` });
+      const { type, joinTeam, joinMatch } = this.props.notificationRejoindre;
+      if (type === 'Match') {
+          Actions.searchTeamProfile({ idEquipe: joinMatch.from._id, title: `${joinMatch.from.name}`, test: true });
+      } else {
+          Actions.searchPlayerProfile({ player: joinTeam.from, title: `${joinTeam.from.firstname} ${joinTeam.from.lastname}` });
+      }
   }
 
   onClickAccept() {
-      const { from, to, _id } = this.props.notificationRejoindre;
-      this.props.acceptRejoindreTeam(_id, { idEquipe: to, idUser: from._id });
+      const { type, joinTeam, joinMatch, _id, to } = this.props.notificationRejoindre;
+      if (type === 'Match') {
+          this.props.acceptedMatch(joinMatch.match, _id);
+      } else {
+          this.props.acceptRejoindreTeam(_id, { idEquipe: to, idUser: joinTeam.from._id });
+      }
   }
 
   onClickReject() {
-      this.props.refuseRejoindreTeam(this.props.notificationRejoindre._id);
-  }
-  renderImagePlayer() {
-      const { from } = this.props.notificationRejoindre;
-      if (from.photo !== undefined) {
-          const uriImg = `${URL}/users/upload/${from.photo}`;
-          return <Thumbnail source={{ uri: uriImg }} />;
+      const { type, joinMatch, _id } = this.props.notificationRejoindre;
+      if (type === 'Match') {
+          this.props.rejectMatch(joinMatch.match, _id);
+      } else {
+          this.props.refuseRejoindreTeam(_id);
       }
-      return <Thumbnail source={imagePlayer} />;
   }
-
-  renderBodyNotification() {
-      const { from } = this.props.notificationRejoindre;
-      if (this.props.notificationRejoindre.accepted) {
-          return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${from.firstname} ${from.lastname} pour rejoindre l'équipe`}</Text>;
+  renderImage() {
+      const { type, joinTeam, joinMatch } = this.props.notificationRejoindre;
+      console.log(this.props.notificationRejoindre);
+      if (type === 'Match') {
+          if (joinMatch.from.logo !== undefined) {
+              const uriImg = `${URL}/equipe/teamUploads/${joinMatch.from.logo}`;
+              return <Thumbnail source={{ uri: uriImg }} />;
+          }
+          return <Thumbnail source={logoEquipe} />;
+      }
+      const uriImg = `${URL}/users/upload/${joinTeam.from.photo}`;
+      return <Thumbnail source={{ uri: uriImg }} />;
+  }
+  renderTitleNotification() {
+    const { type, joinTeam, joinMatch, createdAt } = this.props.notificationRejoindre;
+      if (type === 'Match') {
+          return (
+              <View>
+                  <Text style={styles.styleTextPlayer}>{joinMatch.from.name}</Text>
+                  <Text style={styles.styleTextDate}>{moment(createdAt).format('DD-MM-YYYY h:mm')}</Text>
+              </View>
+          );
       }
       return (
           <View>
-              <Text style={styles.styleText}>Vous avez une invitation de rejoindre votre équipe</Text>
-              <View style={styles.containerButtons}>
-                  <Button bordered success style={styles.styleButton} onPress={this.onClickAccept.bind(this)}>
-                      <Text>Accepter</Text>
-                  </Button>
-                  <Button bordered danger style={styles.styleButton} onPress={this.onClickReject.bind(this)}>
-                      <Text>Refuser</Text>
-                  </Button>
-              </View>
+              <Text style={styles.styleTextPlayer}>{`${joinTeam.from.firstname} ${joinTeam.from.lastname}`}</Text>
+              <Text style={styles.styleTextDate}>{moment(createdAt).format('DD-MM-YYYY h:mm')}</Text>
           </View>
       );
   }
+  renderBodyNotification() {
+      const { type, joinTeam, joinMatch } = this.props.notificationRejoindre;
+      if (type === 'Rejoindre') {
+          if (joinTeam.accepted) {
+              return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${joinTeam.from.firstname} ${joinTeam.from.lastname} pour rejoindre l'équipe`}</Text>;
+              }
+              return (
+                  <View>
+                      <Text style={styles.styleText}>Vous avez une invitation de rejoindre votre équipe</Text>
+                      <View style={styles.containerButtons}>
+                          <Button bordered success style={styles.styleButton} onPress={this.onClickAccept.bind(this)}>
+                              <Text>Accepter</Text>
+                          </Button>
+                          <Button bordered danger style={styles.styleButton} onPress={this.onClickReject.bind(this)}>
+                              <Text>Refuser</Text>
+                          </Button>
+                      </View>
+                  </View>
+              );
+      } else {
+          if (joinMatch.accepted) {
+              return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${joinMatch.from.name} pour rejoindre l'équipe`}</Text>;
+              }
+              return (
+                  <View>
+                      <Text style={styles.styleText}>Vous avez une invitation de jouer un match</Text>
+                      <View style={styles.containerButtons}>
+                          <Button bordered success style={styles.styleButton} onPress={this.onClickAccept.bind(this)}>
+                              <Text>Accepter</Text>
+                          </Button>
+                          <Button bordered danger style={styles.styleButton} onPress={this.onClickReject.bind(this)}>
+                              <Text>Refuser</Text>
+                          </Button>
+                      </View>
+                  </View>
+              );
+      }
+  }
 
   render() {
-      const { notificationRejoindre } = this.props;
       return (
         <ListItem avatar>
             <Left>
-                {this.renderImagePlayer()}
+                {this.renderImage()}
             </Left>
             <Body>
                 <TouchableNativeFeedback onPress={this.onClickName.bind(this)}>
-                    <View>
-                        <Text style={styles.styleTextPlayer}>{`${notificationRejoindre.from.firstname} ${notificationRejoindre.from.lastname}`}</Text>
-                        <Text style={styles.styleTextDate}>{moment(notificationRejoindre.createdAt).format('DD-MM-YYYY h:mm')}</Text>
-                    </View>
+                    {this.renderTitleNotification()}
                 </TouchableNativeFeedback>
                 {this.renderBodyNotification()}
             </Body>
@@ -98,4 +147,4 @@ const mapStateToProps = ({ notificationRejoindreTeam }) => {
   return { notificationsRejoindre };
 };
 
-export default connect(mapStateToProps, { refuseRejoindreTeam, acceptRejoindreTeam })(ItemTeamNotificationRejoindre);
+export default connect(mapStateToProps, { refuseRejoindreTeam, acceptRejoindreTeam, acceptedMatch, rejectMatch })(ItemTeamNotificationRejoindre);
