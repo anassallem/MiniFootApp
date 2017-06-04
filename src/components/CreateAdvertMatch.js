@@ -39,7 +39,7 @@ class CreateAdvertMatch extends Component {
       if (testDimanche) {
           disponibility.push('Dimanche');
       }
-      const advert = { description, disponibility, createdBy: team._id };
+      const advert = { advertTeam: { description, disponibility, createdBy: team._id }, type: 'AdvertMatch' };
       this.props.socket.emit('add_advert', advert);
   }
   renderLogo() {

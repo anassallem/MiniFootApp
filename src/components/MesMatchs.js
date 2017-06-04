@@ -65,8 +65,8 @@ class MesMatchs extends Component {
   handleRejectMatch(idMatch) {
       this.props.deleteMatchById(idMatch);
   }
-  handleReserverMatch(idMatch, stade) {
-      Actions.reserverStade({ stade, title: stade.name, idMatch });
+  handleReserverMatch(idMatch, stade, teamOne, teamTow) {
+      Actions.reserverStade({ stade, title: stade.name, idMatch, teamOne, teamTow });
   }
   handleAddScore(idMatch, teamOne, teamTow) {
       this.props.changeModalScore(idMatch, teamOne, teamTow);

@@ -40,17 +40,16 @@ class ProfilForm extends Component {
       this.onRefresh();
     }
     handleImage() {
-      ImagePicker.showImagePicker(null, (response) => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-       console.log('User cancelled image picker');
-      } else if (response.error) {
-       console.log('ImagePicker Error: ', response.error);
-      } else {
-       this.props.changeImage(response.uri, response, true);
-      }
-    });
+        ImagePicker.showImagePicker(null, (response) => {
+            console.log('Response = ', response);
+            if (response.didCancel) {
+            console.log('User cancelled image picker');
+            } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+            } else {
+            this.props.changeImage(response.uri, response, true);
+            }
+        });
     }
     handleButtonUpload() {
         try {
@@ -79,7 +78,7 @@ class ProfilForm extends Component {
 
   renderProfile() {
     const { colorGray } = styles;
-    const { firstname, photo, lastname, email, adresse, phone, city, joueur } = this.props.user;
+    const { firstname, photo, lastname, email, adresse, phone, city, joueur, equipe } = this.props.user;
     const { attaque, defence, milieu, gardien, total, nbrPersonne } = this.props.skills;
 
     if (this.props.refresh === false) {
@@ -109,8 +108,8 @@ class ProfilForm extends Component {
                       </View>
                     </TouchableNativeFeedback>
                 </View>
-                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne}disabled />
-                <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={'--'} />
+                <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne} disabled />
+                <UserInfo city={city} adresse={adresse} position={joueur.poste} email={email} phone={phone} equipe={(equipe === null || equipe === undefined) ? '--' : equipe.name} />
           </View>
       );
     }

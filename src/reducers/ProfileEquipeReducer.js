@@ -5,10 +5,10 @@ import {
   GET_ID_USER,
   REJOINDRE_TEAM,
   CANCEL_REJOINDRE_TEAM,
-  CHANGE_MODAL_VISIBLE_IMAGE
+  CHANGE_MODAL_VISIBLE_IMAGE,
+  GET_MATCH_TEAM_TERMINATED,
+  INITIAL_STATE_TEAM_SEARCH
 } from '../actions/types';
-
-const logoEquipe = require('../components/assets/logoEquipe.jpg');
 
 const INITIAL_STATE = {
   team: {
@@ -23,10 +23,7 @@ const INITIAL_STATE = {
   idUser: null,
   refresh: false,
   photosEquipe: [],
-  matchs: [{ id: 1, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-          { id: 2, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-          { id: 3, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 },
-          { id: 4, image: logoEquipe, equipeOne: 'Fc Barcalone', scoreOne: 2, equipeTow: 'Real Madrid', scoreTow: 2 }],
+  matchs: [],
   playerRejoindreTeam: null,
   etat: 0,
   modalVisible: false,
@@ -49,6 +46,10 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, etat: 0 };
     case CHANGE_MODAL_VISIBLE_IMAGE:
         return { ...state, modalVisible: !state.modalVisible, image: action.payload };
+    case GET_MATCH_TEAM_TERMINATED:
+        return { ...state, matchs: action.payload };
+    case INITIAL_STATE_TEAM_SEARCH:
+        return { ...state, photosEquipe: [] };
     default:
       return state;
   }

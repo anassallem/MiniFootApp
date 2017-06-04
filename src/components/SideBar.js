@@ -69,6 +69,17 @@ class SideBar extends Component {
                         <Right />
                     </ListItem>
                 </TouchableNativeFeedback>
+                <TouchableNativeFeedback onPress={() => this.props.onClickAdverts()}>
+                    <ListItem icon>
+                        <Left>
+                            <Icon name="ios-albums-outline" style={colorIcon} />
+                        </Left>
+                        <Body>
+                            <Text style={textStyle}>Mes annonces</Text>
+                        </Body>
+                        <Right />
+                    </ListItem>
+                </TouchableNativeFeedback>
                 <TouchableNativeFeedback onPress={() => this.props.onClickEquipe()}>
                     <ListItem icon>
                         <Left>

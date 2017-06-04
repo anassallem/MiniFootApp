@@ -5,7 +5,8 @@ import {
   INITIAL_STATE_CREATE_MATCH,
   SWITCH_MODAL_STADE_CHANGED,
   START_LOAD_SEARSH_STADE,
-  STOP_LOAD_SEARSH_STADE,
+  STOP_CREATE_LOAD_SEARSH_STADE,
+  STOP_MORE_LOAD_SEARSH_STADE,
   STADE_CHANGED,
   SEARCH_STADE_CHANGED
 } from './types';
@@ -42,11 +43,15 @@ export const createMacth = (myTeam) => {
         }, 1000);
     };
 };
-export const fetchStades = (text) => {
+export const fetchStades = (text, page) => {
     return (dispatch) => {
         dispatch({ type: START_LOAD_SEARSH_STADE });
-        getStades(text).then((res) => {
-            dispatch({ type: STOP_LOAD_SEARSH_STADE, payload: res });
+        getStades(text, page).then((res) => {
+            if (page === 0) {
+                dispatch({ type: STOP_CREATE_LOAD_SEARSH_STADE, payload: res });
+            } else {
+                dispatch({ type: STOP_MORE_LOAD_SEARSH_STADE, payload: res });
+            }
         }, (err) => {
             console.log(err);
         });

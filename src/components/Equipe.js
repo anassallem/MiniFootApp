@@ -51,7 +51,7 @@ class Equipe extends Component {
         } catch (e) { console.log('caught error', e); }
     }
     renderPage() {
-      const { steps, user, refresh } = this.props;
+      const { steps, refresh } = this.props;
       if (refresh) {
           return (<View style={{ justifyContent: 'center', flex: 1 }} >
                     <ActivityIndicator size={'large'} color={['#1565C0']} />
@@ -64,11 +64,12 @@ class Equipe extends Component {
           case 1:
             return <CreateEquipeStepOne buttonPress={this.onButtonPressCreate.bind(this)} />;
           case 2:
-            return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} user={user} />;
+            return <MenuEquipe buttonPressQuit={this.onPressQuitEquipe.bind(this)} />;
           default:
             return <CreateEquipe buttonPress={this.onButtonPressCreate.bind(this)} />;
       }
     }
+
     render() {
         return (
             <View style={styles.mainContainer}>

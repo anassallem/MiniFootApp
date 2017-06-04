@@ -252,8 +252,8 @@ const styles = {
 
 const mapStateToProps = ({ equipe, homeDiscussion }) => {
   const { team } = equipe;
-  const { numberNotifyTeam } = homeDiscussion;
-  return { team, numberNotifyTeam };
+  const { numberNotifyTeam, user } = homeDiscussion;
+  return { team, numberNotifyTeam, user };
 };
 
 export default connect(mapStateToProps, null)(MenuEquipe);

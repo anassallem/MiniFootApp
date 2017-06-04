@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, Image, TouchableNativeFeedback, AsyncStorage, Alert } from 'react-native';
 import { Icon } from 'native-base';
 import { connect } from 'react-redux';
-import { Actions } from 'react-native-router-flux';
 import { URL } from '../../actions/api/config';
 import { renameCapitaine } from '../../actions';
 
@@ -14,9 +13,9 @@ class SingleMembreTeamCapitaine extends Component {
           AsyncStorage.getItem('equipe').then((value) => {
               const equipe = JSON.parse(value);
               if (joueur.type === 'Responsable') {
-                  Alert.alert('Information', 'vous êtes déja le responsable');
+                  Alert.alert('Information', 'Vous êtes déja le responsable');
               } else {
-                  Alert.alert('Attention', `Vous voulez vraiment nommée ${firstname} ${lastname} responsable d'équipe. si vous confirmer tu perdre le droit des autres fonctionalité`,
+                  Alert.alert('Attention', `Vous voulez vraiment nommée ${firstname} ${lastname} responsable d'équipe. si vous confirmer tu perdre le droit des autres fonctionalitées`,
                   [{ text: 'Confirmer', onPress: () => this.renameCapitaine(_id, equipe) }, { text: 'Annuler', onPress: () => console.log('OK Pressed!') }]);
               }
           }).done();

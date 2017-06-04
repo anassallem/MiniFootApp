@@ -132,9 +132,12 @@ export const updateUserProfil = (idUser, user) => {
         if (err) {
           console.log(err);
         } else {
-          AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
-            dispatch({ type: UPDATE_USER_PROFIL });
-          });
+            AsyncStorage.getItem('user').then((value) => {
+                const data = JSON.parse(value);
+                const newUser = { success: true, token: data.token, user: res };
+                AsyncStorage.setItem('user', JSON.stringify(newUser));
+                    dispatch({ type: UPDATE_USER_PROFIL });
+            }).done();
         }
       });
   };

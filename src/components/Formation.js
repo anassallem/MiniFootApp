@@ -88,29 +88,43 @@ class Formation extends Component {
                );
      }
    }
+   renderHeader() {
+       const { top, center, bottom } = this.props;
+       if (this.props.user.joueur.type !== 'Joueur') {
+           return (
+               <Header>
+                   <Left>
+                       <TouchableWithoutFeedback onPress={this.onPressAddPlayers.bind(this)}>
+                           <View>
+                               <Text style={styles.textHeaderStyle}>Ajouter</Text>
+                           </View>
+                       </TouchableWithoutFeedback>
+                   </Left>
+                 <Body style={{ alignItems: 'center' }}>
+                     <Title>{`${top}-${center}-${bottom}`}</Title>
+                 </Body>
+                 <Right>
+                     <TouchableWithoutFeedback onPress={this.onPressSaveFormation.bind(this)}>
+                         <View>
+                             <Text style={styles.textHeaderStyle}>Enregistrer</Text>
+                         </View>
+                     </TouchableWithoutFeedback>
+                 </Right>
+               </Header>
+           );
+       }
+       return (
+           <Header>
+             <Body style={{ alignItems: 'center' }}>
+                 <Title>{`${top}-${center}-${bottom}`}</Title>
+             </Body>
+           </Header>
+       );
+   }
   render() {
-      const { top, center, bottom } = this.props;
       return (
           <View style={styles.mainContainer}>
-              <Header>
-                  <Left>
-                      <TouchableWithoutFeedback onPress={this.onPressAddPlayers.bind(this)}>
-                          <View>
-                              <Text style={styles.textHeaderStyle}>Ajouter</Text>
-                          </View>
-                      </TouchableWithoutFeedback>
-                  </Left>
-                <Body style={{ alignItems: 'center' }}>
-                    <Title>{`${top}-${center}-${bottom}`}</Title>
-                </Body>
-                <Right>
-                    <TouchableWithoutFeedback onPress={this.onPressSaveFormation.bind(this)}>
-                        <View>
-                            <Text style={styles.textHeaderStyle}>Enregistrer</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </Right>
-              </Header>
+              {this.renderHeader()}
               <Image source={imageTerrain} onLayout={this.setImageZoneValues.bind(this)} style={styles.styleContainerImage}>
                   {this.renderDropZone()}
                   <View style={styles.draggableContainer}>
@@ -175,9 +189,10 @@ let styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = ({ formation }) => {
+const mapStateToProps = ({ formation, homeDiscussion }) => {
   const { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom } = formation;
-  return { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom };
+  const { user } = homeDiscussion;
+  return { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom, user };
 };
 
 export default connect(mapStateToProps, { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam, setImageZone, changeFormation })(Formation);

@@ -38,7 +38,6 @@ const UserInfo = ({ city, position, email, phone, equipe, adresse }) => {
 
 const styles = {
   containerInfo: {
-    margin: 10
   },
   textStyle: {
     color: '#616161'

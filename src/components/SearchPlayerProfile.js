@@ -132,7 +132,7 @@ class SearchPlayerProfile extends Component {
               {this.renderButtonFriends()}
           </View>
           <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne} disabled />
-          <UserInfo city={player.city} adresse={player.adresse} position={player.joueur.poste} email={player.email} phone={player.phone} equipe={'--'} />
+          <UserInfo city={player.city} adresse={player.adresse} position={player.joueur.poste} email={player.email} phone={player.phone} equipe={(player.equipe === null || player.equipe === undefined) ? '--' : player.equipe.name} />
         </View>
       </ScrollView>
     );

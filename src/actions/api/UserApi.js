@@ -90,8 +90,8 @@ export const confirmInvitationsUser = (idInvitation, invitation) => {
   });
 };
 
-export const getUsers = (text) => {
-    const requestURL = `${URL}/users?name=${text}`;
+export const getUsers = (text, page) => {
+    const requestURL = `${URL}/users?name=${text}&page=${page}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;

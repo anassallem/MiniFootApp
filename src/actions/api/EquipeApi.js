@@ -79,8 +79,8 @@ const futch = (url, opts = {}, onProgress) => {
         xhr.send(opts.body);
     });
 };
-export const getTeams = (text) => {
-    const requestURL = `${URL}/equipe?name=${text}`;
+export const getTeams = (text, page) => {
+    const requestURL = `${URL}/equipe?name=${text}&page=${page}`;
     return axios.get(requestURL)
     .then((res) => {
       return res.data;

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView,
-         RefreshControl, AsyncStorage, Modal } from 'react-native';
-import { Icon, Button, Header, Right, Body, Title } from 'native-base';
+import { View, Text, TouchableNativeFeedback, ListView, Image, Dimensions, ScrollView, RefreshControl } from 'react-native';
+import { Icon, Header, Right, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { Actions } from 'react-native-router-flux';
-import { getTeam, getImagesTeamProfil, changeModalVisibleImage } from '../actions';
+import { getTeam, getImagesTeamProfil, getMatchTeam } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
+const background = require('./assets/blurred.jpg');
 
 class ProfileEquipe extends Component {
 
@@ -29,10 +29,10 @@ class ProfileEquipe extends Component {
     componentWillUnmount() {
       this.props.navigationStateHandler.unregisterFocusHook(this);
     }
-
     onRefresh() {
       this.props.getTeam(this.props.idEquipe);
       this.props.getImagesTeamProfil(this.props.idEquipe);
+      this.props.getMatchTeam(this.props.idEquipe);
     }
     onButtonUpdate() {
       Actions.updateProfilTeam({ team: this.props.team });
@@ -40,14 +40,18 @@ class ProfileEquipe extends Component {
     onPressAnnonces() {
         Actions.myPublications({ team: this.props.team });
     }
-    onChangeModal(image, y) {
-      this.props.changeModalVisibleImage(image);
+    onChangeModal(image, e) {
+        let position = 0;
+        this.props.photosEquipe.forEach((photo, i) => {
+           if (photo === image) {
+               position = i;
+           }
+        });
+        Actions.displayPicture({ photos: this.props.photosEquipe, index: position, delete: true, idEquipe: this.props.idEquipe, typePictures: 'Team' });
     }
-
     handleNavigationSceneFocus() {
       this.onRefresh();
     }
-
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -78,19 +82,13 @@ class ProfileEquipe extends Component {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
         return (
               <TouchableNativeFeedback onPress={() => {
-                  try {
-                       AsyncStorage.getItem('user').then((value) => {
-                           const user = JSON.parse(value);
-                           if (user.user._id === joueur.idJoueur._id) {
-                             Actions.profil();
-                           } else {
-                                Actions.searchPlayerProfile({ player: joueur.idJoueur, title: `${joueur.idJoueur.firstname} ${joueur.idJoueur.lastname}` });
-                              }
-                        }).done();
-                  } catch (e) {
-                     console.log('caught error', e);
-                    }
-              }}
+                   if (this.props.user._id === joueur.idJoueur._id) {
+                     Actions.profil();
+                   } else {
+                     Actions.searchPlayerProfile({ player: joueur.idJoueur, title: `${joueur.idJoueur.firstname} ${joueur.idJoueur.lastname}` });
+                   }
+                 }
+               }
               >
                 <View style={styles.containerPlayerImage}>
                     <Image source={{ uri: img }} style={styles.photoPlayerStyle} />
@@ -99,18 +97,24 @@ class ProfileEquipe extends Component {
               </TouchableNativeFeedback>
               );
     }
+    renderLogoTeam(logo) {
+        if (logo !== undefined) {
+            return <Image style={styles.logoMatch} source={{ uri: `${URL}/equipe/teamUploads/${logo}` }} />;
+        }
+        return <Image style={styles.logoMatch} source={logoEquipe} />;
+    }
     renderRowMatch(match) {
         return (<View style={styles.containerMatchs}>
-                    <Text style={styles.nameEquipeMatchStyle}>{match.equipeOne}</Text>
-                    <Image source={match.image} style={styles.logoMatch} />
+                    <Text style={styles.nameEquipeMatchStyle}>{match.teamOne.name}</Text>
+                    {this.renderLogoTeam(match.teamOne.logo)}
                     <View style={styles.scoreStyle}>
                         <Text style={styles.textScoreStyle}>{match.scoreOne}</Text>
                     </View>
                     <View style={styles.scoreStyle}>
                         <Text style={styles.textScoreStyle}>{match.scoreTow}</Text>
                     </View>
-                    <Image source={match.image} style={styles.logoMatch} />
-                    <Text style={styles.nameEquipeMatchStyle}>{match.equipeTow}</Text>
+                    {this.renderLogoTeam(match.teamTow.logo)}
+                    <Text style={styles.nameEquipeMatchStyle}>{match.teamTow.name}</Text>
                 </View>);
     }
     renderPhotoEquipe() {
@@ -120,37 +124,46 @@ class ProfileEquipe extends Component {
         }
         return <Image source={logoEquipe} style={styles.styleLogo} />;
     }
+    renderPhotosTeamVide() {
+        if (this.props.photosEquipe.length === 0) {
+            return (<Text style={{ marginLeft: 20 }}>Aucune photo disponible</Text>);
+        }
+    }
     renderProfileEquipe() {
         if (this.props.team !== null && this.props.refresh === false) {
             const { name, description, adresse, date_creation, createdBy } = this.props.team;
             return (
                 <View>
-                <View style={styles.containerTop}>
-                    {this.renderPhotoEquipe()}
-                    <Text style={styles.styleNameEquipe} >{name}</Text>
-                    <Text numberOfLines={3} style={styles.styleDescription}>
-                        {description}
-                    </Text>
-                    <View style={styles.containerButton}>
-                        <Button iconLeft light bordered style={{ marginRight: 20 }} onPress={this.onPressAnnonces.bind(this)}>
-                            <Icon name='ios-albums-outline' style={styles.styleIconButton} />
-                           <Text>Annonces</Text>
-                       </Button>
-                    </View>
-                </View>
-                <View style={styles.containerInfo}>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-person-outline' style={styles.styleIcon} />
-                        <Text>{createdBy.firstname} {createdBy.lastname}</Text>
-                    </View>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-navigate-outline' style={styles.styleIcon} />
-                        <Text>{adresse}</Text>
-                    </View>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-calendar-outline' style={styles.styleIcon} />
-                        <Text>{moment(date_creation).format('DD/MM/YYYY')}</Text>
-                    </View>
+                    <Image source={background} resizeMode='stretch' style={styles.styleBackground}>
+                        <View style={styles.containerTop}>
+                                {this.renderPhotoEquipe()}
+                                <Text style={styles.styleNameEquipe} >{name}</Text>
+                                <Text numberOfLines={3} style={styles.styleDescription}>{description}</Text>
+                                <TouchableNativeFeedback onPress={this.onPressAnnonces.bind(this)}>
+                                    <View style={styles.styleButtonAdvert}>
+                                        <Icon name='ios-albums-outline' style={styles.styleIconButton} />
+                                        <Text style={{ color: '#FFFFFF' }}>Annonces</Text>
+                                    </View>
+                                </TouchableNativeFeedback>
+                        </View>
+                        <View style={styles.containerInfo}>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-person-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{createdBy.firstname} {createdBy.lastname}</Text>
+                            </View>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-navigate-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{adresse}</Text>
+                            </View>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-calendar-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{moment(date_creation).format('DD/MM/YYYY')}</Text>
+                            </View>
+                        </View>
+                    </Image>
+                <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-images-outline' style={styles.styleIconTitle} />
+                    <Text style={styles.styleTextTitle}>Photos d'équipe</Text>
                 </View>
                 <ListView
                   enableEmptySections
@@ -159,49 +172,39 @@ class ProfileEquipe extends Component {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 />
+                {this.renderPhotosTeamVide()}
                 <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-shirt-outline' style={styles.styleIconTitle} />
                     <Text style={styles.styleTextTitle}>Membres d'équipe</Text>
                 </View>
                 <ListView
                   enableEmptySections
                   dataSource={this.playerDataSource}
-                  renderRow={this.renderRowPlayer}
+                  renderRow={this.renderRowPlayer.bind(this)}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 />
                 <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-football' style={styles.styleIconTitle} />
                     <Text style={styles.styleTextTitle}>Matchs joués</Text>
                 </View>
                 <ListView
                   enableEmptySections
                   dataSource={this.MatchDataSource}
-                  renderRow={this.renderRowMatch}
+                  renderRow={this.renderRowMatch.bind(this)}
                 />
                 </View>
             );
         }
     }
-    renderModal() {
-      if (this.props.image !== null) {
-        return (
-          <Modal
-            style={styles.modalStyle}
-            animationType={'fade'}
-            transparent
-            visible={this.props.modalVisible}
-            onRequestClose={() => {}}
-          >
-            <View style={styles.modalStyle}>
-              <View style={styles.textStyle}>
-                <TouchableNativeFeedback onPress={this.onChangeModal.bind(this, null)}>
-                    <Icon name="ios-close-outline" style={{ color: '#fff' }} />
+    renderButtonUpdate() {
+        if (this.props.user.joueur.type === 'Responsable') {
+            return (
+                <TouchableNativeFeedback onPress={this.onButtonUpdate.bind(this)}>
+                    <Text style={styles.textHeaderStyle}>Modifier</Text>
                 </TouchableNativeFeedback>
-              </View>
-                <Image source={{ uri: this.props.image }} style={styles.imageStyle} />
-            </View>
-          </Modal>
-        );
-      }
+            );
+        }
     }
     render() {
         return (
@@ -211,9 +214,7 @@ class ProfileEquipe extends Component {
                       <Title>Mon Equipe</Title>
                   </Body>
                   <Right>
-                      <TouchableNativeFeedback onPress={this.onButtonUpdate.bind(this)}>
-                      <Text style={styles.textHeaderStyle}>Modifier</Text>
-                      </TouchableNativeFeedback>
+                      {this.renderButtonUpdate()}
                   </Right>
                 </Header>
                 <ScrollView
@@ -225,7 +226,6 @@ class ProfileEquipe extends Component {
                       onRefresh={this.onRefresh.bind(this)}
                     />}
                 >
-                    {this.renderModal()}
                     {this.renderProfileEquipe()}
                 </ScrollView>
            </View>
@@ -237,10 +237,21 @@ class ProfileEquipe extends Component {
 const { width } = Dimensions.get('window');
 const styles = {
     mainContainer: {
-        flex: 1
+        flex: 1,
     },
-    headerStyle: {
-        marginBottom: 10
+    styleBackground: {
+        width: null,
+        height: null,
+        paddingTop: 10
+    },
+    styleButtonAdvert: {
+        borderWidth: 0.5,
+        borderColor: '#FFFFFF',
+        borderRadius: 5,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.2)',
     },
     textHeaderStyle: {
         color: '#FFFFFF'
@@ -252,6 +263,14 @@ const styles = {
         width: 80,
         height: 80
     },
+    styleIconTitle: {
+        color: '#2196F3',
+        marginRight: 10
+    },
+    textWhite: {
+        color: '#FFFFFF',
+        fontSize: 14
+    },
     styleNameEquipe: {
         fontSize: 16,
         color: '#333',
@@ -260,7 +279,7 @@ const styles = {
     },
     styleDescription: {
         fontSize: 12,
-        color: '#333',
+        color: '#FFFFFF',
         textAlign: 'center',
         marginTop: 10,
         marginLeft: 30,
@@ -272,43 +291,39 @@ const styles = {
         marginTop: 10
     },
     styleIconButton: {
-        color: '#9E9E9E'
+        color: '#FFFFFF',
+        marginRight: 5
     },
     containerInfo: {
         flexDirection: 'row',
-        borderWidth: 0.5,
+        borderTopWidth: 0.5,
         marginTop: 10,
-        marginBottom: 10,
-        borderColor: '#E0E0E0'
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        borderTopColor: '#FFFFFF'
     },
     containerBodyInfo: {
         flexDirection: 'column',
         borderRightWidth: 0.5,
-        borderRightColor: '#E0E0E0',
+        borderRightColor: '#FFFFFF',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         width: width / 3
     },
     styleIcon: {
-        color: '#7D7D7D'
+        color: '#FFFFFF'
     },
     photoTeamStyle: {
-        width: 80,
-        height: 80,
-        margin: 5,
-        borderColor: '#9E9E9E',
-        borderWidth: 1,
-        borderRadius: 5
+        width: 100,
+        height: 100,
+        margin: 2
     },
     containerPlayersTitle: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 15,
         alignItems: 'center',
-        borderWidth: 0.5,
-        marginTop: 10,
-        marginBottom: 10,
-        borderColor: '#E0E0E0',
-        padding: 10
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#EEEEEE'
     },
     containerPlayerImage: {
         flexDirection: 'column',
@@ -316,8 +331,7 @@ const styles = {
         alignItems: 'center'
     },
     styleTextTitle: {
-        fontSize: 16,
-        color: '#4A86E8'
+        color: '#2196F3'
     },
     styleTextPhoto: {
         fontSize: 12
@@ -336,9 +350,9 @@ const styles = {
         alignItems: 'center',
     },
     logoMatch: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
         margin: 5,
         borderColor: '#9E9E9E',
         borderWidth: 1
@@ -350,11 +364,11 @@ const styles = {
     },
     scoreStyle: {
         margin: 5,
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 15,
         borderColor: '#9E9E9E',
         borderWidth: 1,
         backgroundColor: 'rgba(0,0,0,0.2)'
@@ -381,9 +395,10 @@ const styles = {
 };
 
 
-const mapStateToProps = ({ profileEquipe }) => {
-  const { team, refresh, photosEquipe, matchs, modalVisible, image } = profileEquipe;
-  return { team, refresh, photosEquipe, matchs, modalVisible, image };
+const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
+  const { team, refresh, photosEquipe, matchs } = profileEquipe;
+  const { user } = homeDiscussion;
+  return { team, refresh, photosEquipe, matchs, user };
 };
 
-export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, changeModalVisibleImage })(ProfileEquipe);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getMatchTeam })(ProfileEquipe);

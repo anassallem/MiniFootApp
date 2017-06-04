@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Image, Dimensions, Text, TouchableNativeFeedback, ScrollView, ListView, Modal } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { View, Image, Dimensions, Text, TouchableNativeFeedback, ScrollView, ListView } from 'react-native';
 import { Icon } from 'native-base';
 import { URL } from '../actions/api/config';
-import { profileStadeOpenModal, clickLikeStade, verifLickStade, clickDeslikeStade } from '../actions';
+import { clickLikeStade, verifLickStade, clickDeslikeStade } from '../actions';
 
 const logoStade = require('./assets/photostade.jpg');
 
@@ -18,7 +19,13 @@ class ProfileStade extends Component {
         this.createDataSource(nextProps);
   }
   onClickImage(tag, e) {
-      this.props.profileStadeOpenModal(tag);
+      let position = 0;
+      this.props.stade.photos.forEach((photo, i) => {
+         if (photo === tag) {
+             position = i;
+         }
+      });
+      Actions.displayPicture({ photos: this.props.stade.photos, index: position, delete: false, typePictures: 'Stade' });
   }
   onClickLike() {
       this.props.clickLikeStade(this.props.stade._id, this.props.user._id);
@@ -92,6 +99,7 @@ class ProfileStade extends Component {
           );
       }
   }
+
   renderRow(photo) {
       const uriImgStade = `${URL}/stade/stadeUploads/${photo}`;
       return (
@@ -100,39 +108,16 @@ class ProfileStade extends Component {
           </TouchableNativeFeedback>
         );
   }
-  renderModal() {
-       const uriImgStade = `${URL}/stade/stadeUploads/${this.props.photo}`;
-      return (
-        <Modal
-          style={styles.modalStyle}
-          animationType={'fade'}
-          transparent
-          visible={this.props.visible}
-          onRequestClose={() => {}}
-        >
-        <View style={styles.containerLoadingStyle}>
-          <View style={styles.containerLoadingModal}>
-              <TouchableNativeFeedback onPress={() => { this.props.profileStadeOpenModal(this, ''); }}>
-                  <View style={{ alignItems: 'flex-end', padding: 5, backgroundColor: '#232123', width: Dimensions.get('window').width - 61 }}>
-                      <Icon name='ios-close-circle-outline' style={{ color: '#FFFFFF' }} />
-                  </View>
-              </TouchableNativeFeedback>
-              <Image source={{ uri: uriImgStade }} style={styles.imageStyle} />
-          </View>
-        </View>
-        </Modal>
-      );
-  }
+
   render() {
       const { stade } = this.props;
     return (
         <ScrollView>
             <View style={styles.maincontainer}>
                 {this.renderImageStade()}
-                {this.renderModal()}
                 <View style={styles.containerTitle}>
                     <Icon name='ios-images-outline' style={styles.styleIcon} />
-                    <Text style={styles.styleTitle}>Photos d'équipe</Text>
+                    <Text style={styles.styleTitle}>Photos de stade</Text>
                 </View>
                 <ListView
                     enableEmptySections
@@ -286,8 +271,8 @@ const styles = {
 };
 
 const mapStateToProps = ({ profileStade, homeDiscussion }) => {
-  const { photo, visible, etat } = profileStade;
+  const { etat } = profileStade;
   const { user } = homeDiscussion;
-  return { photo, visible, etat, user };
+  return { etat, user };
 };
-export default connect(mapStateToProps, { profileStadeOpenModal, clickLikeStade, verifLickStade, clickDeslikeStade })(ProfileStade);
+export default connect(mapStateToProps, { clickLikeStade, verifLickStade, clickDeslikeStade })(ProfileStade);

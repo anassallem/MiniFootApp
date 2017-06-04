@@ -33,15 +33,15 @@ export default (state = INITIAL_STATE, action) => {
         let newAdverts = state.adverts;
         newAdverts.forEach((item) => {
             if (item._id === action.payload) {
-                 item.testInterested = action.reverse;
+                 item.advertTeam.testInterested = action.reverse;
                  if (action.reverse) {
-                     item.interested.push(action.idUser);
+                     item.advertTeam.interested.push(action.idUser);
                  } else {
-                     if (item.interested.indexOf(action.idUser) > -1) {
-                       item.interested.splice(item.interested.indexOf(action.idUser), 1);
+                     if (item.advertTeam.interested.indexOf(action.idUser) > -1) {
+                       item.advertTeam.interested.splice(item.advertTeam.interested.indexOf(action.idUser), 1);
                       }
                  }
-                 item.countInterested = item.interested.length;
+                 item.advertTeam.countInterested = item.advertTeam.interested.length;
              }
          });
         return { ...state, loadInterrested: true, adverts: newAdverts };

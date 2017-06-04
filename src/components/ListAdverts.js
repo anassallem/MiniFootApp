@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, ListView, RefreshControl, Modal, TouchableNativeFeedback } from 'react-native';
-import { Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
+import { Icon, Fab } from 'native-base';
 import { connect } from 'react-redux';
 import SingleItemAdvert from './common/SingleItemAdvert';
 import { getListAdverts, initialListAdverts, closeModal } from '../actions';
-import { ItemPlayer } from './common';
+import { ItemPlayer, SingleItemAdvertUser, SingleItemAdvertEvent } from './common';
 
 class ListAdverts extends Component {
     componentWillMount() {
@@ -34,7 +35,13 @@ class ListAdverts extends Component {
       this.dataSourceInterssted = ds.cloneWithRows(listInteressted);
     }
     renderRow(advert) {
-      return <SingleItemAdvert advert={advert} user={this.props.user} />;
+        if (advert.type === 'AdvertMatch') {
+            return <SingleItemAdvert advert={advert} user={this.props.user} />;
+        } else if (advert.type === 'AdvertUser') {
+            return <SingleItemAdvertUser advert={advert} idUser={this.props.user._id} />;
+        } else if (advert.type === 'AdvertEvent') {
+            return <SingleItemAdvertEvent advert={advert} idUser={this.props.user._id} />;
+        }
     }
     renderRowPlayer(player) {
         return <ItemPlayer player={player} />;
@@ -79,6 +86,17 @@ class ListAdverts extends Component {
                         }
                     />
                 {this.renderListIntersted()}
+                <View style={styles.containerButton}>
+                    <Fab
+                        active={false}
+                        direction="up"
+                        style={{ backgroundColor: '#01579B' }}
+                        position="bottomRight"
+                        onPress={() => { Actions.createAdvertUser(); }}
+                    >
+                        <Icon name="md-add" />
+                    </Fab>
+                </View>
             </View>
         );
     }
@@ -106,6 +124,11 @@ const styles = {
         padding: 5,
         height: 400
     },
+    containerButton: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end'
+    }
 };
 const mapStateToProps = ({ listAdverts }) => {
   const { adverts, page, refreshing, listInteressted, loading } = listAdverts;

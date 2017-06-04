@@ -18,12 +18,12 @@ export const getListAdverts = (page, idUser) => {
       getadverts(page).then((res) => {
           if (res.length > 0) {
               res.forEach((item) => {
-                 if (item.interested.indexOf(idUser) === -1) {
-                     item.testInterested = false;
+                 if (item.advertTeam.interested.indexOf(idUser) === -1) {
+                     item.advertTeam.testInterested = false;
                  } else {
-                     item.testInterested = true;
+                     item.advertTeam.testInterested = true;
                  }
-                 item.countInterested = item.interested.length;
+                 item.advertTeam.countInterested = item.advertTeam.interested.length;
               });
               dispatch({ type: LOAD_LIST_ADVERTS, payload: res });
           } else {
@@ -39,12 +39,12 @@ export const initialListAdverts = (idUser) => {
       dispatch({ type: START_REFRESHING_ADVERTS });
       getadverts(0).then((res) => {
           res.forEach((item) => {
-             if (item.interested.indexOf(idUser) === -1) {
-                 item.testInterested = false;
+             if (item.advertTeam.interested.indexOf(idUser) === -1) {
+                 item.advertTeam.testInterested = false;
              } else {
-                 item.testInterested = true;
+                 item.advertTeam.testInterested = true;
              }
-             item.countInterested = item.interested.length;
+             item.advertTeam.countInterested = item.advertTeam.interested.length;
           });
           dispatch({ type: LOAD_LIST_ADVERTS_BEGIN, payload: res });
       }, (err) => {
@@ -76,14 +76,13 @@ export const getListInteressted = (idAdvert) => {
   return (dispatch) => {
       dispatch({ type: START_GET_LIST_INTERESSTED_ADVERTS });
       getListInteresstedAdvert(idAdvert).then((res) => {
-          dispatch({ type: STOP_GET_LIST_INTERESSTED_ADVERTS, payload: res.interested });
+          dispatch({ type: STOP_GET_LIST_INTERESSTED_ADVERTS, payload: res.advertTeam.interested });
       }, (err) => {
           console.log(err);
       });
   };
 };
 export const closeModal = () => {
-    console.log('closeModal');
   return {
     type: CLOSE_MODAL_ADVERT
   };

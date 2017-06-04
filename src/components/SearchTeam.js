@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ListView } from 'react-native';
-import { Icon, Text, Header, Item, Input, Button } from 'native-base';
+import { View, ListView, RefreshControl } from 'react-native';
+import { Icon, Header, Item, Input } from 'native-base';
 import { fetchTeams, searchTeamChanged } from '../actions';
-import { ItemTeam, Spinner } from './common';
+import { ItemTeam } from './common';
 
 class SearchTeam extends Component {
 
   componentWillMount() {
-    this.props.fetchTeams(this.props.text);
+    this.props.fetchTeams(this.props.text, 0);
     this.createDataSource(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
     this.createDataSource(nextProps);
   }
-
+  onRefresh() {
+      this.props.fetchTeams(this.props.text, 0);
+  }
+  onEndReached() {
+      this.props.fetchTeams(this.props.text, this.props.page);
+  }
   onSearchChanged(text) {
-     this.props.fetchTeams(text);
+     this.props.fetchTeams(text, 0);
      this.props.searchTeamChanged(text);
   }
 
@@ -32,21 +37,6 @@ class SearchTeam extends Component {
        return <ItemTeam team={team} />;
   }
 
-  renderList() {
-     if (this.props.loading) {
-       return <Spinner size="large" />;
-     }
-     return (
-       <ListView
-         enableEmptySections
-         dataSource={this.dataSource}
-         renderRow={this.renderRow.bind(this)}
-         pageSize={10}
-         onEndReached={() => { console.log('fired'); }}
-       />
-     );
-   }
-
   render() {
     return (
         <View style={{ marginBottom: 60 }}>
@@ -56,18 +46,30 @@ class SearchTeam extends Component {
                   <Input placeholder="Search" onChangeText={this.onSearchChanged.bind(this)} />
                   <Icon active name="people" />
               </Item>
-              <Button transparent>
-                  <Text>Search</Text>
-              </Button>
           </Header>
-          {this.renderList()}
+          <ListView
+            enableEmptySections
+            dataSource={this.dataSource}
+            renderRow={this.renderRow.bind(this)}
+            pageSize={10}
+            onEndReached={this.onEndReached.bind(this)}
+            onEndReachedThreshold={5}
+            refreshControl={
+                <RefreshControl
+                    tintColor='blue'
+                    colors={['#64B5F6', '#2196F3', '#1976D2']}
+                    refreshing={this.props.loading}
+                    onRefresh={this.onRefresh.bind(this)}
+                />
+            }
+          />
         </View>
     );
   }
 }
 
 const mapStateToProps = ({ searchTeam }) => {
-  const { teams, text, loading } = searchTeam;
-  return { teams, text, loading };
+  const { teams, text, loading, page } = searchTeam;
+  return { teams, text, loading, page };
 };
 export default connect(mapStateToProps, { fetchTeams, searchTeamChanged })(SearchTeam);

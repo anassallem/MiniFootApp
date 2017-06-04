@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Dimensions, TextInput, TouchableNativeFeedback } from 'react-native';
-import { Header, Icon, Button } from 'native-base';
+import { Header, Icon } from 'native-base';
 
 class Headers extends Component {
   render() {
@@ -27,7 +27,7 @@ const { width } = Dimensions.get('window');
 const styles = {
   styleIcon: {
     color: '#FFFFFF',
-    marginRight: 10,
+    paddingRight: 10,
     fontSize: 20
   },
   mainContainer: {

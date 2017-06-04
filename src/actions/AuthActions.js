@@ -2,8 +2,8 @@ import { AsyncStorage } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { auth } from './api/AuthentificationApi';
 import {
-  EMAIL_CHANGED,
-  PASSWORD_CHANGED,
+  LOGIN_EMAIL_CHANGED,
+  LOGIN_PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
   LOGIN_USER,
@@ -14,7 +14,7 @@ import {
 export const emailChanged = (text) => {
   const valid = validateEmail(text);
   return {
-    type: EMAIL_CHANGED,
+    type: LOGIN_EMAIL_CHANGED,
     payload: text,
     validate: valid
   };
@@ -23,7 +23,7 @@ export const emailChanged = (text) => {
 export const passwordChanged = (text) => {
   const valid = validatePassword(text);
   return {
-    type: PASSWORD_CHANGED,
+    type: LOGIN_PASSWORD_CHANGED,
     payload: text,
     validate: valid
   };
@@ -82,18 +82,19 @@ const loginUserFail = (dispatch, message) => {
 };
 
 const loginUserSuccess = (dispatch, user) => {
-  dispatch({
-    type: LOGIN_USER_SUCCESS
-  });
-  setCache(user);
-  Actions.home();//navigation between routes
+    setCache(user);
+    dispatch({
+        type: LOGIN_USER_SUCCESS
+    });
+    Actions.home();
 };
 
-async function setCache (user){
+function setCache(user) {
   try {
-    await AsyncStorage.setItem('user', JSON.stringify(user));
+       AsyncStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       // Error saving data
+      console.log(error);
     }
 }
 

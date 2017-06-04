@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { AsyncStorage, Modal, View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { Container, Content, Text } from 'native-base';
-import { UserSkills } from './common';
+import { UserSkillsFull } from './common';
 import { changeRatingAttaque, changeRatingDefence, changeRatingMilieu, changeRatingGardien, addSkills } from '../actions';
 
 class PlayerNoteForm extends Component {
@@ -55,7 +55,7 @@ class PlayerNoteForm extends Component {
     return (
       <Container>
         <Content style={{ marginTop: 50 }}>
-          <UserSkills AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne} disabled={false}
+          <UserSkillsFull AC={attaque} DF={defence} MC={milieu} GB={gardien} nbrNote={nbrPersonne} disabled={false}
             envoyerSkills={this.handelEnvoyerSkills.bind(this)}
             changeRatingAC={this.handelRatingAC.bind(this)}
             changeRatingDF={this.handelRatingDF.bind(this)}

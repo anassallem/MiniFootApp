@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, AsyncStorage } from 'react-native';
+import { TouchableNativeFeedback, AsyncStorage, View } from 'react-native';
 import { Actions } from 'react-native-router-flux';
 import { Left, Body, ListItem, Thumbnail, Text } from 'native-base';
 import { URL } from '../../actions/api/config';
@@ -20,23 +20,96 @@ class ItemPlayer extends Component {
                console.log('caught error', e);
            }
     }
+    renderPostePlayer() {
+        const { joueur } = this.props.player;
+        switch (joueur.poste) {
+            case 'Attaque':
+                return <Text style={styles.textStyleAC}>{joueur.poste}</Text>;
+            case 'Milieu':
+                return <Text style={styles.textStyleMC}>{joueur.poste}</Text>;
+            case 'Defence':
+                return <Text style={styles.textStyleDF}>{joueur.poste}</Text>;
+            case 'Gardien':
+                return <Text style={styles.textStyleGB}>{joueur.poste}</Text>;
+            default:
+        }
+    }
     render() {
-        const { firstname, lastname, email, photo } = this.props.player;
+        const { firstname, lastname, photo } = this.props.player;
         const uriImg = `${URL}/users/upload/${photo}`;
         return (
             <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
-                <ListItem avatar>
-                    <Left>
-                        <Thumbnail source={{ uri: uriImg }} />
-                    </Left>
-                    <Body>
+                <View style={styles.mainContainer}>
+                    <Thumbnail source={{ uri: uriImg }} />
+                    <View style={styles.containerBody}>
                         <Text>{`${firstname} ${lastname}`}</Text>
-                        <Text note>{email}</Text>
-                    </Body>
-                </ListItem>
+                        {this.renderPostePlayer()}
+                    </View>
+                </View>
             </TouchableNativeFeedback>
         );
     }
 }
+const styles = {
+    mainContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#EEEEEE'
+    },
+    containerBody: {
+        flexDirection: 'column',
+        marginLeft: 10,
+    },
+    textStyleAC: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
+        color: '#FFFFFF',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: '#FAFAFA',
+        backgroundColor: '#F44336',
+        width: 80
+    },
+    textStyleMC: {
+        paddingLeft: 17,
+        paddingRight: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
+        color: '#FFFFFF',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: '#FAFAFA',
+        backgroundColor: '#3F51B5',
+        width: 80
+    },
+    textStyleDF: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
+        color: '#FFFFFF',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: '#FAFAFA',
+        backgroundColor: '#FDD835',
+        width: 80
+    },
+    textStyleGB: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 3,
+        paddingBottom: 3,
+        color: '#FFFFFF',
+        borderRadius: 5,
+        borderWidth: 0.5,
+        borderColor: '#FAFAFA',
+        backgroundColor: '#4CAF50',
+        width: 80
+    }
+};
 
 export { ItemPlayer };

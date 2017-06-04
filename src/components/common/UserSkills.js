@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Text, Card, CardItem, Body, Col, Grid, Icon, Button } from 'native-base';
+import { Text, Icon, Button, Card } from 'native-base';
+import { View, Image } from 'react-native';
 import StarRating from 'react-native-star-rating';
+
+const stickersPlayer = require('../assets/stickers.png');
 
 class UserSkills extends Component {
 
@@ -29,86 +32,86 @@ class UserSkills extends Component {
                  </Button>);
      }
   }
-
   render() {
       const { AC, DF, MC, GB, nbrNote, disabled } = this.props;
-      const { containerInfo, textStyle, styleContainerFooter } = styles;
       return (
-            <Card style={containerInfo}>
-                <CardItem header bordered style={{ borderBottomColor: '#9E9E9E', borderBottomWidth: 0.2 }}>
-                    <Text>Compétences</Text>
-                </CardItem>
-                <CardItem style={{ paddingLeft: 50, paddingRight: 50 }}>
-                    <Body>
-                        <Grid style={{ alignItems: 'center' }}>
-                            <Col style={{ width: 50 }}>
-                                <Text>AC</Text>
-                            </Col>
-                            <Col>
-                                <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
-                                    maxStars={5} rating={AC} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
-                                    selectedStar={(rating) => this.onStarRatingPressAC(rating)}
-                                />
-                            </Col>
-                        </Grid>
-                        <Grid style={{ alignItems: 'center' }}>
-                            <Col style={{ width: 50 }}>
-                                <Text>DF</Text>
-                            </Col>
-                            <Col>
-                                <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
-                                    maxStars={5} rating={DF} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
-                                    selectedStar={(rating) => this.onStarRatingPressDF(rating)}
-                                />
-                            </Col>
-                        </Grid>
-                        <Grid style={{ alignItems: 'center' }}>
-                            <Col style={{ width: 50 }}>
-                                <Text>MC</Text>
-                            </Col>
-                            <Col>
-                                <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
-                                    maxStars={5} rating={MC} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
-                                    selectedStar={(rating) => this.onStarRatingPressMC(rating)}
-                                />
-                            </Col>
-                        </Grid>
-                        <Grid style={{ alignItems: 'center' }}>
-                            <Col style={{ width: 50 }}>
-                                <Text>GB</Text>
-                            </Col>
-                            <Col>
-                                <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
-                                    maxStars={5} rating={GB} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
-                                    selectedStar={(rating) => this.onStarRatingPressGB(rating)}
-                                />
-                            </Col>
-                        </Grid>
-                    </Body>
-                 </CardItem>
-                 <CardItem footer style={styleContainerFooter}>
+          <Card>
+            <View style={styles.mainContainer}>
+                <Image source={stickersPlayer} style={styles.styleImage} resizeMode='stretch'>
+                    <View style={styles.containerAC}>
+                        <Text>Attaque</Text>
+                        <Text style={styles.textStyle}>Technique et vitesse</Text>
+                        <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
+                            maxStars={5} rating={AC} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
+                            selectedStar={(rating) => this.onStarRatingPressAC(rating)}
+                        />
+                    </View>
+                    <View style={styles.containerMC}>
+                        <Text>Milieu</Text>
+                        <Text style={styles.textStyle}>Tactique et concentration</Text>
+                        <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
+                            maxStars={5} rating={MC} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
+                            selectedStar={(rating) => this.onStarRatingPressMC(rating)}
+                        />
+                    </View>
+                    <View style={styles.containerDF}>
+                        <Text>Défence</Text>
+                        <Text style={styles.textStyle}>Endurance et vitesse</Text>
+                        <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
+                            maxStars={5} rating={DF} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
+                            selectedStar={(rating) => this.onStarRatingPressDF(rating)}
+                        />
+                    </View>
+                    <View style={styles.containerGB}>
+                        <Text>Gardien</Text>
+                        <Text style={styles.textStyle}>Anticipation et rapidité</Text>
+                        <StarRating disabled emptyStar={'ios-star-outline'} fullStar={'ios-star'} halfStar={'ios-star-half'} iconSet={'Ionicons'}
+                            maxStars={5} rating={GB} starColor={'#2196F3'} starSize={30} emptyStarColor={'#2196F3'} disabled={disabled}
+                            selectedStar={(rating) => this.onStarRatingPressGB(rating)}
+                        />
+                    </View>
+                </Image>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
                     {this.renderButton()}
-                    <Text style={textStyle}>{nbrNote} personnes</Text>
-                 </CardItem>
-           </Card>
+                    <Text style={styles.textStyle}>{nbrNote} personnes</Text>
+                </View>
+            </View>
+        </Card>
     );
   }
 }
 
 const styles = {
-  containerInfo: {
-      margin: 10
+  mainContainer: {
+      margin: 5
+  },
+  styleImage: {
+      width: null,
+      height: 290,
+      paddingTop: 5,
+      paddingBottom: 5
+  },
+  containerAC: {
+      alignSelf: 'flex-start',
+  },
+  containerMC: {
+      alignSelf: 'flex-end',
+      marginTop: 30,
+  },
+  containerDF: {
+      alignSelf: 'flex-start',
+      marginTop: 10
+  },
+  containerGB: {
+      alignSelf: 'flex-end',
+      marginTop: 10
   },
   textStyle: {
       color: '#616161',
-      fontSize: 14
+      fontSize: 12
   },
   colorGray: {
       color: '#616161'
-  },
-  styleContainerFooter: {
-      justifyContent: 'space-around',
-      backgroundColor: '#FAFAFA',
   }
 };
 

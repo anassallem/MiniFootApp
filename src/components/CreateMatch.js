@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableNativeFeedback, ListView, Modal, TextInput, Dimensions, Alert, ActivityIndicator } from 'react-native';
+import { View, Image, Text, TouchableNativeFeedback, ListView, Modal, TextInput, Dimensions, Alert, ActivityIndicator, RefreshControl } from 'react-native';
 import { Header, Body, Title, Icon, ListItem, Left, Thumbnail } from 'native-base';
 import { connect } from 'react-redux';
 import { fetchTeams, searchTeamChanged, teamAdversaireChanged, switchModalChanged,
@@ -13,21 +13,35 @@ const background = require('./assets/grass.jpg');
 
 class CreateMatch extends Component {
   componentWillMount() {
-     this.props.fetchTeams(this.props.text);
-     this.props.fetchStades(this.props.textStade);
+     this.props.fetchStades(this.props.textStade, 0);
      this.createDataSource(this.props);
      this.createdataSourceStade(this.props);
+  }
+  componentDidMount() {
+      this.props.fetchTeams(this.props.text, 0);
   }
   componentWillReceiveProps(nextProps) {
      this.createDataSource(nextProps);
      this.createdataSourceStade(nextProps);
   }
+  onRefresh() {
+      this.props.fetchTeams(this.props.text, 0);
+  }
+  onRefreshStade() {
+      this.props.fetchStades(this.props.textStade, 0);
+  }
+  onEndReached() {
+      this.props.fetchTeams(this.props.text, this.props.page);
+  }
+  onEndReachedStade() {
+      this.props.fetchStades(this.props.textStade, this.props.pageStade);
+  }
   onSearchChanged(text) {
-     this.props.fetchTeams(text);
+     this.props.fetchTeams(text, 0);
      this.props.searchTeamChanged(text);
   }
   onSearchStadeChanged(text) {
-      this.props.fetchStades(text);
+      this.props.fetchStades(text, 0);
       this.props.searchStadeChanged(text);
   }
   onPressChooseTeam() {
@@ -48,6 +62,14 @@ class CreateMatch extends Component {
           }
       } else {
           Alert.alert('Information', 'selectionner une équipe avant de créer match');
+      }
+  }
+  handleClickTeamAdversaire(team, tag) {
+      if (this.props.myTeam._id === team._id) {
+          Alert.alert('Attention', 'Vous ne pouvez pas sélectionner la même équipe.');
+      } else {
+          this.props.teamAdversaireChanged(team);
+          this.props.switchModalChanged();
       }
   }
   createDataSource({ teams }) {
@@ -92,7 +114,7 @@ class CreateMatch extends Component {
   }
   renderRow(team) {
        return (
-           <TouchableNativeFeedback onPress={() => { this.props.teamAdversaireChanged(team); this.props.switchModalChanged(); }}>
+           <TouchableNativeFeedback onPress={this.handleClickTeamAdversaire.bind(this, team)}>
                <ListItem avatar>
                    <Left>
                        {this.renderPhoto(team)}
@@ -104,19 +126,6 @@ class CreateMatch extends Component {
            </TouchableNativeFeedback>
        );
   }
-  renderList() {
-     if (this.props.loading) {
-       return <Spinner size="large" />;
-     }
-     return (
-       <ListView
-         enableEmptySections
-         dataSource={this.dataSource}
-         renderRow={this.renderRow.bind(this)}
-         pageSize={10}
-       />
-     );
-   }
   renderChooseTeamAdversaire() {
        return (<Modal animationType={'fade'} transparent visible={this.props.visible} onRequestClose={() => {}}>
                  <View style={styles.containerLoadingStyle}>
@@ -130,7 +139,22 @@ class CreateMatch extends Component {
                             placeholder="Rechercher ..." onChangeText={this.onSearchChanged.bind(this)}
                             underlineColorAndroid={'#E0E0E0'}
                         />
-                       {this.renderList()}
+                        <ListView
+                          enableEmptySections
+                          dataSource={this.dataSource}
+                          renderRow={this.renderRow.bind(this)}
+                          pageSize={10}
+                          onEndReached={this.onEndReached.bind(this)}
+                          onEndReachedThreshold={5}
+                          refreshControl={
+                              <RefreshControl
+                                  tintColor='blue'
+                                  colors={['#64B5F6', '#2196F3', '#1976D2']}
+                                  refreshing={this.props.loading}
+                                  onRefresh={this.onRefresh.bind(this)}
+                              />
+                          }
+                        />
                    </View>
                  </View>
                </Modal>
@@ -172,19 +196,6 @@ class CreateMatch extends Component {
           </View>
       );
   }
-  renderListStade() {
-      if (this.props.loadingStade) {
-        return <Spinner size="large" />;
-      }
-      return (
-        <ListView
-          enableEmptySections
-          dataSource={this.dataSourceStade}
-          renderRow={this.renderRowStade.bind(this)}
-          pageSize={10}
-        />
-      );
-  }
   renderChooseStade() {
       return (<Modal animationType={'fade'} transparent visible={this.props.visibleStade} onRequestClose={() => {}}>
                 <View style={styles.containerLoadingStyle}>
@@ -198,7 +209,22 @@ class CreateMatch extends Component {
                            placeholder="Rechercher ..." onChangeText={this.onSearchStadeChanged.bind(this)}
                            underlineColorAndroid={'#E0E0E0'}
                        />
-                   {this.renderListStade()}
+                       <ListView
+                         enableEmptySections
+                         dataSource={this.dataSourceStade}
+                         renderRow={this.renderRowStade.bind(this)}
+                         pageSize={10}
+                         onEndReached={this.onEndReachedStade.bind(this)}
+                         onEndReachedThreshold={5}
+                         refreshControl={
+                             <RefreshControl
+                                 tintColor='blue'
+                                 colors={['#64B5F6', '#2196F3', '#1976D2']}
+                                 refreshing={this.props.loadingStade}
+                                 onRefresh={this.onRefreshStade.bind(this)}
+                             />
+                         }
+                       />
                   </View>
                 </View>
               </Modal>
@@ -420,10 +446,10 @@ const styles = {
     },
 };
 const mapStateToProps = ({ searchTeam, createMatch, homeDiscussion }) => {
-  const { teams, text, loading } = searchTeam;
-  const { visible, teamAdversaire, loadCreate, stade, stades, visibleStade, loadingStade } = createMatch;
+  const { teams, text, loading, page } = searchTeam;
+  const { visible, teamAdversaire, loadCreate, stade, stades, visibleStade, loadingStade, pageStade } = createMatch;
   const { socket } = homeDiscussion;
-  return { teams, text, loading, visible, teamAdversaire, socket, loadCreate, stades, stade, visibleStade, loadingStade };
+  return { teams, text, loading, visible, teamAdversaire, socket, loadCreate, stades, stade, visibleStade, loadingStade, page, pageStade };
 };
 
 export default connect(mapStateToProps,

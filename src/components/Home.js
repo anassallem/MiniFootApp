@@ -56,6 +56,10 @@ class Home extends Component {
       Actions.listFriends();
       this.closeDrawer();
   }
+  handleMesAdverts() {
+      Actions.mesAdvertsUser();
+      this.closeDrawer();
+  }
   handelEquipe() {
       Actions.searchTeam();
       this.closeDrawer();
@@ -70,10 +74,11 @@ class Home extends Component {
   }
   handelDeconnexion() {
       try {
+          this.props.socket.emit('disconnect', this.props.user._id);
           AsyncStorage.removeItem('user');
           AsyncStorage.removeItem('equipe');
           this.props.initialStateHome();
-          Actions.login();
+          Actions.login({ type: 'reset' });
        } catch (e) {
          console.log('caught error', e);
        }
@@ -84,6 +89,12 @@ class Home extends Component {
   openDrawer = () => {
       this.drawer._root.open();
   };
+  handelSearch() {
+      Actions.searchPlayer();
+  }
+  handelDrawer() {
+      this.openDrawer();
+  }
   handelInitialNumberNotify() {
       this.props.initialNumberNotifyHome();
   }
@@ -116,12 +127,6 @@ class Home extends Component {
           return <ListAdverts user={this.props.user} />;
       }
   }
-  handelSearch() {
-      Actions.searchPlayer();
-  }
-  handelDrawer() {
-      this.openDrawer();
-  }
   render() {
     return (
       <Drawer
@@ -131,6 +136,8 @@ class Home extends Component {
               onClickMatchs={this.handleMatchs.bind(this)}
               onClickListStades={this.handleListStade.bind(this)}
               onClickDeconnexion={this.handelDeconnexion.bind(this)}
+              onClickAdverts={this.handleMesAdverts.bind(this)}
+              tweenDuration={100}
               />}
               onClose={() => this.closeDrawer()}
       >

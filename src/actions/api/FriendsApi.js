@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { URL } from './config';
 
-export const getInvitationsUser = (idUser) => {
-    const requestURL = `${URL}/friends/${idUser}/invitations`;
+export const getInvitationsUser = (page, idUser) => {
+    const requestURL = `${URL}/friends/${idUser}/invitations?page=${page}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;
@@ -31,8 +31,8 @@ export const acceptInvitationsUser = (idInvitation, invitation) => {
   });
 };
 
-export const getFriends = (idUser) => {
-    const requestURL = `${URL}/friends/${idUser}`;
+export const getFriends = (page, idUser) => {
+    const requestURL = `${URL}/friends/${idUser}?page=${page}`;
       return axios.get(requestURL)
       .then((res) => {
         return res.data;

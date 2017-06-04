@@ -10,6 +10,7 @@ export const getMesMatchs = (idEquipe, date, page) => {
     throw new Error(res);
   });
 };
+
 export const getMesMatchsEquipe = (idEquipe, date, page) => {
     const requestURL = `${URL}/match/${idEquipe}/myTeam?date=${date}&page=${page}`;
     return axios.get(requestURL)
@@ -52,6 +53,15 @@ export const addScoreMatch = (idMatch, scoreOne, scoreTow) => {
     const score = { scoreOne, scoreTow };
     const requestURL = `${URL}/match/${idMatch}/score`;
     return axios.put(requestURL, score, CONFIG)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};
+export const getMatchsTeamTerminated = (idEquipe) => {
+    const requestURL = `${URL}/match/${idEquipe}/terminated`;
+    return axios.get(requestURL)
     .then((res) => {
       return res.data;
   }, (res) => {

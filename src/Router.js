@@ -32,6 +32,10 @@ import SearchStades from './components/SearchStades';
 import ProfileStade from './components/ProfileStade';
 import ReserverStade from './components/ReserverStade';
 import Matchs from './components/Matchs';
+import CreateAdvert from './components/CreateAdvert';
+import MesAdvertsUser from './components/MesAdvertsUser';
+import AdvertEventDetail from './components/AdvertEventDetail';
+import DisplayPicture from './components/DisplayPicture';
 
 const icon = require('./components/assets/back.png');
 
@@ -80,6 +84,10 @@ class RouterComponent extends Component {
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="createAdvert" component={CreateAdvertMatch} />
+              <Scene key="createAdvertUser" component={CreateAdvert} />
+              <Scene key="mesAdvertsUser" component={MesAdvertsUser} hideNavBar={false} title="Mes annonces"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
               <Scene key="formation" component={Formation} hideNavBar />
               <Scene key="addPlayersFormation" component={AddPlayersFormation} hideNavBar />
               <Scene key="showTeamPhotos" component={ShowTeamPhotos} title="Photos" hideNavBar />
@@ -101,6 +109,10 @@ class RouterComponent extends Component {
               <Scene key="matchs" component={Matchs} hideNavBar={false} title="Mes matchs"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
+              <Scene key="advertEventDetail" component={AdvertEventDetail} hideNavBar={false} title="Événement"
+                navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
+              />
+              <Scene key="displayPicture" component={DisplayPicture} hideNavBar />
            </Scene>
         </Router>
         );

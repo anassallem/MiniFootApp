@@ -10,67 +10,48 @@ class MyInvitations extends Component {
   componentWillMount() {
       this.createDataSource(this.props);
   }
-
   componentDidMount() {
       this.onRefresh();
   }
-
   componentWillReceiveProps(nextProps) {
     this.createDataSource(nextProps);
   }
-
   onRefresh() {
-      try {
-          AsyncStorage.getItem('user').then((value) => {
-              const user = JSON.parse(value);
-              this.props.getInvitations(user.user._id);
-          }).done();
-      } catch (e) {
-          console.log('caught error', e);
-      }
+      this.props.getInvitations(0, this.props.user._id);
   }
-
+  onEndReached() {
+      this.props.getInvitations(this.props.page, this.props.user._id);
+  }
   createDataSource({ invitations }) {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
     this.dataSource = ds.cloneWithRows(invitations);
   }
-
   renderRow(invitation) {
     return <ItemPlayerInvitation invitation={invitation} />;
   }
-
-  renderList() {
-     if (this.props.loading) {
-       return <Spinner size="large" />;
-     }
-     return (
-       <ListView
-         enableEmptySections
-         dataSource={this.dataSource}
-         renderRow={this.renderRow}
-         refreshControl={
-          <RefreshControl
-            tintColor='blue'
-            colors={['#64B5F6', '#2196F3', '#1976D2']}
-            refreshing={this.props.loading}
-            onRefresh={this.onRefresh.bind(this)}
-          />
-        }
-       />
-     );
-   }
   render() {
       return (
-        <View>
-            {this.renderList()}
-        </View>
+            <ListView
+              enableEmptySections
+              dataSource={this.dataSource}
+              renderRow={this.renderRow.bind(this)}
+              refreshControl={
+               <RefreshControl
+                 tintColor='blue'
+                 colors={['#64B5F6', '#2196F3', '#1976D2']}
+                 refreshing={this.props.loading}
+                 onRefresh={this.onRefresh.bind(this)}
+               />
+             }
+            />
     );
   }
 }
-const mapStateToProps = ({ myInvitations }) => {
-  const { invitations, loading } = myInvitations;
-  return { invitations, loading };
+const mapStateToProps = ({ myInvitations, homeDiscussion }) => {
+  const { invitations, loading, page } = myInvitations;
+  const { user } = homeDiscussion;
+  return { invitations, loading, page, user };
 };
 export default connect(mapStateToProps, { getInvitations })(MyInvitations);

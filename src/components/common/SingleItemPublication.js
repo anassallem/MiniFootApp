@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import { TouchableNativeFeedback, View, Dimensions } from 'react-native';
-import { CardItem, Body, Card, Text, Left, Icon, Thumbnail } from 'native-base';
+import { connect } from 'react-redux';
+import { TouchableNativeFeedback, View, Dimensions, Alert } from 'react-native';
+import { CardItem, Body, Card, Text, Left, Icon, Thumbnail, Right } from 'native-base';
 import { URL } from '../../actions/api/config';
+import { getListInteresstedPublication, deleteAdvert } from '../../actions';
 
 const logo = require('../assets/logoEquipe.jpg');
 
 class SingleItemPublication extends Component {
     onPressButton() {
+        this.props.getListInteresstedPublication(this.props.advert._id);
+    }
+    onPressButtonDelete() {
+        if (this.props.user.joueur.type !== 'Joueur') {
+            Alert.alert('Attention', 'Vous voulez vraiment supprimer cette annonce',
+            [{ text: 'Confirmer', onPress: () => this.props.deleteAdvert(this.props.advert._id) }, { text: 'Annuler', onPress: () => console.log('OK Pressed!') }]);
+        } else {
+            Alert.alert('Attention', "Vous n'avez pas le droit du supprimer");
+        }
     }
     clickInteressted() {
 
     }
     renderListDisponibility() {
-        return this.props.advert.disponibility.map((item) => {
+        return this.props.advert.advertTeam.disponibility.map((item) => {
             return (
                 <View key={Math.random(100)} style={styles.styleDisponibility}>
                     <Text>{item}</Text>
@@ -23,24 +34,28 @@ class SingleItemPublication extends Component {
     }
 
     renderLogoTeam() {
-        if (this.props.advert.createdBy.logo !== undefined) {
-            return <Thumbnail square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.createdBy.logo}` }} />;
+        if (this.props.advert.advertTeam.createdBy.logo !== undefined) {
+            return <Thumbnail square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.advertTeam.createdBy.logo}` }} />;
         }
         return <Thumbnail square source={logo} />;
     }
     render() {
-        const { createdBy, description, createdAt, interested } = this.props.advert;
+        const { createdBy, description, interested } = this.props.advert.advertTeam;
         return (
-            <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
                 <Card>
                    <CardItem>
                        <Left>
                          {this.renderLogoTeam()}
                          <Body>
                              <Text>{createdBy.name}</Text>
-                             <Text note>{moment(createdAt).fromNow()}</Text>
+                             <Text note>{moment(this.props.advert.createdAt).fromNow()}</Text>
                          </Body>
                        </Left>
+                       <Right>
+                           <TouchableNativeFeedback onPress={this.onPressButtonDelete.bind(this)}>
+                               <Icon name='ios-trash-outline' style={styles.styleIconDelete} />
+                           </TouchableNativeFeedback>
+                       </Right>
                    </CardItem>
                    <CardItem content style={styles.styleContainerBody}>
                        <Text>{description}</Text>
@@ -54,14 +69,15 @@ class SingleItemPublication extends Component {
                    <CardItem style={styles.styleContainerFooter}>
 
                      <View style={styles.styleFooter}>
-                         <View style={styles.styleNbrInterested}>
-                             <Text style={{ marginRight: 8, marginLeft: 8 }}>{interested.length}</Text>
-                             <Icon active name="ios-football-outline" style={{ fontSize: 18 }} />
-                         </View>
+                         <TouchableNativeFeedback onPress={this.onPressButton.bind(this)}>
+                             <View style={styles.styleNbrInterested}>
+                                 <Text style={{ marginRight: 8, marginLeft: 8 }}>{interested.length}</Text>
+                                 <Icon active name="ios-football-outline" style={{ fontSize: 18 }} />
+                             </View>
+                         </TouchableNativeFeedback>
                      </View>
                    </CardItem>
                 </Card>
-            </TouchableNativeFeedback>
         );
     }
 }
@@ -140,7 +156,16 @@ const styles = {
     },
     styleTitle: {
         color: '#9E9E9E'
+    },
+    styleIconDelete: {
+        color: '#F44336',
+        fontSize: 30
     }
 };
 
-export default SingleItemPublication;
+const mapStateToProps = ({ homeDiscussion }) => {
+  const { user } = homeDiscussion;
+  return { user };
+};
+
+export default connect(mapStateToProps, { getListInteresstedPublication, deleteAdvert })(SingleItemPublication);

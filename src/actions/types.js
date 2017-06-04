@@ -1,5 +1,7 @@
 export const EMAIL_CHANGED = 'email_changed';
 export const PASSWORD_CHANGED = 'password_changed';
+export const LOGIN_EMAIL_CHANGED = 'login_email_changed';
+export const LOGIN_PASSWORD_CHANGED = 'login_password_changed';
 export const PASSWORDCONFIRM_CHANGED = 'password_confirm_changed';
 export const NAME_CHANGED = 'name_changed';
 export const LASTNAME_CHANGED = 'lastname_changed';
@@ -25,6 +27,7 @@ export const CONFIRM_INVITATIONS = 'confirm_invitations';
 //search player
 export const SEARCH_CHANGED = 'search_changed';
 export const FETCH_PLAYERS = 'fetch_players';
+export const FETCH_PLAYERS_MORE = 'fetch_players_more';
 export const LOADING_PLAYERS = 'loading_players';
 export const CHANGE_RATING_ATTAQUE = 'change_rating_attaque';
 export const CHANGE_RATING_DEFENCE = 'change_rating_defence';
@@ -47,11 +50,13 @@ export const CONFIRM_NEW_PASSWORD = 'confirm_new_password';
 export const UPDATE_USER_POSTE = 'update_user_poste';
 export const USER_UPDATE_JOUEUR = 'user_update_joueur';
 export const REFRESH_UPDATE_START = 'refresh_update_start';
-
+//my friends
 export const SWITCH_CHANGED = 'switch_changed';
 export const GET_INVITATIONS = 'get_invitations';
+export const GET_INVITATIONS_MORE = 'get_invitations_more';
 export const LOADING_MY_FRIENDS = 'loading_my_friends';
 export const GET_MY_FRIENDS = 'get_friends';
+export const GET_MY_FRIENDS_MORE = 'get_friends_more';
 export const LOADING_INVITATION_FRIENDS = 'loading_invitation_Friends';
 export const DELETE_INVITATIONS = 'delete_invitations';
 export const ACCEPT_INVITATIONS = 'accept_invitations';
@@ -82,6 +87,7 @@ export const CREATE_EQUIPE = 'create_equipe';
 export const CREATE_EQUIPE_SUCCESS = 'create_equipe_success';
 export const CREATE_EQUIPE_FAIL = 'create_equipe_fail';
 export const FETCH_TEAMS = 'fetch_teams';
+export const FETCH_TEAMS_MORE = 'fetch_teams_more';
 export const LOADING_TEAMS = 'loading_teams';
 export const SEARCH_TEAM = 'search_team';
 export const INITIAL_STATE_EQUIPE = 'initial_state_equipe';
@@ -93,7 +99,8 @@ export const REJOINDRE_TEAM = 'rejoindre_team';
 export const GET_ID_USER = 'get_id_user';
 export const CANCEL_REJOINDRE_TEAM = 'cancel_rejoindre_team';
 export const CHANGE_MODAL_VISIBLE_IMAGE = 'change_modal_visible_image';
-
+export const GET_MATCH_TEAM_TERMINATED = 'get_match_team_terminated';
+export const INITIAL_STATE_TEAM_SEARCH = 'initial_state_team_search';
 //notifications rejoindre team
 export const GET_NOTIFICATIONS_REJOINDRE_TEAM = 'get_notifications_rejoindre_team';
 export const LOADING_NOTIFICATIONS_REJOINDRE_TEAM = 'loading_notifications_rejoindre_team';
@@ -164,6 +171,10 @@ export const LOAD_LIST_PUBLICATIONS = 'load_list_publications';
 export const LOAD_LIST_PUBLICATIONS_BEGIN = 'load_list_publications_begin';
 export const START_REFRESHING_PUBLICATIONS = 'start_refreshing_publications';
 export const STOP_REFRESHING_PUBLICATIONS = 'stop_refreshing_publications';
+export const START_GET_LIST_INTERESSTED_MY_PUBLICATIONS = 'start_get_list_interessted_my_publications';
+export const STOP_GET_LIST_INTERESSTED_MY_PUBLICATIONS = 'stop_get_list_interessted_my_publications';
+export const CLOSE_MODAL_ADVERT_MY_PUBLICATIONS = 'close_modal_advert_my_publications';
+export const DELETE_ADVERT_BY_ID = 'delete_adver_by_id';
 //create match
 export const SWITCH_MODAL_CHANGED = 'switch_modal_changed';
 export const TEAM_ADVERSAIRE_CHANGED = 'team_adversaire_changed';
@@ -171,7 +182,8 @@ export const START_LOAD_CREATE_MATCH = 'start_load_create_match';
 export const INITIAL_STATE_CREATE_MATCH = 'initial_state_create_match';
 export const SWITCH_MODAL_STADE_CHANGED = 'switch_modal_stade_changed';
 export const START_LOAD_SEARSH_STADE = 'start_load_search_stade';
-export const STOP_LOAD_SEARSH_STADE = 'stop_load_search_stade';
+export const STOP_CREATE_LOAD_SEARSH_STADE = 'stop_load_search_stade';
+export const STOP_MORE_LOAD_SEARSH_STADE = 'stop_more_load_search_stade';
 export const STADE_CHANGED = 'stade_changed';
 export const SEARCH_STADE_CHANGED = 'search_stade_changed';
 // mes match
@@ -187,8 +199,8 @@ export const SCORE_TWO_CHANGED = 'score_tow_changed';
 export const SEARCH_LIST_STADE_CHANGED = 'search_list_stade_changed';
 export const START_LOAD_SEARSH_LIST_STADE = 'start_load_search_list_stade';
 export const STOP_LOAD_SEARSH_LIST_STADE = 'stop_load_search_list_stade';
+export const STOP_LOAD_SEARSH_LIST_STADE_MORE = 'stop_load_search_list_stade_more';
 //profile stades
-export const PROFILE_STADE_OPEN_MODAL = 'profile_stade_open_modal';
 export const ADD_LIKE_TO_STADE = 'add_like_to_stade';
 export const VERIF_LIKE_TO_STADE = 'verif_like_to_stade';
 export const DELETE_LIKE_TO_STADE = 'delete_like_to_stade';
@@ -207,3 +219,19 @@ export const ADD_SCORE_TO_MATCH = 'add_score_to_match';
 export const START_GET_MES_MATCHS_MY_EQUIPE = 'start_get_mes_matchs_my_equipe';
 export const STOP_GET_MES_MATCHS_MY_EQUIPE = 'stop_get_mes_matchs_my_equipe';
 export const STOP_GET_MES_MATCHS_MY_EQUIPE_LOAD = 'stop_get_mes_matchs_my_equipe_load';
+// add advert user
+export const DESCRIPTION_ADVERT_CHANGED = 'description_advert_changed';
+export const START_ADD_NEW_ADVERT_USER = 'start_add_new_advert_user';
+export const INITIAL_ADD_NEW_ADVERT_USER = 'initial_add_new_advert_user';
+// mes adverts user
+export const START_REFRESHING_MES_ADVERTS = 'start_refreshing_mes_adverts';
+export const GET_MES_LIST_ADVERTS = 'get_mes_list_adverts';
+export const GET_MES_LIST_ADVERTS_MORE = 'get_mes_list_adverts_more';
+export const DELETE_ADVERT_USER_BY_ID = 'delete_advert_user_by_id';
+// advert Event detail
+export const DESCRIPTION_COMMENT_CHANGED = 'description_comment_changed';
+export const START_LOAD_COMMENTS_ADVERT = 'start_load_comments_advert';
+export const STOP_LOAD_COMMENTS_ADVERT = 'stop_load_comments_advert';
+export const STOP_LOAD_MORE_COMMENTS_ADVERT = 'stop_load_more_comments_advert';
+export const ADD_COMMENT_ADVERT_EVENT = 'add_comment_advert_event';
+export const DELETE_COMMENT_ADVERT_EVENT = 'delete_comment_advert_event';

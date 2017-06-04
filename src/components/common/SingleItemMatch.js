@@ -55,7 +55,7 @@ class SingleItemMatch extends Component {
         } else if (match.etat === 1) {
             // si les deux équipe a accepter le match alors il peut réserver le stade
             return (
-                <TouchableNativeFeedback onPress={() => { this.props.reserver(match._id, match.stade); }}>
+                <TouchableNativeFeedback onPress={() => { this.props.reserver(match._id, match.stade, match.teamOne, match.teamTow); }}>
                     <View style={styles.containerMessage}>
                         <Text style={styles.styleNameTeam}>Réserver</Text>
                     </View>

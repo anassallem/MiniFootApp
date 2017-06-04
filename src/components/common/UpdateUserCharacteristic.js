@@ -65,7 +65,6 @@ class UpdateUserCharacteristic extends Component {
                  selectedValue={poste}
                  onValueChange={this.updatePoste.bind(this)}
                >
-                 <Picker.Item label="Choisir votre position sur le terrain" />
                  <Picker.Item label="Attaque" value="Attaque" />
                  <Picker.Item label="Milieu" value="Milieu" />
                  <Picker.Item label="Défence" value="Defence" />

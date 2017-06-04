@@ -27,9 +27,9 @@ class UpdateProfilUser extends Component {
 onButtonUpdate() {
   const { firstname, lastname, adresse, email, city, phone, testFirstName, testLastName,
           testEmail, testAdresse, testCity, testPhone, age, testAge, taille, testTaille, poid, testPoid, poste } = this.props;
-  const id = this.props.user._id;
+  const _id = this.props.user._id;
 
-  const user = { id, firstname, lastname, adresse, email, city, phone, joueur: { age, taille, poid, poste } };
+  const user = { _id, firstname, lastname, adresse, email, city, phone, joueur: { age, taille, poid, poste } };
   if ((testEmail === true) && (testCity === true) &&
       (testPhone === true) && (testFirstName === true) &&
       (testLastName === true) && (testAdresse === true) &&

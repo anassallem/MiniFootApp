@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Actions } from 'react-native-router-flux';
-import { TouchableNativeFeedback, View, Dimensions } from 'react-native';
-import { CardItem, Body, Card, Text, Left, Icon, Thumbnail } from 'native-base';
+import { TouchableNativeFeedback, View, Dimensions, Text } from 'react-native';
+import { CardItem, Body, Card, Left, Icon, Thumbnail } from 'native-base';
 import { connect } from 'react-redux';
 import { deleteInterrested, addNewInterrested, getListInteressted } from '../../actions';
 import { URL } from '../../actions/api/config';
@@ -15,12 +15,12 @@ class SingleItemAdvert extends Component {
     }
     onPressTeam() {
         const { user, advert } = this.props;
-         if (user.equipe === advert.createdBy._id) {
-            Actions.profileEquipe({ idEquipe: advert.createdBy._id });
+         if (user.equipe === advert.advertTeam.createdBy._id) {
+            Actions.profileEquipe({ idEquipe: advert.advertTeam.createdBy._id });
          } else if (user.equipe === undefined) {
-           Actions.searchTeamProfile({ idEquipe: advert.createdBy._id, title: `${advert.createdBy.name}` });
+           Actions.searchTeamProfile({ idEquipe: advert.advertTeam.createdBy._id, title: `${advert.advertTeam.createdBy.name}` });
          } else {
-            Actions.searchTeamProfile({ idEquipe: advert.createdBy._id, title: `${advert.createdBy.name}`, test: true });
+            Actions.searchTeamProfile({ idEquipe: advert.advertTeam.createdBy._id, title: `${advert.advertTeam.createdBy.name}`, test: true });
          }
     }
     clickAddInteressted() {
@@ -30,10 +30,10 @@ class SingleItemAdvert extends Component {
         this.props.deleteInterrested(this.props.advert._id, this.props.user._id);
     }
     renderListDisponibility() {
-        return this.props.advert.disponibility.map((item) => {
+        return this.props.advert.advertTeam.disponibility.map((item) => {
             return (
                 <View key={Math.random(100)} style={styles.styleDisponibility}>
-                    <Text>{item}</Text>
+                    <Text style={{ color: '#FFFFFF' }}>{item}</Text>
                 </View>
             );
         });
@@ -46,7 +46,7 @@ class SingleItemAdvert extends Component {
                     </View>
             );
         }
-        if (this.props.advert.testInterested) {
+        if (this.props.advert.advertTeam.testInterested) {
             return (
                 <TouchableNativeFeedback onPress={this.clickDeleteInteressted.bind(this)}>
                     <View style={{ flexDirection: 'row' }}>
@@ -66,31 +66,28 @@ class SingleItemAdvert extends Component {
         );
     }
     renderLogoTeam() {
-        if (this.props.advert.createdBy.logo !== undefined) {
-            return <Thumbnail style={{ width: 50, height: 50 }} square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.createdBy.logo}` }} />;
+        if (this.props.advert.advertTeam.createdBy.logo !== undefined) {
+            return <Thumbnail style={{ width: 40, height: 40 }} square source={{ uri: `${URL}/equipe/teamUploads/${this.props.advert.advertTeam.createdBy.logo}` }} />;
         }
-        return <Thumbnail style={{ width: 50, height: 50 }} square source={logo} />;
+        return <Thumbnail style={{ width: 40, height: 40 }} square source={logo} />;
     }
     render() {
-        const { createdBy, description, createdAt, countInterested } = this.props.advert;
+        const { createdBy, description, countInterested } = this.props.advert.advertTeam;
         return (
                 <Card>
-                   <CardItem style={{ borderLeftWidth: 10, borderLeftColor: '#00BCD4' }}>
+                   <CardItem>
                        <Left>
                          {this.renderLogoTeam()}
                          <Body>
                              <TouchableNativeFeedback onPress={this.onPressTeam.bind(this)}>
                                  <Text style={styles.styleNameTeam}>{createdBy.name}</Text>
                              </TouchableNativeFeedback>
-                             <Text note>{moment(createdAt).fromNow()}</Text>
+                             <Text style={styles.styledate}>{moment(this.props.advert.createdAt).fromNow()}</Text>
                          </Body>
                        </Left>
                    </CardItem>
                    <CardItem content style={styles.styleContainerBody}>
-                       <Text>{description}</Text>
-                       <View style={styles.containerTitle}>
-                           <Text style={styles.styleTitle}>Disponibilité d'équipe</Text>
-                       </View>
+                       <Text style={styles.styleTitle}>{description}</Text>
                        <View style={styles.containerDisponibility}>
                           {this.renderListDisponibility()}
                        </View>
@@ -161,9 +158,7 @@ const styles = {
     },
     styleContainerBody: {
         flexDirection: 'column',
-        alignItems: 'flex-start',
-        borderLeftWidth: 10,
-        borderLeftColor: '#00BCD4'
+        alignItems: 'flex-start'
     },
     styleDisponibility: {
         borderColor: '#E0E0E0',
@@ -175,20 +170,14 @@ const styles = {
         paddingLeft: 12,
         paddingRight: 12,
         paddingTop: 5,
-        paddingBottom: 5
-    },
-    containerTitle: {
-        marginTop: 10,
-        borderBottomWidth: 0.5,
-        borderBottomColor: '#E0E0E0',
-        width: width - 40,
-        paddingTop: 10,
-        paddingBottom: 10,
-        alignItems: 'center',
-        alignSelf: 'center'
+        paddingBottom: 5,
+        backgroundColor: '#B0BEC5'
     },
     styleTitle: {
-        color: '#9E9E9E'
+        color: '#000000'
+    },
+    styledate: {
+        fontSize: 12
     }
 };
 const mapStateToProps = ({ listAdverts }) => {

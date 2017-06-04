@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text, ListView, TouchableNativeFeedback, Image, Dimensions, ScrollView, RefreshControl, AsyncStorage } from 'react-native';
-import { Icon, Button, Header, Body, Title } from 'native-base';
+import { Icon, Header, Body, Title } from 'native-base';
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam } from '../actions';
+import { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam, getMatchTeam, initialStateTeamSearch } from '../actions';
 import { URL } from '../actions/api/config';
 
 const logoEquipe = require('./assets/logoEquipe.jpg');
-//const imgUser = require('./assets/userdefault.png');
+const background = require('./assets/blurred.jpg');
 
 class SearchTeamProfile extends Component {
 
     componentWillMount() {
+        this.props.initialStateTeamSearch();
         this.createDataSource(this.props);
         this.createDataSourcePlayers(this.props);
         this.createDataSourceMatchs(this.props);
@@ -31,6 +32,7 @@ class SearchTeamProfile extends Component {
     onRefresh() {
        this.props.getTeam(this.props.idEquipe);
        this.props.getImagesTeamProfil(this.props.idEquipe);
+       this.props.getMatchTeam(this.props.idEquipe);
        try {
             AsyncStorage.getItem('user').then((value) => {
                 const user = JSON.parse(value);
@@ -54,14 +56,19 @@ class SearchTeamProfile extends Component {
              console.log('caught error', e);
          }
     }
+    onChangeModal(image, e) {
+        let position = 0;
+        this.props.photosEquipe.forEach((photo, i) => {
+           if (photo === image) {
+               position = i;
+           }
+        });
+        Actions.displayPicture({ photos: this.props.photosEquipe, index: position, delete: false, idEquipe: this.props.idEquipe, typePictures: 'Team' });
+    }
     onCancelRejoindreTeam() {
       const { playerRejoindreTeam } = this.props;
       this.props.cancelRejoindreTeam(playerRejoindreTeam.data._id);
     }
-    onPressAnnonces() {
-        Actions.myPublications({ team: this.props.team });
-    }
-
     createDataSource({ photosEquipe }) {
         const ds = new ListView.DataSource({
           rowHasChanged: (r1, r2) => r1 !== r2
@@ -82,7 +89,11 @@ class SearchTeamProfile extends Component {
     }
     renderRow(photo) {
         const imageTeamProfil = `${URL}/equipe/teamUploads/${photo}`;
-        return <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />;
+        return (
+          <TouchableNativeFeedback onPress={this.onChangeModal.bind(this, imageTeamProfil)}>
+              <Image source={{ uri: imageTeamProfil }} style={styles.photoTeamStyle} />
+          </TouchableNativeFeedback>
+        );
     }
     renderRowPlayer(joueur) {
       const img = `${URL}/users/upload/${joueur.idJoueur.photo}`;
@@ -109,18 +120,24 @@ class SearchTeamProfile extends Component {
           </TouchableNativeFeedback>
         );
     }
+    renderLogoTeam(logo) {
+        if (logo !== undefined) {
+            return <Image style={styles.logoMatch} source={{ uri: `${URL}/equipe/teamUploads/${logo}` }} />;
+        }
+        return <Image style={styles.logoMatch} source={logoEquipe} />;
+    }
     renderRowMatch(match) {
         return (<View style={styles.containerMatchs}>
-                    <Text style={styles.nameEquipeMatchStyle}>{match.equipeOne}</Text>
-                    <Image source={match.image} style={styles.logoMatch} />
+                    <Text style={styles.nameEquipeMatchStyle}>{match.teamOne.name}</Text>
+                    {this.renderLogoTeam(match.teamOne.logo)}
                     <View style={styles.scoreStyle}>
                         <Text style={styles.textScoreStyle}>{match.scoreOne}</Text>
                     </View>
                     <View style={styles.scoreStyle}>
                         <Text style={styles.textScoreStyle}>{match.scoreTow}</Text>
                     </View>
-                    <Image source={match.image} style={styles.logoMatch} />
-                    <Text style={styles.nameEquipeMatchStyle}>{match.equipeTow}</Text>
+                    {this.renderLogoTeam(match.teamTow.logo)}
+                    <Text style={styles.nameEquipeMatchStyle}>{match.teamTow.name}</Text>
                 </View>);
     }
     renderPhotoEquipe() {
@@ -134,61 +151,74 @@ class SearchTeamProfile extends Component {
       if (this.props.test !== true) {
         if (this.props.etat === 0) {
           return (
-              <Button iconLeft light bordered onPress={this.onRejoindreTeam.bind(this)}>
-                  <Icon name='arrow-forward' style={styles.styleIconButton} />
-                 <Text>Rejoindre</Text>
-             </Button>
+              <TouchableNativeFeedback onPress={this.onRejoindreTeam.bind(this)}>
+                  <View style={styles.styleButtonAdvert}>
+                      <Icon name='arrow-forward' style={styles.styleIconButton} />
+                     <Text style={{ color: '#FFFFFF' }}>Rejoindre</Text>
+                  </View>
+              </TouchableNativeFeedback>
            );
          }
           return (
-              <Button iconLeft light bordered onPress={this.onCancelRejoindreTeam.bind(this)}>
-                  <Icon name='arrow-forward' style={styles.styleIconButton} />
-                 <Text>Annuler invitation</Text>
-             </Button>
+               <TouchableNativeFeedback onPress={this.onCancelRejoindreTeam.bind(this)}>
+                  <View style={styles.styleButtonAdvert}>
+                      <Icon name='arrow-forward' style={styles.styleIconButton} />
+                      <Text style={{ color: '#FFFFFF' }}>Annuler invitation</Text>
+                  </View>
+               </TouchableNativeFeedback>
            );
       }
+    }
+    renderPhotosTeamVide() {
+        if (this.props.photosEquipe.length === 0) {
+            return (<Text style={{ marginLeft: 20 }}>Aucune photo disponible</Text>);
+        }
     }
     renderProfileEquipe() {
         if (this.props.refresh === false) {
           const { name, description, adresse, date_creation, createdBy } = this.props.team;
             return (
                 <View>
-                <View style={styles.containerTop}>
-                    {this.renderPhotoEquipe()}
-                    <Text style={styles.styleNameEquipe}>{name}</Text>
-                    <Text numberOfLines={3} style={styles.styleDescription}>
-                      {description}
-                    </Text>
-                    <View style={styles.containerButton}>
-                        <Button iconLeft light bordered style={{ marginRight: 20 }} onPress={this.onPressAnnonces.bind(this)}>
-                            <Icon name='ios-albums-outline' style={styles.styleIconButton} />
-                           <Text>Annonces</Text>
-                       </Button>
-                       {this.renderButtonRejoindre()}
-                    </View>
-                </View>
-                <View style={styles.containerInfo}>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-person-outline' style={styles.styleIcon} />
-                        <Text>{createdBy.firstname} {createdBy.lastname}</Text>
-                    </View>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-navigate-outline' style={styles.styleIcon} />
-                        <Text>{adresse}</Text>
-                    </View>
-                    <View style={styles.containerBodyInfo}>
-                        <Icon name='ios-calendar-outline' style={styles.styleIcon} />
-                        <Text>{moment(date_creation).format('DD/MM/YYYY')}</Text>
-                    </View>
+                    <Image source={background} resizeMode='stretch' style={styles.styleBackground}>
+                        <View style={styles.containerTop}>
+                            {this.renderPhotoEquipe()}
+                            <Text style={styles.styleNameEquipe}>{name}</Text>
+                            <Text numberOfLines={3} style={styles.styleDescription}>
+                              {description}
+                            </Text>
+                            <View style={styles.containerButton}>
+                               {this.renderButtonRejoindre()}
+                            </View>
+                        </View>
+                        <View style={styles.containerInfo}>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-person-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{createdBy.firstname} {createdBy.lastname}</Text>
+                            </View>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-navigate-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{adresse}</Text>
+                            </View>
+                            <View style={styles.containerBodyInfo}>
+                                <Icon name='ios-calendar-outline' style={styles.styleIcon} />
+                                <Text style={styles.textWhite}>{moment(date_creation).format('DD/MM/YYYY')}</Text>
+                            </View>
+                        </View>
+                    </Image>
+                <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-images-outline' style={styles.styleIconTitle} />
+                    <Text style={styles.styleTextTitle}>Photos d'équipe</Text>
                 </View>
                 <ListView
                   enableEmptySections
                   dataSource={this.dataSource}
-                  renderRow={this.renderRow}
+                  renderRow={this.renderRow.bind(this)}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                 />
+                {this.renderPhotosTeamVide()}
                 <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-shirt-outline' style={styles.styleIconTitle} />
                     <Text style={styles.styleTextTitle}>Membres d'équipe</Text>
                 </View>
                 <ListView
@@ -199,12 +229,13 @@ class SearchTeamProfile extends Component {
                   showsHorizontalScrollIndicator={false}
                 />
                 <View style={styles.containerPlayersTitle}>
+                    <Icon name='ios-football' style={styles.styleIconTitle} />
                     <Text style={styles.styleTextTitle}>Matchs joués</Text>
                 </View>
                 <ListView
                   enableEmptySections
                   dataSource={this.MatchDataSource}
-                  renderRow={this.renderRowMatch}
+                  renderRow={this.renderRowMatch.bind(this)}
                 />
                 </View>
             );
@@ -218,7 +249,6 @@ class SearchTeamProfile extends Component {
                       <Title>Mon Equipe</Title>
                   </Body>
                 </Header>
-
                 <ScrollView
                     refreshControl={
                     <RefreshControl
@@ -239,10 +269,21 @@ class SearchTeamProfile extends Component {
 const { width } = Dimensions.get('window');
 const styles = {
     mainContainer: {
-        flex: 1
+        flex: 1,
     },
-    headerStyle: {
-        marginBottom: 10
+    styleBackground: {
+        width: null,
+        height: null,
+        paddingTop: 10
+    },
+    styleButtonAdvert: {
+        borderWidth: 0.5,
+        borderColor: '#FFFFFF',
+        borderRadius: 5,
+        padding: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.2)',
     },
     textHeaderStyle: {
         color: '#FFFFFF'
@@ -254,6 +295,10 @@ const styles = {
         width: 80,
         height: 80
     },
+    textWhite: {
+        color: '#FFFFFF',
+        fontSize: 14
+    },
     styleNameEquipe: {
         fontSize: 16,
         color: '#333',
@@ -262,7 +307,7 @@ const styles = {
     },
     styleDescription: {
         fontSize: 12,
-        color: '#333',
+        color: '#FFFFFF',
         textAlign: 'center',
         marginTop: 10,
         marginLeft: 30,
@@ -274,43 +319,43 @@ const styles = {
         marginTop: 10
     },
     styleIconButton: {
-        color: '#9E9E9E'
+        color: '#FFFFFF',
+        marginRight: 5
     },
     containerInfo: {
         flexDirection: 'row',
-        borderWidth: 0.5,
+        borderTopWidth: 0.5,
         marginTop: 10,
-        marginBottom: 10,
-        borderColor: '#E0E0E0'
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        borderTopColor: '#FFFFFF'
     },
     containerBodyInfo: {
         flexDirection: 'column',
         borderRightWidth: 0.5,
-        borderRightColor: '#E0E0E0',
+        borderRightColor: '#FFFFFF',
         padding: 10,
         alignItems: 'center',
         justifyContent: 'center',
         width: width / 3
     },
     styleIcon: {
-        color: '#7D7D7D'
+        color: '#FFFFFF'
     },
     photoTeamStyle: {
-        width: 80,
-        height: 80,
-        margin: 5,
-        borderColor: '#9E9E9E',
-        borderWidth: 1,
-        borderRadius: 5
+        width: 100,
+        height: 100,
+        margin: 2
     },
     containerPlayersTitle: {
-        justifyContent: 'center',
+        flexDirection: 'row',
+        padding: 15,
         alignItems: 'center',
-        borderWidth: 0.5,
-        marginTop: 10,
-        marginBottom: 10,
-        borderColor: '#E0E0E0',
-        padding: 10
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#EEEEEE'
+    },
+    styleIconTitle: {
+        color: '#2196F3',
+        marginRight: 10
     },
     containerPlayerImage: {
         flexDirection: 'column',
@@ -338,9 +383,9 @@ const styles = {
         alignItems: 'center',
     },
     logoMatch: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
         margin: 5,
         borderColor: '#9E9E9E',
         borderWidth: 1
@@ -352,11 +397,11 @@ const styles = {
     },
     scoreStyle: {
         margin: 5,
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 10,
+        borderRadius: 15,
         borderColor: '#9E9E9E',
         borderWidth: 1,
         backgroundColor: 'rgba(0,0,0,0.2)'
@@ -365,9 +410,22 @@ const styles = {
         margin: 5,
         color: '#434343',
         fontSize: 10
+    },
+    modalStyle: {
+        flex: 1,
+        padding: 30,
+        backgroundColor: 'rgba(0,0,0, 0.9)'
+    },
+    textStyle: {
+      height: 50,
+      paddingLeft: 280,
+    },
+    imageStyle: {
+      flex: 1,
+      width: null,
+      alignSelf: 'stretch',
     }
 };
-
 
 const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
   const { team, refresh, photosEquipe, photos, matchs, idUser, playerRejoindreTeam, etat } = profileEquipe;
@@ -375,4 +433,4 @@ const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
   return { team, refresh, photosEquipe, photos, matchs, idUser, socket, playerRejoindreTeam, etat };
 };
 
-export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam })(SearchTeamProfile);
+export default connect(mapStateToProps, { getTeam, getImagesTeamProfil, getIdUser, getPlayerBelongsTeam, cancelRejoindreTeam, envoyerRejoindreTeam, getMatchTeam, initialStateTeamSearch })(SearchTeamProfile);

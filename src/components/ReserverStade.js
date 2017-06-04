@@ -19,6 +19,8 @@ class ReserverStade extends Component {
       this.props.showModalReserver();
   }
   onClickEnvoyer() {
+      const notify = { idStade: this.props.stade._id, teamOne: this.props.teamOne, teamTow: this.props.teamTow };
+      this.props.socket.emit('reserver', notify);
       this.props.envoyerMatchForReserver(this.props.idMatch, this.props.date, this.props.message);
   }
   onPressCalendar() {
@@ -383,9 +385,10 @@ const styles = {
    }
 };
 
-const mapStateToProps = ({ reserverStade }) => {
+const mapStateToProps = ({ reserverStade, homeDiscussion }) => {
   const { events, loading, visible, date, show, message, loadEnvoyer, response } = reserverStade;
-  return { events, loading, visible, date, show, message, loadEnvoyer, response };
+  const { socket } = homeDiscussion;
+  return { events, loading, visible, date, show, message, loadEnvoyer, response, socket };
 };
 
 export default connect(mapStateToProps, { getMatchs, changeModalReserver, dateChanged, showModalReserver, messageReserverChanged, envoyerMatchForReserver, hideModalChargement })(ReserverStade);

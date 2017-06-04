@@ -58,8 +58,7 @@ function setCache(equipe) {
      AsyncStorage.getItem('user').then((value) => {
        const user = JSON.parse(value);
        user.user.joueur.type = 'Responsable';
-       AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
-       });
+       AsyncStorage.mergeItem('user', JSON.stringify(user), () => {});
        }).done();
     } catch (error) {
       console.log(error);
@@ -135,7 +134,7 @@ export const changeStepTow = (equipe, user) => {
           } else {
               mergeCacheUser(user, res.joueur.type);
               if (res.equipe !== undefined) {
-                  setCache(res.equipe);
+                  AsyncStorage.setItem('equipe', JSON.stringify(res.equipe));
                   dispatch({ type: CHANGE_STEP_TOW, payload: user.user, myTeam: res.equipe });
               } else {
                   dispatch({ type: CHANGE_STEP_ZERO });

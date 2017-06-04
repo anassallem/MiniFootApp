@@ -52,7 +52,7 @@ export default (state = INITIAL_STATE, action) => {
     case REFRESH_UPDATE_START:
             return { ...state, refresh: true };
     case UPDATE_USER_PROFIL:
-            return { ...INITIAL_STATE };
+            return { ...state, refresh: false, changeCardInfo: false, changeCardCarac: false, changeCardPassword: false };
     case CHANGE_CARD_INFO:
             return { ...state, changeCardInfo: !state.changeCardInfo, changeCardCarac: false, changeCardPassword: false };
     case CHANGE_CARD_CARC:

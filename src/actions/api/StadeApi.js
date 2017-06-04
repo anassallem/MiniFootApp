@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { URL, CONFIG } from './config';
 
-export const getStades = (text) => {
-    const requestURL = `${URL}/stade?name=${text}`;
+export const getStades = (text, page) => {
+    const requestURL = `${URL}/stade?name=${text}&page=${page}`;
     return axios.get(requestURL)
     .then((res) => {
       return res.data;

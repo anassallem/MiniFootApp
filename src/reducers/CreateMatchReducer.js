@@ -5,7 +5,8 @@ import {
     INITIAL_STATE_CREATE_MATCH,
     SWITCH_MODAL_STADE_CHANGED,
     START_LOAD_SEARSH_STADE,
-    STOP_LOAD_SEARSH_STADE,
+    STOP_CREATE_LOAD_SEARSH_STADE,
+    STOP_MORE_LOAD_SEARSH_STADE,
     STADE_CHANGED,
     SEARCH_STADE_CHANGED
 } from '../actions/types';
@@ -18,7 +19,8 @@ const INITIAL_STATE = {
   loadingStade: false,
   stades: [],
   stade: null,
-  textStade: ''
+  textStade: '',
+  pageStade: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -31,14 +33,14 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loadCreate: true };
     case INITIAL_STATE_CREATE_MATCH:
       return { ...INITIAL_STATE };
-    case SWITCH_MODAL_CHANGED:
-      return { ...state, visible: !state.visible };
     case SWITCH_MODAL_STADE_CHANGED:
       return { ...state, visibleStade: !state.visibleStade };
     case START_LOAD_SEARSH_STADE:
       return { ...state, loadingStade: true };
-    case STOP_LOAD_SEARSH_STADE:
-      return { ...state, loadingStade: false, stades: action.payload };
+    case STOP_CREATE_LOAD_SEARSH_STADE:
+      return { ...state, loadingStade: false, stades: action.payload, pageStade: 1 };
+    case STOP_MORE_LOAD_SEARSH_STADE:
+      return { ...state, loadingStade: false, stades: [...state.stades, ...action.payload], pageStade: state.pageStade + 1 };
     case STADE_CHANGED:
       return { ...state, stade: action.payload };
     case SEARCH_STADE_CHANGED:

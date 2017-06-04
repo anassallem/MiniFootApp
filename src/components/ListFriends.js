@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { changeSwitch } from '../actions';
 import { SwitchSegment } from './common';
 import MyFriends from './MyFriends';

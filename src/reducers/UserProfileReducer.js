@@ -29,7 +29,8 @@ const INITIAL_STATE = {
         poid: 0,
         age: 0,
         type: 'Joueur'
-    }
+    },
+    equipe: null
   },
   skills: {},
   photo: null,
