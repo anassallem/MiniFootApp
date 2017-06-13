@@ -49,7 +49,7 @@ class RouterComponent extends Component {
           >
             <Scene key="main" duration={1}>
               <Scene key="accueil" component={Accueil} title="Accueil" hideNavBar initial />
-              <Scene key="home" component={Home} title="home" />
+              <Scene key="home" component={Home} title="home" hideNavBar />
               <Scene key="login" component={LoginForm} title="Login" hideNavBar />
               <Scene key="register" component={RegisterForm} title="Register" hideNavBar />
               <Scene key="profil" component={ProfilForm} title="Profile" hideNavBar={false}
@@ -77,10 +77,10 @@ class RouterComponent extends Component {
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="updateProfilTeam" component={UpdateProfilTeam} title="Modifier Equipe" hideNavBar />
-              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous Capitaine"
+              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous responsable"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-              <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select Capitaine d'équipe"
+          <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select un responsable d'équipe"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="createAdvert" component={CreateAdvertMatch} />

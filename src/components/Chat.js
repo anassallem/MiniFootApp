@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { GiftedChat, Bubble, Send, Composer, LoadEarlier } from 'react-native-gifted-chat';
 import { View } from 'react-native';
 import { URL } from '../actions/api/config';
-import { loadMessagesRoom, setRoomToVue } from '../actions/api/RoomsApi';
+import { loadMessagesRoom } from '../actions/api/RoomsApi';
 
 class Chat extends Component {
   constructor(props) {
@@ -40,20 +40,17 @@ class Chat extends Component {
 
   componentDidMount() {
     this.props.mySocket.on(this.props.room._id, (data) => {
-     const newUser = { _id: this.props.user.idUser, name: `${this.props.user.firstname} ${this.props.user.lastname}`, avatar: this.props.user.photo };
-      setRoomToVue(this.props.room._id, newUser).then((res) => {
-         data.user.avatar = `${URL}/users/upload/${data.user.avatar}`;
-         setTimeout(() => {
-         this.setState((previousState) => {
-           return {
-             messages: GiftedChat.append(previousState.messages, data)
-           };
-         });
-         }, 1000);
-      });
-      }, (err) => {
-        console.log(err);
-      });
+    if (data.user._id !== this.props.user.idUser) {
+        data.user.avatar = `${URL}/users/upload/${data.user.avatar}`;
+        setTimeout(() => {
+            this.setState((previousState) => {
+                return {
+                    messages: GiftedChat.append(previousState.messages, data)
+                };
+            });
+        }, 500);
+    }
+    });
   }
 
   componentWillUnmount() {

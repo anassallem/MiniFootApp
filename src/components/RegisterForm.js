@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, TouchableNativeFeedback } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { Text } from 'native-base';
 import {
-       emailChanged,
-       passwordChanged,
+       registerEmailChanged,
+       registerPasswordChanged,
        passwordConfirmChanged,
        nameChanged,
        lastNameChanged,
@@ -14,17 +14,17 @@ import {
        loadedUser,
        setMessageRegisterError
  } from '../actions';
-import { SButton, Spinner, InputTextAuth } from './common';
+import { Spinner, InputTextAuth } from './common';
 
-const background = require('./assets/inscrit.jpg');
+const background = require('./assets/grass.jpg');
 
 class RegisterForm extends Component {
 
   onEmailChange(text) {
-    this.props.emailChanged(text);
+    this.props.registerEmailChanged(text);
   }
   onPasswordChange(text) {
-    this.props.passwordChanged(text);
+    this.props.registerPasswordChanged(text);
   }
   onPasswordConfirmChange(text) {
     this.props.passwordConfirmChanged(text, this.props.password);
@@ -66,9 +66,11 @@ class RegisterForm extends Component {
       return <Spinner size="large" />;
     }
     return (
-      <SButton icon='md-log-in' onPress={this.onButtonPress.bind(this)}>
-        Inscription
-      </SButton>
+      <TouchableNativeFeedback onPress={this.onButtonPress.bind(this)}>
+              <View style={styles.styleButton}>
+                  <Text style={styles.textWhite}>Inscription</Text>
+              </View>
+      </TouchableNativeFeedback>
     );
   }
 
@@ -77,8 +79,7 @@ class RegisterForm extends Component {
       <View style={{ flex: 1 }}>
         <Image source={background} square style={styles.backgroundImage} >
          <ScrollView>
-          <View style={{ marginTop: 40, marginLeft: 20, marginRight: 20 }}>
-            <Text style={styles.textStyle}> Créer un compte </Text>
+          <View style={{ marginTop: 20, marginLeft: 20, marginRight: 20 }}>
               <InputTextAuth
                 placeholder="Saisir votre nom"
                 onChangeText={this.onNameChange.bind(this)}
@@ -144,10 +145,10 @@ class RegisterForm extends Component {
                   {this.props.validPassword === false ? 'Mot de passe non confirmé ' : ''}
               </Text>
 
-              {this.renderButton()}
               <Text style={styles.errorMessageStyle} onPress={this.onTextPress.bind(this)}>
                   {this.props.error}
               </Text>
+              {this.renderButton()}
               <Text
                   style={styles.registerTextStyle}
                   onPress={this.onTextPress.bind(this)}
@@ -168,14 +169,29 @@ const styles = {
     width: null,
     backgroundColor: 'transparent',
   },
+  styleButton: {
+      alignItems: 'center',
+      backgroundColor: '#C8E6C9',
+      justifyContent: 'center',
+      borderWidth: 2,
+      paddingTop: 10,
+      paddingBottom: 10,
+      borderColor: '#1B5E20',
+      borderRadius: 8,
+      marginBottom: 10,
+  },
   errorTextStyle: {
     fontSize: 14,
     color: '#000000',
     marginLeft: 5,
     marginBottom: 10
   },
+  textWhite: {
+      fontSize: 16,
+      color: '#2E7D32',
+  },
   registerTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
     alignSelf: 'center',
     color: '#FFFFFF',
     marginBottom: 30
@@ -226,8 +242,8 @@ const mapStateToProps = ({ user }) => {
            testAdresse };
 };
 export default connect(mapStateToProps,
-  { emailChanged,
-    passwordChanged,
+  { registerEmailChanged,
+    registerPasswordChanged,
     passwordConfirmChanged,
     nameChanged,
     lastNameChanged,

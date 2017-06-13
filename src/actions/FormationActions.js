@@ -28,15 +28,15 @@ export const equipeFetchFormation = (idEquipe, tags) => {
                   item.showDraggable = true;
               });
           }
-          let top = 0;
+          /*let top = 0;
           let center = 0;
           let bottom = 0;
           res.formation.forEach((p) => {
               top += p.position.top;
               center += p.position.center;
               bottom += p.position.bottom;
-          });
-          dispatch({ type: LOAD_FORMATION, payload: res.formation, top, center, bottom });
+          });*/
+          dispatch({ type: LOAD_FORMATION, payload: res.formation });
         }, (err) => {
           console.log(err);
         }

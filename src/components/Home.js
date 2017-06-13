@@ -23,7 +23,7 @@ class Home extends Component {
             const user = JSON.parse(value);
             this.props.getUserCache(user);
             this.socket.emit('add_user', user.user._id);
-            this.props.getRoomUser(user.user._id);
+            this.props.getRoomUser(user.user._id, this.socket);
             this.socket.on(user.user._id, (notification) => {
                 this.props.changeNumberNotify();
                 this.props.changePage('Notification');
@@ -43,11 +43,11 @@ class Home extends Component {
       this.props.getSocket(this.socket);
   }
 
-  componentWillReceiveProps(nextProps) {
+  /*/*componentWillReceiveProps(nextProps) {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
     });
-  }
+  }*/
   handelProfile() {
       Actions.profil();
       this.closeDrawer();

@@ -40,23 +40,24 @@ class Formation extends Component {
       this.props.setDropZone(event);
   }
   setImageZoneValues(event) {
-      this.props.setImageZone(event);
+      //this.props.setImageZone(event);
   }
   isDropZone(gesture) {
        const { dropZoneValues } = this.props;
        return gesture.moveY > dropZoneValues.y && gesture.moveY < dropZoneValues.y + dropZoneValues.height + 50;
   }
   handelChangeFormation(idBubble, top, center, bottom) {
-      if (top === 1) {
+      /*if (top === 1) {
           this.props.changeFormation(idBubble, 'TOP');
       } else if (center === 1) {
           this.props.changeFormation(idBubble, 'CENTER');
       } else if (bottom === 1) {
           this.props.changeFormation(idBubble, 'BOTTOM');
-      }
+      }*/
   }
   renderBubbles() {
       const { imageZoneValues } = this.props;
+      console.log(this.props.bubbles);
     return this.props.bubbles.map((bubble) => {
       return (<ItemDraggable key={bubble.idJoueur._id} bubble={bubble} imageZoneValues={imageZoneValues}
                 handleVisibility={this.onVisibilityZoneDrop.bind(this)} changeFormationTeam={this.handelChangeFormation.bind(this)}
@@ -89,7 +90,8 @@ class Formation extends Component {
      }
    }
    renderHeader() {
-       const { top, center, bottom } = this.props;
+       //const { top, center, bottom } = this.props;
+       //<Title>{`${top}-${center}-${bottom}`}</Title>
        if (this.props.user.joueur.type !== 'Joueur') {
            return (
                <Header>
@@ -101,7 +103,7 @@ class Formation extends Component {
                        </TouchableWithoutFeedback>
                    </Left>
                  <Body style={{ alignItems: 'center' }}>
-                     <Title>{`${top}-${center}-${bottom}`}</Title>
+                     <Title>Formation</Title>
                  </Body>
                  <Right>
                      <TouchableWithoutFeedback onPress={this.onPressSaveFormation.bind(this)}>
@@ -116,7 +118,7 @@ class Formation extends Component {
        return (
            <Header>
              <Body style={{ alignItems: 'center' }}>
-                 <Title>{`${top}-${center}-${bottom}`}</Title>
+                 <Title>Formation</Title>
              </Body>
            </Header>
        );
@@ -165,13 +167,10 @@ let styles = StyleSheet.create({
     marginTop: 60,
     flexWrap: 'wrap',
     alignItems: 'center',
-    margin: 10,
-    padding: 10
   },
   styleTextDelete: {
     textAlign: 'center',
     color: '#fff',
-    marginLeft: 10
   },
   containerLoadingStyle: {
       position: 'relative',

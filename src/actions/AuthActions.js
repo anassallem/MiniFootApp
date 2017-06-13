@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import { auth } from './api/AuthentificationApi';
 import {
   LOGIN_EMAIL_CHANGED,
@@ -86,7 +86,8 @@ const loginUserSuccess = (dispatch, user) => {
     dispatch({
         type: LOGIN_USER_SUCCESS
     });
-    Actions.home();
+    //Actions.home();
+    Actions.home({ type: ActionConst.REPLACE });
 };
 
 function setCache(user) {

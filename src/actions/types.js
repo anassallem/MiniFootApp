@@ -64,8 +64,9 @@ export const ACCEPT_INVITATIONS = 'accept_invitations';
 //Discussion
 export const GET_PLAYER_ONLINE = 'get_player_online';
 export const SOCKET_CHANGED = 'socket_changed';
+export const ON_NEW_MESSAGE_RECEIVE = 'on_new_message_receive';
 export const GET_ALL_DISCUSSION = 'get_all_discussion';
-export const ID_USER_CHANGED = 'id_user_changed';
+export const CHANGE_ROOM_TO_VUE = 'change_room_to_vue';
 //Home
 export const GET_USER_CACHE = 'get_user_cache';
 export const GET_MY_ROOMS = 'get_my_rooms';
@@ -122,8 +123,12 @@ export const START_REFRESH_MEMBRE_TEAM = 'start_refresh_membre_team';
 export const MODAL_VISIBLE = 'modal_visible';
 export const IMAGES_MULTIPLE = 'image_multiple';
 export const GET_IMAGES_MULTIPLE_TEAM = 'get_image_multiple_team';
+export const INITIAL_STATE_SHOW_TEAM_PHOTOS = 'initial_state_show_team_photos';
+export const START_UPLOAD_IMAGE_TEAM = 'start_upload_image_team';
+export const DELETE_PICTURE_TEAM = 'delete_picture_team';
 
 export const GET_ALL_USERS_EQUIPE = 'get_all_user_equipe';
+export const GET_ALL_USERS_EQUIPE_MORE = 'get_all_user_equipe_more';
 export const SEARCH_PLAYERS_TEAM_CHANGED = 'search_players_team_changed';
 export const ADD_PLAYER_TO_LIST_TAGS = 'add_player_to_list_tags';
 export const FILTER_PLAYER_LIST_TAGS = 'filter_player_list_tags';

@@ -48,7 +48,7 @@ class CreateAdvert extends Component {
                 </Body>
                 <Right>
                     <TouchableNativeFeedback onPress={this.onPressAddAdvert.bind(this)}>
-                        <Text style={styles.textHeaderStyle}>Ajouter</Text>
+                        <Text style={styles.textHeaderStyle}>{(this.props.description === '') ? '' : 'Ajouter' }</Text>
                     </TouchableNativeFeedback>
                 </Right>
               </Header>

@@ -1,6 +1,8 @@
 import { Actions } from 'react-native-router-flux';
 import { create } from './api/UserApi';
 import {
+  EMAIL_CHANGED,
+  PASSWORD_CHANGED,
   NAME_CHANGED,
   LASTNAME_CHANGED,
   ADRESSE_CHANGED,
@@ -11,6 +13,24 @@ import {
   MESSAGE_REGISTER_ERROR_CHANGED
 } from './types';
 
+export const registerEmailChanged = (text) => {
+  const valid = validateEmail(text);
+  return {
+    type: EMAIL_CHANGED,
+    payload: text,
+    validate: valid
+  };
+};
+
+export const registerPasswordChanged = (text) => {
+  const valid = validatePassword(text);
+  return {
+    type: PASSWORD_CHANGED,
+    payload: text,
+    validate: valid
+  };
+};
+
 export const nameChanged = (text) => {
   const valid = testFirstName(text);
   return {
@@ -19,6 +39,7 @@ export const nameChanged = (text) => {
     validate: valid
   };
 };
+
 
 export const setMessageRegisterError = (message) => {
   return {
@@ -63,7 +84,7 @@ export const createUser = (user) => {
         createUserSuccess(dispatch, res);
         console.log(res);
       } else if (res.success === false) {
-        createUserFail(dispatch);
+        createUserFail(dispatch, res.message);
       }
       }, (err) => {
         console.log(err);
@@ -107,4 +128,19 @@ function testLastName(lastName) {
     return false;
   }
   return true;
+}
+function validateEmail(email) {
+  if (email !== '') {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+    return null;
+}
+
+function validatePassword(password) {
+  if (password !== '') {
+    const re =(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
+    return re.test(password);
+  }
+  return null;
 }

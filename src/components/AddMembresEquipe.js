@@ -12,7 +12,7 @@ class AddMembresEquipe extends Component {
     }
     componentWillMount() {
         this.createDataSource(this.props);
-        this.props.getAllUserEquipe(this.props.search);
+        this.props.getAllUserEquipe(this.props.search, 0);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -20,14 +20,17 @@ class AddMembresEquipe extends Component {
     }
 
     onSearchChanged(text) {
-      this.props.getAllUserEquipe(text);
+      this.props.getAllUserEquipe(text, 0);
       this.props.searchPalyersTeamChanged(text);
+    }
+    onEndReached() {
+        this.props.getAllUserEquipe(this.props.search, this.props.page);
     }
     onPressEnvoyer() {
         AsyncStorage.getItem('equipe').then((value) => {
             const equipe = JSON.parse(value);
             this.props.envoyerIvitationEquipe();
-            const notify = { users: this.props.tags, title: equipe.name, idEquipe: equipe._id };
+            const notify = { users: this.props.tags, title: equipe.name, idEquipe: equipe._id, icon: equipe.logo };
             this.props.socket.emit('invitationEquipe', notify);
         }).done();
     }
@@ -44,19 +47,6 @@ class AddMembresEquipe extends Component {
     renderRow(player) {
         return <SinglePlayerSearchTeam player={player} />;
     }
-    renderList() {
-       if (this.props.refresh) {
-         return <ActivityIndicator size={'large'} color={['#1565C0']} />;
-       }
-       return (
-           <ListView
-             enableEmptySections
-             dataSource={this.dataSource}
-             renderRow={this.renderRow}
-             style={{ flex: 1 }}
-           />
-       );
-     }
     renderTagsView() {
         return this.props.tags.map((item) => {
             return (<View key={item._id} style={styles.styleTag}>
@@ -110,9 +100,14 @@ class AddMembresEquipe extends Component {
                             placeholder='Ajouter des joueurs'
                         />
                     </View>
-                    <ScrollView>
-                        {this.renderList()}
-                    </ScrollView>
+                    <ListView
+                      enableEmptySections
+                      dataSource={this.dataSource}
+                      renderRow={this.renderRow.bind(this)}
+                      pageSize={10}
+                      onEndReached={this.onEndReached.bind(this)}
+                      onEndReachedThreshold={5}
+                    />
                 </View>
            </View>
         );
@@ -162,7 +157,6 @@ const styles = {
         color: '#2962FF'
     },
     styleInputSearch: {
-        marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#EEEEEE',
         flexDirection: 'row',
@@ -189,9 +183,9 @@ const styles = {
 
 
 const mapStateToProps = ({ membreTeam, homeDiscussion }) => {
-  const { users, search, tags, refresh, loading } = membreTeam;
+  const { users, search, tags, refresh, loading, page } = membreTeam;
   const { socket } = homeDiscussion;
-  return { users, search, tags, refresh, loading, socket };
+  return { users, search, tags, refresh, loading, socket, page };
 };
 
 export default connect(mapStateToProps, { getAllUserEquipe, searchPalyersTeamChanged, filterListTags, envoyerIvitationEquipe })(AddMembresEquipe);

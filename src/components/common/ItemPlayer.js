@@ -72,7 +72,8 @@ const styles = {
         borderWidth: 0.5,
         borderColor: '#FAFAFA',
         backgroundColor: '#F44336',
-        width: 80
+        fontSize: 12,
+        width: 65
     },
     textStyleMC: {
         paddingLeft: 17,
@@ -84,7 +85,8 @@ const styles = {
         borderWidth: 0.5,
         borderColor: '#FAFAFA',
         backgroundColor: '#3F51B5',
-        width: 80
+        fontSize: 12,
+        width: 65
     },
     textStyleDF: {
         paddingLeft: 10,
@@ -96,7 +98,8 @@ const styles = {
         borderWidth: 0.5,
         borderColor: '#FAFAFA',
         backgroundColor: '#FDD835',
-        width: 80
+        width: 66,
+        fontSize: 12,
     },
     textStyleGB: {
         paddingLeft: 10,
@@ -108,7 +111,8 @@ const styles = {
         borderWidth: 0.5,
         borderColor: '#FAFAFA',
         backgroundColor: '#4CAF50',
-        width: 80
+        fontSize: 12,
+        width: 65
     }
 };
 

@@ -49,7 +49,7 @@ export default (state = INITIAL_STATE, action) => {
     case GET_MATCH_TEAM_TERMINATED:
         return { ...state, matchs: action.payload };
     case INITIAL_STATE_TEAM_SEARCH:
-        return { ...state, photosEquipe: [] };
+        return { ...state, photosEquipe: [], etat: 0 };
     default:
       return state;
   }

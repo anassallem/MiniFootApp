@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 import { getTeam, getImagesTeamProfil, getMatchTeam } from '../actions';
 import { URL } from '../actions/api/config';
 
-const logoEquipe = require('./assets/logoEquipe.jpg');
+const logoEquipe = require('./assets/logo.png');
 const background = require('./assets/blurred.jpg');
 
 class ProfileEquipe extends Component {
@@ -260,8 +260,8 @@ const styles = {
         alignItems: 'center'
     },
     styleLogo: {
-        width: 80,
-        height: 80
+        width: 100,
+        height: 100
     },
     styleIconTitle: {
         color: '#2196F3',
@@ -393,7 +393,6 @@ const styles = {
       alignSelf: 'stretch',
     }
 };
-
 
 const mapStateToProps = ({ profileEquipe, homeDiscussion }) => {
   const { team, refresh, photosEquipe, matchs } = profileEquipe;

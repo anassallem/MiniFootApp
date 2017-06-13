@@ -2,7 +2,7 @@ import axios from 'axios';
 import { URL, CONFIG } from './config';
 
 export const getMesMatchs = (idEquipe, date, page) => {
-    const requestURL = `${URL}/match/${idEquipe}?date=${date}&page=${page}`;
+    const requestURL = `${URL}/match/${idEquipe}/myMatchs?date=${date}&page=${page}`;
     return axios.get(requestURL)
     .then((res) => {
       return res.data;

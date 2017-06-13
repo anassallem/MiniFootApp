@@ -20,6 +20,7 @@ class MesMatchs extends Component {
     this.props.navigationStateHandler.registerFocusHook(this);
   }
   componentWillReceiveProps(nextProps) {
+      console.log(nextProps.matchs);
     this.createDataSource(nextProps);
   }
   componentWillUnmount() {

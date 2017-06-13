@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, AsyncStorage } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 import { SwitchSegment } from './common';
 import { changeSwitch, socketChanged, changeIdUser } from '../actions';
@@ -7,26 +7,12 @@ import DiscussionFriends from './DiscussionFriends';
 import DiscussionFriendsConnect from './DiscussionFriendsConnect';
 
 class Discussion extends Component {
-    componentDidMount() {
-        this.props.socketChanged(this.props.socket);
-        try {
-          AsyncStorage.getItem('user').then((value) => {
-              const user = JSON.parse(value);
-              this.props.changeIdUser(user.user._id);
-          }).done();
-        } catch (e) {
-          console.log('caught error', e);
-        }
-    }
-
     handelSwitch() {
         this.props.changeSwitch();
     }
-
     renderPage() {
         return this.props.switcher === true ? <DiscussionFriends /> : <DiscussionFriendsConnect />;
     }
-    
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -47,9 +33,10 @@ const styles = {
     }
 };
 
-const mapStateToProps = ({ discussionPlayer }) => {
-  const { players, switcher, mySocket, idUser } = discussionPlayer;
-  return { players, switcher, mySocket, idUser };
+const mapStateToProps = ({ discussionPlayer, homeDiscussion }) => {
+  const { switcher, online } = discussionPlayer;
+  const { user, socket } = homeDiscussion;
+  return { switcher, user, socket, online };
 };
 
 export default connect(mapStateToProps, { changeSwitch, socketChanged, changeIdUser })(Discussion);

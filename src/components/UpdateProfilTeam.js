@@ -13,7 +13,6 @@ const logoEquipe = require('./assets/logoEquipe.jpg');
 class UpdateProfilTeam extends Component {
 
   componentWillMount() {
-        console.log('updateProfile');
     _.each(this.props.team, (value, prop) => {
       this.props.teamUpdate(prop, value);
     });

@@ -146,6 +146,7 @@ const styles = {
     },
     errorMessageStyle: {
        justifyContent: 'center',
+       alignSelf: 'center',
        color: '#FFFFFF'
     }
 };

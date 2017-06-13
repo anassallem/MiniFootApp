@@ -5,9 +5,9 @@ import Home from './Home';
 
 class Accueil extends Component {
     constructor(props) {
-    super(props);
-    this.state = { user: 0 };
-  }
+        super(props);
+        this.state = { user: 0 };
+    }
     componentDidMount() {
         try {
              AsyncStorage.getItem('user', (err, user) => {
@@ -21,15 +21,13 @@ class Accueil extends Component {
             console.log('caught error', e);
         }
     }
-
     renderPageAccueil() {
-        if (this.state.user === 2) {
-            return <LoginForm />;
-        } else if (this.state.user === 1) {
-            return <Home />;
-        }
+            if (this.state.user === 2) {
+                return <LoginForm />;
+            } else if (this.state.user === 1) {
+                return <Home />;
+            }
     }
-
     render() {
         return (
             <View style={{ flex: 1 }}>

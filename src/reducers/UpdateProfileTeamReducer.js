@@ -22,12 +22,11 @@ export default (state = INITIAL_STATE, action) => {
     case REFRESH_UPDATE_TEAM_START:
       return { ...state, refresh: true };
     case UPDATE_TEAM_PROFIL:
-      return { ...INITIAL_STATE };
+      return { ...state, refresh: false };
     case UPDATE_IMAGE_TEAM_CHANGED:
         return { ...state, logo: action.payload, data: action.data, display: true };
     case UPLOAD_IMAGE_TEAM:
-              return { ...state, refresh: action.payload, display: false };
-
+        return { ...state, refresh: action.payload, display: false };
     default:
       return state;
   }

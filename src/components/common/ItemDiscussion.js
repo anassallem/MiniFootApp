@@ -1,36 +1,35 @@
 import React, { Component } from 'react';
-import { View, Image, Dimensions, Text, AsyncStorage, TouchableNativeFeedback } from 'react-native';
+import { View, Image, Dimensions, Text, TouchableNativeFeedback } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux';
 import moment from 'moment';
-import { changeRoomToVue } from '../../actions';
 import { URL } from '../../actions/api/config';
 
 class ItemDiscussion extends Component {
+    componentWillMount() {
+        this.props.socket.on(this.props.room._id, (message) => {
+            setTimeout(() => {
+                this.props.messageReceive(this.props.room._id, message, this.props.room.users);
+            }, 500);
+        });
+    }
 
     onPressButton() {
         const { users } = this.props.room;
-        try {
-          AsyncStorage.getItem('user').then((value) => {
-              const user = JSON.parse(value);
-              const me = { idUser: user.user._id, firstname: user.user.firstname, lastname: user.user.lastname, photo: user.user.photo };
-              if ((this.props.idUser === this.props.room.user._id)) {
-                  Actions.chat({ user: me, mySocket: this.props.mySocket, room: this.props.room, title: `${users[0].firstname} ${users[0].lastname}` });
-              } else if ((this.props.idUser !== this.props.room.user._id) && this.props.room.vue === 1) {
-                  Actions.chat({ user: me, mySocket: this.props.mySocket, room: this.props.room, title: `${users[0].firstname} ${users[0].lastname}` });
-              } else {
-                  this.props.changeRoomToVue(me, this.props.mySocket, this.props.room, `${users[0].firstname} ${users[0].lastname}`);
-              }
-          }).done();
-        } catch (e) {
-          console.log('caught error', e);
+        const { user } = this.props;
+        const me = { idUser: user._id, firstname: user.firstname, lastname: user.lastname, photo: user.photo };
+        if ((user._id === this.props.room.user._id)) {
+            Actions.chat({ user: me, mySocket: this.props.socket, room: this.props.room, title: `${users[0].firstname} ${users[0].lastname}` });
+        } else if ((user._id !== this.props.room.user._id) && this.props.room.vue === 1) {
+            Actions.chat({ user: me, mySocket: this.props.socket, room: this.props.room, title: `${users[0].firstname} ${users[0].lastname}` });
+        } else {
+            this.props.onChangeToVue(me, this.props.socket, this.props.room, `${users[0].firstname} ${users[0].lastname}`);
         }
     }
     renderImageIcon() {
         const { user, vue } = this.props.room;
         if (user !== undefined) {
             const uriImg = `${URL}/users/upload/${user.avatar}`;
-            if (vue === 1 && (user._id !== this.props.idUser)) {
+            if (vue === 1 && (user._id !== this.props.user._id)) {
                 return <Image style={styles.styleImageIcon} source={{ uri: uriImg }} />;
             }
         }
@@ -42,19 +41,19 @@ class ItemDiscussion extends Component {
             const uriImg = `${URL}/users/upload/${photo}`;
             return (
                 <TouchableNativeFeedback onPress={this.onPressButton.bind(this)} style={styles.mainContainer}>
-                  <View style={(vue === 1 || (user._id === this.props.idUser)) ? styles.bodyContainer : styles.bodyContainerNotVue}>
+                  <View style={(vue === 1 || (user._id === this.props.user._id)) ? styles.bodyContainer : styles.bodyContainerNotVue}>
                       <Image style={styles.styleImage} source={{ uri: uriImg }} />
                       <View style={styles.textContainer}>
                           <View style={styles.textTop}>
                               <View style={styles.styleTextPerson}>
                                   <Text style={styles.titleStyle}>{`${firstname} ${lastname}`}</Text>
                               </View>
-                              <Text style={(vue === 1 || (user._id === this.props.idUser)) ? styles.textDateStyle : styles.textDateStyleNotVue}>
+                              <Text style={(vue === 1 || (user._id === this.props.user._id)) ? styles.textDateStyle : styles.textDateStyleNotVue}>
                                   {moment(createdAt).fromNow()}
                               </Text>
                           </View>
                           <View style={styles.containerMessage}>
-                              <Text numberOfLines={1} style={(vue === 1 || (user._id === this.props.idUser)) ? styles.styleMessage : styles.styleMessageNotVue}>
+                              <Text numberOfLines={1} style={(vue === 1 || (user._id === this.props.user._id)) ? styles.styleMessage : styles.styleMessageNotVue}>
                                   {message}
                               </Text>
                               {this.renderImageIcon()}
@@ -154,8 +153,5 @@ const styles = {
     borderColor: '#EEEEEE'
   }
 };
-const mapStateToProps = ({ discussionPlayer }) => {
-  const { mySocket, idUser } = discussionPlayer;
-  return { mySocket, idUser };
-};
-export default connect(mapStateToProps, { changeRoomToVue })(ItemDiscussion);
+
+export default ItemDiscussion;

@@ -11,7 +11,7 @@ class ItemPlayerConnect extends Component {
         AsyncStorage.getItem('user').then((value) => {
             const user = JSON.parse(value);
             const me = { idUser: user.user._id, firstname: user.user.firstname, lastname: user.user.lastname, photo: user.user.photo };
-            this.props.getIdRoom(me, this.props.player, this.props.mySocket);
+            this.props.getIdRoom(me, this.props.player, this.props.socket);
         }).done();
       } catch (e) {
         console.log('caught error', e);
@@ -79,8 +79,8 @@ const styles = {
 
   }
 };
-const mapStateToProps = ({ discussionPlayer }) => {
-  const { mySocket } = discussionPlayer;
-  return { mySocket };
+const mapStateToProps = ({ homeDiscussion }) => {
+  const { socket } = homeDiscussion;
+  return { socket };
 };
 export default connect(mapStateToProps, { getIdRoom })(ItemPlayerConnect);

@@ -4,6 +4,7 @@ import {
   GET_PLAYER_TEAM_BY_ID,
   START_REFRESH_MEMBRE_TEAM,
   GET_ALL_USERS_EQUIPE,
+  GET_ALL_USERS_EQUIPE_MORE,
   SEARCH_PLAYERS_TEAM_CHANGED,
   ADD_PLAYER_TO_LIST_TAGS,
   FILTER_PLAYER_LIST_TAGS,
@@ -93,11 +94,16 @@ export const filterListTags = (tags, player) => {
   };
 };
 
+
 export const getAllUserEquipe = (text, page) => {
   return (dispatch) => {
       dispatch({ type: START_REFRESH_MEMBRE_TEAM });
       getUsers(text, page).then((res) => {
-          dispatch({ type: GET_ALL_USERS_EQUIPE, payload: res });
+        if (page === 0) {
+            dispatch({ type: GET_ALL_USERS_EQUIPE, payload: res });
+        } else {
+            dispatch({ type: GET_ALL_USERS_EQUIPE_MORE, payload: res });
+        }
       }, (err) => {
         console.log(err);
       });

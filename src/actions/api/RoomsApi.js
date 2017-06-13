@@ -10,6 +10,15 @@ export const getRoomUserById = (idUser) => {
       throw new Error(res);
     });
 };
+export const updateRoom = (idRoom, room) => {
+    const requestURL = `${URL}/rooms/${idRoom}/update`;
+      return axios.put(requestURL, room)
+      .then((res) => {
+        return res.data;
+    }, (res) => {
+      throw new Error(res);
+    });
+};
 
 export const getDiscussionUserById = (idUser) => {
     const requestURL = `${URL}/rooms/${idUser}/discussion`;

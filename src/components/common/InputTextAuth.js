@@ -42,12 +42,14 @@ const styles = {
     flex: 1
   },
   containerIcon: {
+    width: 25,
     marginRight: 10,
     marginLeft: 10
   },
   containerGroupe: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.3)',
     justifyContent: 'center',
     borderWidth: 1,
     borderColor: '#FFFFFF',

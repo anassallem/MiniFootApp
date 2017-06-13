@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, AsyncStorage, ListView, Text } from 'react-native';
+import { View, ListView, Text } from 'react-native';
 import { Icon } from 'native-base';
 import { getPlayerOnline } from '../actions';
 import ItemPlayerConnect from './common/ItemPlayerConnect';
@@ -8,17 +8,12 @@ import ItemPlayerConnect from './common/ItemPlayerConnect';
 class DiscussionFriendsConnect extends Component {
   constructor(props) {
         super(props);
-        try {
-          AsyncStorage.getItem('user').then((value) => {
-              const user = JSON.parse(value);
-              this.props.mySocket.emit('list_connectee', user.user._id);
-          }).done();
-        } catch (e) {
-          console.log('caught error', e);
-        }
+        this.props.socket.emit('list_connectee', this.props.user._id);
     }
     componentWillMount() {
-        this.props.getPlayerOnline(this.props.mySocket);
+        this.props.socket.on('list_connectee', (data) => {
+          this.props.getPlayerOnline(data);
+        });
         this.createDataSource(this.props);
     }
 
@@ -72,8 +67,9 @@ const styles = {
     }
 };
 
-const mapStateToProps = ({ discussionPlayer }) => {
-  const { mySocket, online } = discussionPlayer;
-  return { mySocket, online };
+const mapStateToProps = ({ discussionPlayer, homeDiscussion }) => {
+  const { online } = discussionPlayer;
+  const { user, socket } = homeDiscussion;
+  return { online, user, socket };
 };
 export default connect(mapStateToProps, { getPlayerOnline })(DiscussionFriendsConnect);

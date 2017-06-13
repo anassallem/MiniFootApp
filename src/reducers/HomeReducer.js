@@ -1,13 +1,16 @@
 import {
   GET_USER_CACHE,
-  GET_MY_ROOMS,
   SOCKET_CHANGED,
   INITIAL_STATE_HOME,
   CHANGE_NUMBER_NOTIFY_HOME,
   PAGE_HOME_CHANGED,
   MENU_HOME_CHANGED,
   CHANGE_NUMBER_NOTIFY_TEAM,
-  CHANGE_NUMBER_NOTIFY_ADVERTS
+  CHANGE_NUMBER_NOTIFY_ADVERTS,
+  //discussion
+  GET_MY_ROOMS,
+  ON_NEW_MESSAGE_RECEIVE,
+  CHANGE_ROOM_TO_VUE
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -41,6 +44,30 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, notify: action.payload };
     case MENU_HOME_CHANGED:
         return { ...state, menu: action.payload };
+    case ON_NEW_MESSAGE_RECEIVE: {
+        let newRooms = [];
+        state.rooms.forEach((item) => {
+            if (item._id === action.payload._id) {
+                newRooms.push(action.payload);
+            } else {
+                newRooms.push(item);
+            }
+        });
+        return { ...state, rooms: newRooms };
+    }
+    case CHANGE_ROOM_TO_VUE: {
+        let newRooms = [];
+        state.rooms.forEach((item) => {
+            if (item._id === action.idRoom) {
+                item.vue = 1;
+                item.user = action.user;
+                newRooms.push(item);
+            } else {
+                newRooms.push(item);
+            }
+        });
+        return { ...state, rooms: newRooms };
+    }
     default:
       return state;
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Actions, ActionConst } from 'react-native-router-flux';
-import { View, Animated, ListView, ScrollView, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
+import { View, Animated, ListView, ScrollView, TouchableWithoutFeedback, Alert } from 'react-native';
 import { Text, Header, Right, Body, Title, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import SinglePlayerTeamFormation from './common/SinglePlayerTeamFormation';
@@ -22,18 +22,22 @@ class AddPlayersFormation extends Component {
     }
 
     onPressConfirm() {
-        let newTags = [];
-        this.props.tags.forEach((item) => {
-            newTags.push({
-                idJoueur: { _id: item._id, firstname: item.firstname, joueur: item.joueur, photo: item.photo },
-                pan: new Animated.ValueXY(),
-                showDraggable: true,
-                _id: item._id,
-                position: { top: 1, center: 0, bottom: 0 }
+        if ((this.props.bubbles.length + this.props.tags.length) > 12) {
+             Alert.alert('Attention', 'Vous avez dépassé le nombre maximal des joueurs dans la formation.');
+        } else {
+            let newTags = [];
+            this.props.tags.forEach((item) => {
+                newTags.push({
+                    idJoueur: { _id: item._id, firstname: item.firstname, joueur: item.joueur, photo: item.photo },
+                    pan: new Animated.ValueXY(),
+                    showDraggable: true,
+                    _id: item._id,
+                    //position: { top: 1, center: 0, bottom: 0 }
+                });
             });
-        });
-        Actions.formation({ type: ActionConst.REPLACE, idEquipe: this.props.idEquipe, tags: newTags });
-        this.props.initialStateAddPlayerFormation();
+            Actions.formation({ type: ActionConst.REPLACE, idEquipe: this.props.idEquipe, tags: newTags });
+            this.props.initialStateAddPlayerFormation();
+        }
     }
     onButtonPressDelete(ref, item) {
         this.props.filterListTagsFormation(this.props.tags, ref);
@@ -48,19 +52,6 @@ class AddPlayersFormation extends Component {
     renderRow(player) {
         return <SinglePlayerTeamFormation player={player} />;
     }
-    renderList() {
-       if (this.props.loading) {
-         return <ActivityIndicator size={'large'} color={['#1565C0']} />;
-       }
-       return (
-           <ListView
-             enableEmptySections
-             dataSource={this.dataSource}
-             renderRow={this.renderRow}
-             style={{ flex: 1 }}
-           />
-       );
-     }
     renderTagsView() {
         return this.props.tags.map((item) => {
             return (<View key={item._id} style={styles.styleTag}>
@@ -90,9 +81,12 @@ class AddPlayersFormation extends Component {
                             {this.renderTagsView()}
                         </ScrollView>
                     </View>
-                    <ScrollView>
-                        {this.renderList()}
-                    </ScrollView>
+                    <ListView
+                      enableEmptySections
+                      dataSource={this.dataSource}
+                      renderRow={this.renderRow.bind(this)}
+                      style={{ marginBottom: 100 }}
+                    />
                 </View>
            </View>
         );
@@ -140,9 +134,10 @@ const styles = {
 };
 
 
-const mapStateToProps = ({ playersFormation }) => {
+const mapStateToProps = ({ playersFormation, formation }) => {
   const { players, tags, loading } = playersFormation;
-  return { players, tags, loading };
+  const { bubbles } = formation;
+  return { players, tags, loading, bubbles };
 };
 
 export default connect(mapStateToProps, { getMembresTeamFormation, filterListTagsFormation, initialStateAddPlayerFormation })(AddPlayersFormation);

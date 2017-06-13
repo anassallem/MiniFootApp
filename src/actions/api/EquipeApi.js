@@ -65,6 +65,27 @@ export const uploadLogoTeam = (idEquipe, photo) => {
         }, (e) => console.log(e));
 };
 
+export const uploadPictureTeam = (idEquipe, photo) => {
+    const photoURL = `${URL}/equipe/teamUploads/${idEquipe}/photos`;
+    const x = photo.fileName.split('.');
+    const imageName = `image${Date.now()}.${x[1]}`;
+    const data = new FormData();
+        data.append('name', 'testName');
+        data.append('photo', {
+          uri: photo.uri,
+          type: photo.type,
+          name: imageName
+        });
+      return futch(photoURL, {
+          method: 'post',
+          body: data
+        }, (e) => {
+          const progress = e.loaded / e.total;
+          console.log(progress);
+        }).then((res) => {
+            return res._response;
+        }, (e) => console.log(e));
+};
 const futch = (url, opts = {}, onProgress) => {
     console.log(url, opts);
     return new Promise((res, rej) => {
@@ -79,6 +100,7 @@ const futch = (url, opts = {}, onProgress) => {
         xhr.send(opts.body);
     });
 };
+
 export const getTeams = (text, page) => {
     const requestURL = `${URL}/equipe?name=${text}&page=${page}`;
     return axios.get(requestURL)
@@ -205,8 +227,16 @@ export const deleteRejoindreTeam = (idRejoindreTeam) => {
     }, (res) => {
       throw new Error(res);
     });
-  };
-
+};
+export const deletePictureTeam = (idEquipe, image) => {
+    const requestURL = `${URL}/equipe/teamUploads/${idEquipe}/photos/${image}`;
+    return axios.delete(requestURL)
+    .then((res) => {
+      return res.data;
+  }, (res) => {
+    throw new Error(res);
+  });
+};
 /*export const sendNotificationsTeam = (notification, idEquipe) => {
     const requestURL = `${URL}/notification/${idEquipe}`;
       return axios.post(requestURL, notification, CONFIG).then((res) => {

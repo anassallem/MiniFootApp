@@ -22,7 +22,7 @@ export const createEquipe = (equipe, data, user) => {
     createTeam(equipe, data).then((res) => {
       if (res.success === true) {
         res.message.joueurs = undefined;
-        setCache(res.message);
+        //setCache(res.message);
         createEquipeSuccess(dispatch, res.message, user);
       } else if (res.success === false) {
         createEquipeFail(dispatch);
@@ -43,6 +43,7 @@ const createEquipeFail = (dispatch) => {
 const createEquipeSuccess = (dispatch, equipe, user) => {
     user.user.joueur.type = 'Responsable';
     user.user.equipe = equipe._id;
+    AsyncStorage.setItem('equipe', JSON.stringify(equipe));
     AsyncStorage.mergeItem('user', JSON.stringify(user), () => {
         dispatch({
           type: CREATE_EQUIPE_SUCCESS,
@@ -52,7 +53,7 @@ const createEquipeSuccess = (dispatch, equipe, user) => {
     });
 };
 
-function setCache(equipe) {
+/*function setCache(equipe) {
   try {
      AsyncStorage.setItem('equipe', JSON.stringify(equipe));
      AsyncStorage.getItem('user').then((value) => {
@@ -63,7 +64,7 @@ function setCache(equipe) {
     } catch (error) {
       console.log(error);
     }
-}
+}*/
 
 export const equipeNameChanged = (text) => {
   const valid = validateEmpty(text);

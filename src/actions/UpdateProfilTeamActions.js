@@ -51,7 +51,6 @@ export const updateTeamProfil = (idTeam, team) => {
   return (dispatch) => {
       dispatch({ type: REFRESH_UPDATE_TEAM_START });
       updateTeam(idTeam, team).then((res, err) => {
-        console.log(idTeam, team);
         if (err) {
           console.log(err);
         } else {

@@ -13,7 +13,7 @@ class SingleMembreTeam extends Component {
           AsyncStorage.getItem('equipe').then((value) => {
               const equipe = JSON.parse(value);
               if (joueur.type === 'Responsable') {
-                  Alert.alert('Information', `${firstname} ${lastname} est déja le capitaine`);
+                  Alert.alert('Information', `${firstname} ${lastname} est déja le responsable`);
               } else if (joueur.type === 'Sous Responsable') {
                   Alert.alert('Information', `${firstname} ${lastname} est déja sous responsable`);
               } else {

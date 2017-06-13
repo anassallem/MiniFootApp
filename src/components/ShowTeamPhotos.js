@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-//import ImagePicker from 'react-native-image-crop-picker';
-import { View, TouchableNativeFeedback, Image, Dimensions, Modal, ScrollView } from 'react-native';
+import ImagePicker from 'react-native-image-picker';
+import { View, TouchableNativeFeedback, Image, Dimensions, ScrollView, Modal, ActivityIndicator, Text } from 'react-native';
 import { Header, Right, Body, Title, Icon } from 'native-base';
+import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
-import { setModalVisible, setMultiplePhotos, getPhotosTeam } from '../actions';
+import { setMultiplePhotos, getPhotosTeam, uploadImageEquipe } from '../actions';
 import { URL } from '../actions/api/config';
 
 class ShowTeamPhotos extends Component {
@@ -11,80 +12,97 @@ class ShowTeamPhotos extends Component {
   componentDidMount() {
     this.props.getPhotosTeam(this.props.idEquipe);
   }
-
+  onButtonUpload() {
+      this.props.uploadImageEquipe(this.props.idEquipe, this.props.image);
+  }
+  onClickImage(image, e) {
+      let position = 0;
+      this.props.photos.forEach((photo, i) => {
+         if (photo === image) {
+             position = i;
+         }
+      });
+      Actions.displayPicture({ photos: this.props.photos, index: position, delete: true, idEquipe: this.props.idEquipe, typePictures: 'Team' });
+  }
   onButtonAdd() {
-  /*  ImagePicker.openPicker({
-    multiple: true
-    }).then(images => {
-      this.props.setMultiplePhotos(images);
-    });*/
-  }
-
-  onModalVisible(visible, imageKey) {
-    this.props.setModalVisible(visible, imageKey);
-  }
-
-  getImage() {
-    return this.props.modalImage;
+      const options = {
+          title: 'Select Image',
+          takePhotoButtonTitle: null,
+          storageOptions: {
+            skipBackup: true,
+            path: 'images'
+          },
+          mediaType: 'image'
+      };
+      ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
+          if (response.didCancel) {
+              console.log('User cancelled image picker');
+          } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+          } else {
+              this.props.setMultiplePhotos(response);
+          }
+      });
   }
 
   renderMultiplePhotos() {
-    if (this.props.photos !== null) {
       return this.props.photos.map((photo, key) => {
         return (
-          <View key={key} style={styles.imgWrap}>
-                  <Image source={{ uri: photo.path }} style={styles.imageStyle} />
-          </View>
+            <TouchableNativeFeedback key={key} onPress={this.onClickImage.bind(this, photo)}>
+                <View style={styles.imgWrap}>
+                    <Image source={{ uri: `${URL}/equipe/teamUploads/${photo}` }} style={styles.imageStyle} />
+                </View>
+            </TouchableNativeFeedback>
         );
       });
-    }
   }
-
-  render() {
-    const images = this.props.images.map((val, key) => {
-      const imageTeam = `${URL}/equipe/teamUploads/${val}`;
+  renderImageUpload() {
+      if (this.props.image !== null) {
+          return (
+              <View style={styles.imgWrap}>
+                <Image source={{ uri: this.props.image.uri }} style={styles.imageStyle} />
+              </View>
+          );
+      }
+  }
+  renderButtonUpload() {
+      if (this.props.image !== null) {
+          return (
+              <TouchableNativeFeedback onPress={this.onButtonUpload.bind(this)}>
+                <Icon name="md-checkmark" style={{ color: '#fff', paddingRight: 20 }} />
+              </TouchableNativeFeedback>
+          );
+      }
       return (
-        <TouchableNativeFeedback key={key} onPress={() => { this.onModalVisible(true, imageTeam); }}>
-          <View style={styles.imgWrap}>
-                  <Image source={{ uri: imageTeam }} style={styles.imageStyle} />
-          </View>
-        </TouchableNativeFeedback>
+          <TouchableNativeFeedback onPress={this.onButtonAdd.bind(this)}>
+            <Icon name="ios-camera-outline" style={{ color: '#fff', paddingRight: 20 }} />
+          </TouchableNativeFeedback>
       );
-    });
-
+  }
+  render() {
     return (
-      <View >
+      <View style={{ flex: 1 }}>
         <Header>
           <Body>
               <Title>Photos</Title>
           </Body>
           <Right>
-              <TouchableNativeFeedback onPress={this.onButtonAdd.bind(this)}>
-                <Icon name="ios-camera-outline" style={{ color: '#fff', paddingRight: 20 }} />
-              </TouchableNativeFeedback>
+              {this.renderButtonUpload()}
           </Right>
         </Header>
         <ScrollView>
-
-          <View style={styles.mainContainer}>
-            <Modal
-              style={styles.modalStyle}
-              animationType={'fade'}
-              transparent
-              visible={this.props.modalVisible}
-              onRequestClose={() => {}}
-            >
-              <View style={styles.modalStyle}>
-                <View style={styles.textStyle}>
-                  <TouchableNativeFeedback onPress={() => { this.onModalVisible(false); }}>
-                      <Icon name="ios-close-outline" style={{ color: '#fff' }} />
-                  </TouchableNativeFeedback>
+            <Modal animationType={'fade'} transparent visible={this.props.loading} onRequestClose={() => {}}>
+                <View style={styles.containerStyle}>
+                    <View style={styles.containerModal}>
+                        <ActivityIndicator size="large" />
+                        <Text>  Chargement ...</Text>
+                    </View>
                 </View>
-                  <Image source={{ uri: this.props.modalImage }} style={styles.imageStyle} />
-              </View>
             </Modal>
+          <View style={styles.mainContainer}>
+              {this.renderImageUpload()}
               {this.renderMultiplePhotos()}
-              {images}
           </View>
         </ScrollView>
       </View>
@@ -101,9 +119,6 @@ const styles = {
     headerStyle: {
         marginBottom: 10
     },
-    textHeaderStyle: {
-        color: '#FFFFFF'
-    },
     imageStyle: {
       flex: 1,
       width: null,
@@ -116,19 +131,26 @@ const styles = {
       width: (Dimensions.get('window').width / 2) - 4,
       backgroundColor: '#fff'
     },
-    modalStyle: {
-        flex: 1,
-        padding: 30,
-        backgroundColor: 'rgba(0,0,0, 0.9)'
+    containerStyle: {
+      position: 'relative',
+      flex: 1,
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: 'gray'
     },
-    textStyle: {
-      height: 50,
-      paddingLeft: 280,
+    containerModal: {
+      backgroundColor: '#FFFFFF',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 30,
+      marginLeft: 30,
+      marginRight: 30
     }
-  };
+};
 
 const mapStateToProps = ({ teamPhotos }) => {
-    const { modalVisible, modalImage, images, photos } = teamPhotos;
-    return { modalVisible, modalImage, images, photos };
-  };
-  export default connect(mapStateToProps, { setModalVisible, setMultiplePhotos, getPhotosTeam })(ShowTeamPhotos);
+    const { photos, image, loading } = teamPhotos;
+    return { photos, image, loading };
+};
+export default connect(mapStateToProps, { setMultiplePhotos, getPhotosTeam, uploadImageEquipe })(ShowTeamPhotos);

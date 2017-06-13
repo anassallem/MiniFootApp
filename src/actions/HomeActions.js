@@ -8,7 +8,7 @@ import {
   CHANGE_NUMBER_NOTIFY_ADVERTS,
   GET_USER_CACHE
 } from './types';
-import { getRoomUserById } from './api/RoomsApi';
+import { getDiscussionUserById } from './api/RoomsApi';
 
 export const getUserCache = (user) => {
     return {
@@ -17,10 +17,13 @@ export const getUserCache = (user) => {
     };
 };
 
-export const getRoomUser = (idUser) => {
+export const getRoomUser = (idUser, socket) => {
   return (dispatch) => {
-    getRoomUserById(idUser).then((res) => {
-      dispatch({ type: GET_MY_ROOMS, payload: res });
+    getDiscussionUserById(idUser).then((res) => {
+        res.forEach((room) => {
+            socket.emit('room', room._id);
+        });
+        dispatch({ type: GET_MY_ROOMS, payload: res });
       }, (err) => {
         console.log(err);
       }

@@ -18,15 +18,12 @@ const INITIAL_STATE = {
   dropZoneValues: null,
   imageZoneValues: null,
   loading: false,
-  top: 0,
-  center: 0,
-  bottom: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LOAD_FORMATION:
-      return { ...state, bubbles: action.payload, top: action.top, center: action.center, bottom: action.bottom };
+      return { ...state, bubbles: action.payload };
     case CHANGE_VISIBILITY_ZONE_DROP:
         return { ...state, visibilityZoneDrop: action.payload };
     case SET_DROP_ZONE_VALUES:
@@ -39,11 +36,11 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, loading: true };
     case STOP_LOADING_FORMATION:
         return { ...state, loading: false };
-    case CHANGE_TOP_FORMATION: {
+    /*case CHANGE_TOP_FORMATION: {
         let top = 0;
         let center = 0;
         let bottom = 0;
-        let newBubbles = state.bubbles;
+        let newBubbles = state.bubbles.slice();
         newBubbles.forEach((item) => {
             if (item.idJoueur._id === action.payload) {
                 item.position = { top: 1, center: 0, bottom: 0 };
@@ -58,7 +55,7 @@ export default (state = INITIAL_STATE, action) => {
         let top = 0;
         let center = 0;
         let bottom = 0;
-        let newBubbles = state.bubbles;
+        let newBubbles = state.bubbles.slice();
         newBubbles.forEach((item) => {
             if (item.idJoueur._id === action.payload) {
                 item.position = { top: 0, center: 1, bottom: 0 };
@@ -73,7 +70,7 @@ export default (state = INITIAL_STATE, action) => {
         let top = 0;
         let center = 0;
         let bottom = 0;
-        let newBubbles = state.bubbles;
+        let newBubbles = state.bubbles.slice();
         newBubbles.forEach((item) => {
             if (item.idJoueur._id === action.payload) {
                 item.position = { top: 0, center: 0, bottom: 1 };
@@ -83,7 +80,7 @@ export default (state = INITIAL_STATE, action) => {
             bottom += item.position.bottom;
         });
         return { ...state, bubbles: newBubbles, top, center, bottom };
-    }
+    }*/
     default:
       return state;
   }

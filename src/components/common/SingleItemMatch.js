@@ -7,10 +7,10 @@ const logoEquipe = require('../assets/logoEquipe.jpg');
 
 class SingleItemMatch extends Component {
     renderLogoTeam(logo) {
-        if (logo !== undefined) {
-            return <Image style={styles.styleLogo} source={{ uri: `${URL}/equipe/teamUploads/${logo}` }} />;
+        if (logo === undefined || logo === null) {
+            return <Image style={styles.styleLogo} source={logoEquipe} />;
         }
-        return <Image style={styles.styleLogo} source={logoEquipe} />;
+        return <Image style={styles.styleLogo} source={{ uri: `${URL}/equipe/teamUploads/${logo}` }} />;
     }
     renderButton() {
         const { match, idTeam } = this.props;

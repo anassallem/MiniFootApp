@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, ScrollView, TouchableNativeFeedback, Dimensions } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import { emailChanged, passwordChanged, loginUser, loadUser, tokenChanged, setMessageError } from '../actions';
-import { InputTextAuth, SButton, Spinner } from './common';
+import { InputTextAuth, Spinner } from './common';
+import { URL } from '../actions/api/config';
 
-const background = require('./assets/login.png');
+const background = require('./assets/grass.jpg');
+const logo = require('./assets/logo.png');
 
 class LoginForm extends Component {
 
@@ -17,10 +19,19 @@ class LoginForm extends Component {
           that.props.tokenChanged(token.token);
       },
       onNotification: function (notification) {
-          PushNotification.localNotification({
-            message: notification.message,
-            title: notification.title
-          });
+          console.log(notification);
+          if (notification.tag === 'TEAM') {
+              PushNotification.localNotification({
+                  message: notification.message,
+                  title: notification.title,
+                  smallIcon: `${URL}/equipe/teamUploads/${notification.logo}`
+              });
+          } else {
+              PushNotification.localNotification({
+                  message: notification.message,
+                  title: notification.title
+              });
+          }
       },
       senderID: '1032879928127',
       permissions: {
@@ -60,65 +71,78 @@ class LoginForm extends Component {
       return <Spinner size="large" />;
     }
     return (
-      <SButton onPress={this.onButtonPress.bind(this)}>
-        Login
-      </SButton>
+        <TouchableNativeFeedback onPress={this.onButtonPress.bind(this)}>
+                <View style={styles.styleButton}>
+                    <Text style={styles.textWhite}>CONNEXION</Text>
+                </View>
+        </TouchableNativeFeedback>
     );
   }
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <Image source={background} square style={styles.backgroundImage} >
-          <View style={{ flex: 1 }} />
-          <View style={{ marginLeft: 20, marginRight: 20 }}>
-            <InputTextAuth
-              placeholder="Adresse e-mail"
-              onChangeText={this.onEmailChange.bind(this)}
-              value={this.props.email}
-              testInput={this.props.testEmail}
-              icon={'ios-mail-outline'}
-            />
-            <InputTextAuth
-              secureTextEntry
-              placeholder="Mot de passe"
-              onChangeText={this.onPasswordChange.bind(this)}
-              value={this.props.password}
-              testInput={this.props.testPassword}
-              icon={'ios-lock-outline'}
-            />
-            {this.renderButton()}
-            <Text style={styles.errorTextStyle} onPress={this.onTextPress.bind(this)}>
-                {this.props.error}
-            </Text>
-            <Text style={styles.registerTextStyle} onPress={this.onTextPress.bind(this)}>
-                S'INSCRIRE
-            </Text>
-        </View>
-      </Image>
-    </View>
+        <ScrollView>
+            <Image source={background} style={styles.backgroundImage} >
+                <Image source={logo} style={{ width: 300, height: 300, alignSelf: 'center' }} />
+                <View style={{ marginLeft: 20, marginRight: 20, alignItems: 'center', justifyContent: 'center' }}>
+                    <InputTextAuth
+                        placeholder="Adresse e-mail"
+                        onChangeText={this.onEmailChange.bind(this)}
+                        value={this.props.email}
+                        testInput={this.props.testEmail}
+                        icon={'ios-mail-outline'}
+                    />
+                    <InputTextAuth
+                        secureTextEntry
+                        placeholder="Mot de passe"
+                        onChangeText={this.onPasswordChange.bind(this)}
+                        value={this.props.password}
+                        testInput={this.props.testPassword}
+                        icon={'ios-lock-outline'}
+                    />
+                    <Text style={styles.errorTextStyle} onPress={this.onTextPress.bind(this)}>
+                        {this.props.error}
+                    </Text>
+                    {this.renderButton()}
+                    <Text style={styles.registerTextStyle} onPress={this.onTextPress.bind(this)}>
+                        Vous n'avez pas un compte ? inscrivez-vous
+                    </Text>
+                </View>
+            </Image>
+        </ScrollView>
     );
   }
 }
-
+const { width } = Dimensions.get('window');
 const styles = {
-  backgroundImage: {
-    flex: 1,
-    width: null,
-    backgroundColor: 'transparent',
-  },
-  registerTextStyle: {
-    fontSize: 16,
-    alignSelf: 'center',
-    color: '#FFFFFF',
-    marginBottom: 40
-  },
-  errorTextStyle: {
-    fontSize: 14,
-    alignSelf: 'center',
-    color: '#000000',
-    marginBottom: 10
-  }
+    backgroundImage: {
+        width: null,
+    },
+    registerTextStyle: {
+        fontSize: 14,
+        color: '#FFFFFF',
+    },
+    errorTextStyle: {
+        fontSize: 14,
+        color: '#000000',
+        marginBottom: 10
+    },
+    styleButton: {
+        width: width - 40,
+        alignItems: 'center',
+        backgroundColor: '#C8E6C9',
+        justifyContent: 'center',
+        borderWidth: 2,
+        paddingTop: 10,
+        paddingBottom: 10,
+        borderColor: '#1B5E20',
+        borderRadius: 8,
+        marginBottom: 10,
+    },
+    textWhite: {
+        fontSize: 16,
+        color: '#2E7D32',
+    }
 };
 
 const mapStateToProps = ({ auth }) => {

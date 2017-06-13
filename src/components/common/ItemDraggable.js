@@ -40,7 +40,7 @@ class ItemDraggable extends Component {
             this.state.pan.flattenOffset();
             this.state.bounceValue.setValue(1);
             Animated.spring(this.state.bounceValue, { toValue: 1.1, friction: 3 }).start();
-            if (imageZoneValues !== null) {
+            /*if (imageZoneValues !== null) {
                 const partie = (imageZoneValues.height / 3) - 50;
                 if ((gesture.moveY > partie) && (gesture.moveY < (partie * 2))) {
                     that.props.changeFormationTeam(this.props.bubble.idJoueur._id, 1, 0, 0);
@@ -49,7 +49,7 @@ class ItemDraggable extends Component {
                 } else {
                     that.props.changeFormationTeam(this.props.bubble.idJoueur._id, 0, 0, 1);
                 }
-            }
+            }*/
         }
     });
   }
@@ -85,7 +85,7 @@ let styles = StyleSheet.create({
     borderRadius: CIRCLE_RADIUS,
     margin: 2,
     borderColor: '#F0F0F0',
-    borderWidth: 1
+    borderWidth: 1,
     },
     text: {
       textAlign: 'center',

@@ -1,50 +1,27 @@
 import { Actions } from 'react-native-router-flux';
 import {
   GET_PLAYER_ONLINE,
-  SOCKET_CHANGED,
-  GET_ALL_DISCUSSION,
-  ID_USER_CHANGED,
+  ON_NEW_MESSAGE_RECEIVE,
+  CHANGE_ROOM_TO_VUE
 } from './types';
-import { getDiscussionUserById, getDiscussionByIdFriend, setRoomToVue } from './api/RoomsApi';
+import { getDiscussionByIdFriend, setRoomToVue, updateRoom } from './api/RoomsApi';
 
-export const getPlayerOnline = (socket) => {
-  return (dispatch) => {
-    socket.on('list_connectee', (data) => {
-      dispatch({ type: GET_PLAYER_ONLINE, payload: data });
-    });
-  };
+
+export const onNewMessageReceive = (idRoom, room, users) => {
+    return (dispatch) => {
+        updateRoom(idRoom, room).then((res) => {
+            res.users = users;
+          dispatch({ type: ON_NEW_MESSAGE_RECEIVE, payload: res });
+        }, (err) => {
+          console.log(err);
+        });
+    };
 };
 
-export const socketChanged = (socket) => {
-  return {
-    type: SOCKET_CHANGED,
-    payload: socket
-  };
-};
-
-export const changeIdUser = (idUser) => {
-  return {
-    type: ID_USER_CHANGED,
-    payload: idUser
-  };
-};
-
-export const getDiscussionPlayer = (idUser, mySocket) => {
-  return (dispatch) => {
-    getDiscussionUserById(idUser).then((res) => {
-      dispatch({ type: GET_ALL_DISCUSSION, payload: res });
-      res.forEach((item) => {
-                  mySocket.on(item._id, (data) => {
-                    getDiscussionUserById(idUser).then((res) => {
-                      dispatch({ type: GET_ALL_DISCUSSION, payload: res });
-                    }, (err) => {
-                      console.log(err);
-                    });
-                  });
-                });
-      }, (err) => {
-        console.log(err);
-      });
+export const getPlayerOnline = (data) => {
+    return {
+      type: GET_PLAYER_ONLINE,
+      payload: data
     };
 };
 
@@ -63,6 +40,7 @@ export const changeRoomToVue = (user, mySocket, room, title) => {
   return (dispatch) => {
     const newUser = { _id: user.idUser, name: `${user.firstname} ${user.lastname}`, avatar: user.photo };
     setRoomToVue(room._id, newUser).then((res) => {
+        dispatch({ type: CHANGE_ROOM_TO_VUE, user: newUser, idRoom: room._id });
       Actions.chat({ user, mySocket, room, title });
     }, (err) => {
       console.log(err);

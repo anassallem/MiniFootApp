@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableNativeFeedback, AsyncStorage } from 'react-native';
-import { Actions } from 'react-native-router-flux';
+import { TouchableNativeFeedback, AsyncStorage, View, Dimensions } from 'react-native';
 import { Container, Thumbnail, Text, Content,
      ListItem, Left, Right, Icon, Body } from 'native-base';
 import { URL } from '../actions/api/config';
@@ -27,10 +26,23 @@ class SideBar extends Component {
           return (
               <Thumbnail style={backgroundImage} square source={background}>
                    <Thumbnail source={{ uri: uriImg }}
-                    style={{ width: 70, height: 70 }}
+                    style={{ width: 80, height: 80, alignSelf: 'center' }}
                    />
-                <Text style={textUserStyle}>{ user.user.firstname + ' ' + user.user.lastname}</Text>
-                   <Text style={textUserStyle}>{user.user.email}</Text>
+               <Text style={textUserStyle}>{user.user.firstname} {user.user.lastname}</Text>
+                   <View style={styles.containerInfo}>
+                       <View style={styles.containerBodyInfo}>
+                           <Icon name='ios-shirt-outline' style={styles.styleIcon} />
+                           <Text style={styles.textWhite}>{user.user.joueur.poste}</Text>
+                       </View>
+                       <View style={styles.containerBodyInfo}>
+                           <Icon name='ios-man-outline' style={styles.styleIcon} />
+                           <Text style={styles.textWhite}>{user.user.joueur.taille} cm</Text>
+                       </View>
+                       <View style={styles.containerBodyInfoLast}>
+                           <Icon name='ios-speedometer-outline' style={styles.styleIcon} />
+                           <Text style={styles.textWhite}>{user.user.joueur.poid} Kg</Text>
+                       </View>
+                   </View>
               </Thumbnail>
           );
       }
@@ -127,13 +139,11 @@ class SideBar extends Component {
   }
 }
 
-//const { height } = Dimensions.get('window');
+const width = (Dimensions.get('window').width - (Dimensions.get('window').width / 5)) - 40;
 const styles = {
   backgroundImage: {
     flex: 1,
-    backgroundColor: 'transparent',
     width: null,
-    justifyContent: 'flex-end',
     padding: 20,
   },
   containerNavigation: {
@@ -147,7 +157,39 @@ const styles = {
     color: '#212121'
   },
   textUserStyle: {
-    color: '#FFF'
-  }
+    color: '#FFF',
+    alignSelf: 'center'
+  },
+  containerInfo: {
+      flexDirection: 'row',
+      borderTopWidth: 0.5,
+      marginTop: 10,
+      backgroundColor: 'rgba(0,0,0,0.3)',
+      borderTopColor: '#FFFFFF'
+  },
+  containerBodyInfo: {
+      flexDirection: 'column',
+      borderRightWidth: 0.5,
+      borderRightColor: '#FFFFFF',
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: width / 3
+  },
+  containerBodyInfoLast: {
+      flexDirection: 'column',
+      padding: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: width / 3
+  },
+  textWhite: {
+      color: '#FFFFFF',
+      fontSize: 14
+  },
+  styleIcon: {
+      color: '#FFFFFF',
+      fontSize: 20
+  },
 };
 export default SideBar;

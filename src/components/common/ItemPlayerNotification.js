@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableNativeFeedback } from 'react-native';
+import { View, TouchableNativeFeedback, AsyncStorage, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Actions } from 'react-native-router-flux';
 import moment from 'moment';
@@ -12,14 +12,37 @@ const logoEquipe = require('../assets/logoEquipe.jpg');
 class ItemPlayerNotification extends Component {
   onClickName() {
       const { from } = this.props.notification.rejoin;
-      Actions.searchPlayerProfile({ player: from, title: `${from.firstname} ${from.lastname}` });
+      try {
+          AsyncStorage.getItem('user').then((value) => {
+              const user = JSON.parse(value);
+              if (user.user.equipe === from._id) {
+                  Actions.profileEquipe({ idEquipe: from._id });
+              } else if (user.user.equipe === undefined) {
+                  Actions.searchTeamProfile({ idEquipe: from._id, title: `${from.name}` });
+              } else {
+                  Actions.searchTeamProfile({ idEquipe: from._id, title: `${from.name}`, test: true });
+              }
+          }).done();
+      } catch (e) {
+          console.log('caught error', e);
+      }
+      //Actions.searchPlayerProfile({ player: from, title: `${from.firstname} ${from.lastname}` });
   }
-
   onClickAccept() {
       const { _id, rejoin } = this.props.notification;
-      this.props.acceptNotification(_id, { idUser: rejoin.to, idEquipe: rejoin.from._id });
+      try {
+          AsyncStorage.getItem('user').then((value) => {
+              const user = JSON.parse(value);
+              if (user.user.equipe === undefined || user.user.equipe === null) {
+                   this.props.acceptNotification(_id, { idUser: rejoin.to, idEquipe: rejoin.from._id });
+              } else {
+                  Alert.alert('Attention', "Vous devez quitter votre équipe avant l'accepter");
+              }
+        }).done();
+      } catch (e) {
+          console.log('caught error', e);
+      }
   }
-
   onClickReject() {
       this.props.deleteNotification(this.props.notification._id);
   }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Swiper from 'react-native-swiper';
 import { View, Image, TouchableNativeFeedback, Text } from 'react-native';
+import { connect } from 'react-redux';
 import { URL } from '../actions/api/config';
-
+import { deletePictureMyTeam } from '../actions';
 
 class DisplayPicture extends Component {
-  onClickDelete() {
-
+  onClickDelete(photo, e) {
+      this.props.deletePictureMyTeam(this.props.idEquipe, photo);
   }
   renderButtonDelete(photo) {
       if (this.props.delete) {
@@ -79,4 +80,4 @@ const styles = {
     }
 };
 
-export default DisplayPicture;
+export default connect(null, { deletePictureMyTeam })(DisplayPicture);
