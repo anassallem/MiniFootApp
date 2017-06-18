@@ -24,12 +24,13 @@ class LoginForm extends Component {
               PushNotification.localNotification({
                   message: notification.message,
                   title: notification.title,
-                  smallIcon: `${URL}/equipe/teamUploads/${notification.logo}`
+                  largeIcon: `${URL}/equipe/teamUploads/${notification.logo}`
               });
-          } else {
+          } else if (notification.tag === 'USER') {
               PushNotification.localNotification({
                   message: notification.message,
-                  title: notification.title
+                  title: notification.title,
+                  largeIcon: `${URL}/users/upload/${notification.photo}`
               });
           }
       },

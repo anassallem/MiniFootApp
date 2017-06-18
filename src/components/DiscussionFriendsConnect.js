@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, ListView, Text } from 'react-native';
+import { View, ListView, Text, ActivityIndicator } from 'react-native';
 import { Icon } from 'native-base';
 import { getPlayerOnline } from '../actions';
 import ItemPlayerConnect from './common/ItemPlayerConnect';
 
 class DiscussionFriendsConnect extends Component {
-  constructor(props) {
+    constructor(props) {
         super(props);
         this.props.socket.emit('list_connectee', this.props.user._id);
     }
@@ -30,7 +30,19 @@ class DiscussionFriendsConnect extends Component {
     renderRow(player) {
         return <ItemPlayerConnect player={player} />;
     }
-
+    renderFriendsOnline() {
+        if (this.props.online.length === 0) {
+            return <ActivityIndicator size="large" color={['#1976D2']} />;
+        }
+        return (
+            <ListView
+              enableEmptySections
+              dataSource={this.dataSource}
+              renderRow={this.renderRow.bind(this)}
+              pageSize={10}
+            />
+        );
+    }
     render() {
       return (
         <View>
@@ -38,12 +50,7 @@ class DiscussionFriendsConnect extends Component {
             <Icon name={'ios-barcode-outline'} />
             <Text style={styles.textStyle}>Amis en ligne</Text>
           </View>
-             <ListView
-               enableEmptySections
-               dataSource={this.dataSource}
-               renderRow={this.renderRow}
-               pageSize={10}
-             />
+             {this.renderFriendsOnline()}
         </View>
     );
     }

@@ -49,7 +49,8 @@ export const saveFormationTeam = (idEquipe, players) => {
       dispatch({ type: START_LOADING_FORMATION });
       let formation = [];
       players.forEach((player) => {
-          formation.push({ idJoueur: player.idJoueur._id, pan: { x: player.pan.x, y: player.pan.y }, position: player.position });
+          //, position: player.position
+          formation.push({ idJoueur: player.idJoueur._id, pan: { x: player.pan.x, y: player.pan.y } });
       });
       saveFormationMyTeam(idEquipe, { formation }).then((res) => {
           dispatch({ type: STOP_LOADING_FORMATION });

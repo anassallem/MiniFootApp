@@ -15,7 +15,7 @@ class SingleMembreTeamCapitaine extends Component {
               if (joueur.type === 'Responsable') {
                   Alert.alert('Information', 'Vous êtes déja le responsable');
               } else {
-                  Alert.alert('Attention', `Vous voulez vraiment nommée ${firstname} ${lastname} responsable d'équipe. si vous confirmer tu perdre le droit des autres fonctionalitées`,
+                  Alert.alert('Attention', `Voulez vous vraiment nommée ${firstname} ${lastname} responsable d'équipe. Votre confirmation supprime les fonctionnalités d’un responsable`,
                   [{ text: 'Confirmer', onPress: () => this.renameCapitaine(_id, equipe) }, { text: 'Annuler', onPress: () => console.log('OK Pressed!') }]);
               }
           }).done();

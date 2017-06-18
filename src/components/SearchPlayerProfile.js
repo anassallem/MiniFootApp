@@ -41,7 +41,8 @@ class SearchPlayerProfile extends Component {
       try {
            AsyncStorage.getItem('user').then((value) => {
                const user = JSON.parse(value);
-               this.props.addInvitationFriend(user.user._id, this.props.player._id, { title: `${user.user.firstname} ${user.user.lastname}` });
+               this.props.addInvitationFriend(user.user._id, this.props.player._id, `${user.user.firstname} ${user.user.lastname}`, user.user.photo);
+               this.props.socket.emit('invitation_friend', this.props.player._id);
            }).done();
          } catch (e) {
              console.log('caught error', e);
@@ -157,8 +158,9 @@ const styles = {
      marginLeft: 10
  }
 };
-const mapStateToProps = ({ userProfile }) => {
+const mapStateToProps = ({ userProfile, homeDiscussion }) => {
   const { skills, relationship, refresh } = userProfile;
-  return { skills, relationship, refresh };
+  const { socket } = homeDiscussion;
+  return { skills, relationship, refresh, socket };
 };
 export default connect(mapStateToProps, { getSkills, getRelationship, deleteFriend, cancelInvitationFriend, addInvitationFriend, confirmInvitations, closeModal })(SearchPlayerProfile);

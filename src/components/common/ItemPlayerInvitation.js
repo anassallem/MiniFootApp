@@ -11,10 +11,9 @@ class ItemPlayerInvitation extends Component {
       const { from } = this.props.invitation;
       Actions.searchPlayerProfile({ player: from, title: `${from.firstname} ${from.lastname}` });
   }
-
   onClickAccept() {
       const { from, to, _id } = this.props.invitation;
-      this.props.acceptInvitations(_id, { idUser: to, friend: from._id });
+      this.props.acceptInvitations(_id, { idUser: to, friend: from._id }, this.props.socket);
   }
 
   onClickReject() {

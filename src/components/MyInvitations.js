@@ -29,7 +29,7 @@ class MyInvitations extends Component {
     this.dataSource = ds.cloneWithRows(invitations);
   }
   renderRow(invitation) {
-    return <ItemPlayerInvitation invitation={invitation} />;
+    return <ItemPlayerInvitation invitation={invitation} socket={this.props.socket} />;
   }
   render() {
       return (
@@ -51,7 +51,7 @@ class MyInvitations extends Component {
 }
 const mapStateToProps = ({ myInvitations, homeDiscussion }) => {
   const { invitations, loading, page } = myInvitations;
-  const { user } = homeDiscussion;
-  return { invitations, loading, page, user };
+  const { user, socket } = homeDiscussion;
+  return { invitations, loading, page, user, socket };
 };
 export default connect(mapStateToProps, { getInvitations })(MyInvitations);

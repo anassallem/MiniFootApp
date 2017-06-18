@@ -11,7 +11,8 @@ import Notification from './Notification';
 import ListAdverts from './ListAdverts';
 import { URL } from '../actions/api/config';
 import { Headers } from './common';
-import { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe, changeNumberAdverts } from '../actions';
+import { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, onNewRoomCreated,
+     changePage, changeNumberEquipe, changeNumberAdverts, changeNumberNotifyFriend, initialStateNumberNotifyFriend } from '../actions';
 
 class Home extends Component {
 
@@ -25,8 +26,16 @@ class Home extends Component {
             this.socket.emit('add_user', user.user._id);
             this.props.getRoomUser(user.user._id, this.socket);
             this.socket.on(user.user._id, (notification) => {
-                this.props.changeNumberNotify();
-                this.props.changePage('Notification');
+                if (notification === 'Friend') {
+                    this.props.changeNumberNotifyFriend();
+                } else if (notification === 'TEAM') {
+                    this.props.changeNumberNotify();
+                    this.props.changePage('Notification');
+                } else {
+                    // for new room
+                    console.log(notification);
+                    this.props.onNewRoomCreated(notification);
+                }
             });
             this.socket.on(user.user.equipe, (rejoindre) => {
               if (user.user._id !== rejoindre.joinTeam.from) {
@@ -43,7 +52,7 @@ class Home extends Component {
       this.props.getSocket(this.socket);
   }
 
-  /*/*componentWillReceiveProps(nextProps) {
+  /*componentWillReceiveProps(nextProps) {
     nextProps.rooms.forEach((room) => {
         nextProps.socket.emit('room', room._id);
     });
@@ -54,6 +63,7 @@ class Home extends Component {
   }
   handelFriends() {
       Actions.listFriends();
+      this.props.initialStateNumberNotifyFriend();
       this.closeDrawer();
   }
   handleMesAdverts() {
@@ -74,7 +84,7 @@ class Home extends Component {
   }
   handelDeconnexion() {
       try {
-          this.props.socket.emit('disconnect', this.props.user._id);
+          //this.props.socket.emit('disconnect', this.props.user._id);
           AsyncStorage.removeItem('user');
           AsyncStorage.removeItem('equipe');
           this.props.initialStateHome();
@@ -132,11 +142,13 @@ class Home extends Component {
       <Drawer
               ref={(ref) => { this.drawer = ref; }}
               content={<SideBar onClickProfil={this.handelProfile.bind(this)}
-              onClickFriends={this.handelFriends.bind(this)} onClickEquipe={this.handelEquipe.bind(this)}
+              onClickFriends={this.handelFriends.bind(this)}
+              onClickEquipe={this.handelEquipe.bind(this)}
               onClickMatchs={this.handleMatchs.bind(this)}
               onClickListStades={this.handleListStade.bind(this)}
               onClickDeconnexion={this.handelDeconnexion.bind(this)}
               onClickAdverts={this.handleMesAdverts.bind(this)}
+              notifyFriend={this.props.numberNotifyFriend}
               tweenDuration={100}
               />}
               onClose={() => this.closeDrawer()}
@@ -200,7 +212,18 @@ const styles = {
   }
 };
 const mapStateToProps = ({ homeDiscussion }) => {
-  const { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts } = homeDiscussion;
-  return { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts };
+  const { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts, numberNotifyFriend } = homeDiscussion;
+  return { user, rooms, socket, numberNotify, notify, menu, numberNotifyTeam, numberNotifyAdverts, numberNotifyFriend };
 };
-export default connect(mapStateToProps, { getUserCache, getSocket, getRoomUser, initialStateHome, changeNumberNotify, changePage, changeNumberEquipe, changeNumberAdverts })(Home);
+export default connect(mapStateToProps,
+    { getUserCache,
+      getSocket,
+      getRoomUser,
+      initialStateHome,
+      changeNumberNotify,
+      changePage,
+      changeNumberEquipe,
+      changeNumberAdverts,
+      changeNumberNotifyFriend,
+      initialStateNumberNotifyFriend,
+      onNewRoomCreated })(Home);

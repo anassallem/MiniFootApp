@@ -65,7 +65,6 @@ export const uploadImage = (idUser, photo) => {
 export const getRelationship = (idUser, idFriend) => {
     return (dispatch) => {
         getRelationshipUser(idUser, idFriend).then((res, err) => {
-          console.log(res);
           if (err) {
             console.log(err);
           } else {
@@ -99,13 +98,13 @@ export const cancelInvitationFriend = (idInvitation) => {
     };
 };
 
-export const addInvitationFriend = (idUser, idFriend, title) => {
+export const addInvitationFriend = (idUser, idFriend, title, photo) => {
     return (dispatch) => {
-        addInvitation(idUser, idFriend, title).then((res, err) => {
+        addInvitation(idUser, idFriend, title, photo).then((res, err) => {
           if (err) {
             console.log(err);
           } else {
-              dispatch({ type: ADD_INVITATION_USER, payload: res });
+              dispatch({ type: ADD_INVITATION_USER, payload: res.data._id });
           }
         });
     };

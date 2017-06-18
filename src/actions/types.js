@@ -76,6 +76,9 @@ export const PAGE_HOME_CHANGED = 'page_home_changed';
 export const MENU_HOME_CHANGED = 'menu_home_changed';
 export const CHANGE_NUMBER_NOTIFY_TEAM = 'change_number_notify_team';
 export const CHANGE_NUMBER_NOTIFY_ADVERTS = 'change_number_notify_adverts';
+export const CHANGE_NUMBER_NOTIFY_FRIENDS = 'change_number_notify_friends';
+export const INITIAL_STATE_HOME_NUMBER_NOTIFY_FRIENDS = 'initial_state_home_number_notify_friends';
+export const ON_NEW_ROOM_CREATED = 'on_new_room_created';
 //Equipe
 export const CHANGE_STEP_ZERO = 'change_step_zero';
 export const CHANGE_STEP_ONE = 'change_step_one';

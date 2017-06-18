@@ -70,9 +70,10 @@ export const deleteInvitationFriend = (idInvitation) => {
     });
 };
 
-export const addInvitation = (idUser, idFriend, title) => {
+export const addInvitation = (idUser, idFriend, title, photo) => {
     const requestURL = `${URL}/friends/${idUser}/notificate?to=${idFriend}`;
-      return axios.post(requestURL, title)
+    const notify = { title, photo };
+      return axios.post(requestURL, notify)
       .then((res) => {
         return res.data;
     }, (res) => {

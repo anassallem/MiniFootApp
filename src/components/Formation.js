@@ -57,7 +57,6 @@ class Formation extends Component {
   }
   renderBubbles() {
       const { imageZoneValues } = this.props;
-      console.log(this.props.bubbles);
     return this.props.bubbles.map((bubble) => {
       return (<ItemDraggable key={bubble.idJoueur._id} bubble={bubble} imageZoneValues={imageZoneValues}
                 handleVisibility={this.onVisibilityZoneDrop.bind(this)} changeFormationTeam={this.handelChangeFormation.bind(this)}
@@ -151,6 +150,7 @@ let styles = StyleSheet.create({
   styleContainerImage: {
       flex: 1,
       width: undefined,
+      height: undefined,
       backgroundColor: 'transparent'
   },
   dropZone: {
@@ -189,9 +189,9 @@ let styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({ formation, homeDiscussion }) => {
-  const { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom } = formation;
+  const { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading } = formation;
   const { user } = homeDiscussion;
-  return { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, top, center, bottom, user };
+  return { bubbles, visibilityZoneDrop, dropZoneValues, imageZoneValues, loading, user };
 };
 
 export default connect(mapStateToProps, { equipeFetchFormation, changeVisibilityDropZone, setDropZone, filterBubblesVisibility, saveFormationTeam, setImageZone, changeFormation })(Formation);

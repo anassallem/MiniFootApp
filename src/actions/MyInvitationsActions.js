@@ -18,8 +18,7 @@ export const getInvitations = (page, idUser) => {
         }
       }, (err) => {
         console.log(err);
-      }
-    );
+      });
     };
 };
 
@@ -29,18 +28,18 @@ export const deleteInvitations = (idInvitation) => {
       dispatch({ type: DELETE_INVITATIONS, payload: idInvitation });
       }, (err) => {
         console.log(err);
-      }
-    );
+      });
     };
 };
 
-export const acceptInvitations = (idInvitation, invitation) => {
+export const acceptInvitations = (idInvitation, invitation, socket) => {
   return (dispatch) => {
     acceptInvitationsUser(idInvitation, invitation).then((res) => {
+        console.log(res);
+        socket.emit('newRoomCreated', res);
       dispatch({ type: ACCEPT_INVITATIONS, payload: idInvitation });
       }, (err) => {
         console.log(err);
-      }
-    );
+      });
     };
 };

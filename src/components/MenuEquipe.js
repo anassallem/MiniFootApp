@@ -249,7 +249,6 @@ const styles = {
     }
 };
 
-
 const mapStateToProps = ({ equipe, homeDiscussion }) => {
   const { team, user } = equipe;
   const { numberNotifyTeam } = homeDiscussion;

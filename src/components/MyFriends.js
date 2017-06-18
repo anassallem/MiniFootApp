@@ -29,6 +29,7 @@ class MyFriends extends Component {
     renderRow(player) {
       return <ItemPlayer player={player} />;
     }
+
     render() {
       return (
             <ListView
@@ -37,6 +38,7 @@ class MyFriends extends Component {
               renderRow={this.renderRow.bind(this)}
               onEndReached={this.onEndReached.bind(this)}
               onEndReachedThreshold={5}
+              style={{ marginBottom: 100 }}
               refreshControl={
                <RefreshControl
                  tintColor='blue'

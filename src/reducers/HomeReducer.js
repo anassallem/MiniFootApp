@@ -7,10 +7,13 @@ import {
   MENU_HOME_CHANGED,
   CHANGE_NUMBER_NOTIFY_TEAM,
   CHANGE_NUMBER_NOTIFY_ADVERTS,
+  CHANGE_NUMBER_NOTIFY_FRIENDS,
+  INITIAL_STATE_HOME_NUMBER_NOTIFY_FRIENDS,
   //discussion
   GET_MY_ROOMS,
   ON_NEW_MESSAGE_RECEIVE,
-  CHANGE_ROOM_TO_VUE
+  CHANGE_ROOM_TO_VUE,
+  ON_NEW_ROOM_CREATED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -19,6 +22,7 @@ const INITIAL_STATE = {
   numberNotify: 0,
   numberNotifyTeam: 0,
   numberNotifyAdverts: 0,
+  numberNotifyFriend: 0,
   notify: '',
   menu: '',
   user: null
@@ -36,6 +40,10 @@ export default (state = INITIAL_STATE, action) => {
         return { ...INITIAL_STATE };
     case CHANGE_NUMBER_NOTIFY_HOME:
         return { ...state, numberNotify: state.numberNotify + 1 };
+    case CHANGE_NUMBER_NOTIFY_FRIENDS:
+        return { ...state, numberNotifyFriend: state.numberNotifyFriend + 1 };
+    case INITIAL_STATE_HOME_NUMBER_NOTIFY_FRIENDS:
+        return { ...state, numberNotifyFriend: 0 };
     case CHANGE_NUMBER_NOTIFY_TEAM:
         return { ...state, numberNotifyTeam: state.numberNotifyTeam + 1 };
     case CHANGE_NUMBER_NOTIFY_ADVERTS:
@@ -44,6 +52,8 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, notify: action.payload };
     case MENU_HOME_CHANGED:
         return { ...state, menu: action.payload };
+    case ON_NEW_ROOM_CREATED:
+        return { ...state, rooms: [...state.rooms, ...action.payload] };
     case ON_NEW_MESSAGE_RECEIVE: {
         let newRooms = [];
         state.rooms.forEach((item) => {

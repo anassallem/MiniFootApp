@@ -35,7 +35,6 @@ class ItemDraggable extends Component {
           Animated.spring(this.state.bounceValue, { toValue: 1.2, friction: 3 }).start();
         },
         onPanResponderRelease: (e, gesture) => {
-            const { imageZoneValues } = this.props;
             this.props.handleVisibility(false, gesture, this.props.bubble._id);
             this.state.pan.flattenOffset();
             this.state.bounceValue.setValue(1);

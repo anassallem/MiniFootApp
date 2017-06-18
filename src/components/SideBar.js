@@ -18,7 +18,11 @@ class SideBar extends Component {
           console.log('caught error', e);
       }
   }
-
+  renderNumberNotification() {
+      if (this.props.notifyFriend > 0) {
+          return <Text style={styles.styleNotify}>{this.props.notifyFriend}</Text>;
+      }
+  }
   renderUser() {
       const { backgroundImage, textUserStyle } = styles;
       if (user !== null) {
@@ -76,7 +80,10 @@ class SideBar extends Component {
                             <Icon name="ios-people-outline" style={colorIcon} />
                         </Left>
                         <Body>
-                            <Text style={textStyle}>Mes amis</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text style={textStyle}>Mes amis</Text>
+                                {this.renderNumberNotification()}
+                            </View>
                         </Body>
                         <Right />
                     </ListItem>
@@ -191,5 +198,14 @@ const styles = {
       color: '#FFFFFF',
       fontSize: 20
   },
+  styleNotify: {
+      backgroundColor: 'red',
+      color: '#FFFFFF',
+      paddingTop: 2,
+      paddingBottom: 2,
+      paddingRight: 5,
+      paddingLeft: 5,
+      fontSize: 14
+  }
 };
 export default SideBar;

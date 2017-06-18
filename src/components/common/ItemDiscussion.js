@@ -7,6 +7,7 @@ import { URL } from '../../actions/api/config';
 class ItemDiscussion extends Component {
     componentWillMount() {
         this.props.socket.on(this.props.room._id, (message) => {
+            console.log(this.props.room._id);
             setTimeout(() => {
                 this.props.messageReceive(this.props.room._id, message, this.props.room.users);
             }, 500);
