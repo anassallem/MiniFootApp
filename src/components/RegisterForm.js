@@ -205,7 +205,7 @@ const styles = {
   errorMessageStyle: {
     fontSize: 14,
     alignSelf: 'center',
-    color: '#000000',
+    color: '#FFFFFF',
     marginBottom: 10
   }
 };

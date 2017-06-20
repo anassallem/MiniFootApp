@@ -62,6 +62,7 @@ export const loginUser = (user) => {
   return (dispatch) => {
     dispatch({ type: LOGIN_USER });
     auth(user).then((res) => {
+        console.log(res);
       if (res.success === true) {
         loginUserSuccess(dispatch, res);
       } else if (res.success === false) {
@@ -73,6 +74,7 @@ export const loginUser = (user) => {
     );
     };
 };
+
 
 const loginUserFail = (dispatch, message) => {
   dispatch({

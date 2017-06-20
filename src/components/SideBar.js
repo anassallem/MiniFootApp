@@ -70,7 +70,7 @@ class SideBar extends Component {
                             <Icon name="ios-contact-outline" style={colorIcon} />
                         </Left>
                         <Body>
-                          <Text style={textStyle}>Profile</Text>
+                          <Text style={textStyle}>Profil</Text>
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>
@@ -115,7 +115,7 @@ class SideBar extends Component {
                             <Icon name="ios-football-outline" style={colorIcon} />
                         </Left>
                         <Body>
-                          <Text style={textStyle}>Mes match</Text>
+                          <Text style={textStyle}>Mes matchs</Text>
                         </Body>
                     </ListItem>
                 </TouchableNativeFeedback>

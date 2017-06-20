@@ -125,7 +125,7 @@ const styles = {
     },
     errorTextStyle: {
         fontSize: 14,
-        color: '#000000',
+        color: '#FFFFFF',
         marginBottom: 10
     },
     styleButton: {

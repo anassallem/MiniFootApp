@@ -52,10 +52,10 @@ class RouterComponent extends Component {
               <Scene key="home" component={Home} title="home" hideNavBar />
               <Scene key="login" component={LoginForm} title="Login" hideNavBar />
               <Scene key="register" component={RegisterForm} title="Register" hideNavBar />
-              <Scene key="profil" component={ProfilForm} title="Profile" hideNavBar={false}
+              <Scene key="profil" component={ProfilForm} title="Profil" hideNavBar={false}
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-              <Scene key="updateProfil" component={UpdateProfilUser} title="Modifier Profile" hideNavBar />
+              <Scene key="updateProfil" component={UpdateProfilUser} title="Modifier Profil" hideNavBar />
               <Scene key="searchPlayer" component={SearchPlayer} hideNavBar />
               <Scene key="searchPlayerProfile" component={SearchPlayerProfile} hideNavBar={false}
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
@@ -77,7 +77,7 @@ class RouterComponent extends Component {
                   navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="updateProfilTeam" component={UpdateProfilTeam} title="Modifier Equipe" hideNavBar />
-              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select sous responsable"
+              <Scene key="selectAdjoint" component={SelectAdjointEquipe} hideNavBar={false} title="Select un sous responsable"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
           <Scene key="selectCapitaine" component={SelectCapitaineEquipe} hideNavBar={false} title="Select un responsable d'équipe"
@@ -100,10 +100,10 @@ class RouterComponent extends Component {
               <Scene key="mesMatchs" component={MesMatchs} hideNavBar={false} title="Mes Matchs" hideNavBar />
               <Scene key="createMatch" component={CreateMatch} hideNavBar={false} hideNavBar />
               <Scene key="searchStades" component={SearchStades} hideNavBar />
-              <Scene key="profileStade" component={ProfileStade} hideNavBar={false} title="profile"
+              <Scene key="profileStade" component={ProfileStade} hideNavBar={false} title="profil"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
-              <Scene key="reserverStade" component={ReserverStade} hideNavBar={false} title="profile"
+              <Scene key="reserverStade" component={ReserverStade} hideNavBar={false} title="profil"
                 navigationBarStyle={styles.navBar} titleStyle={styles.navBarTitle} backButtonImage={icon}
               />
               <Scene key="matchs" component={Matchs} hideNavBar={false} title="Mes matchs"

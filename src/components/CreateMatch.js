@@ -251,7 +251,7 @@ class CreateMatch extends Component {
                       <Icon name="ios-add-outline" style={styles.styleIconPlus} />
                   </View>
               </TouchableNativeFeedback>
-              <Text style={styles.styleTextWhite}> Sélectionner une stade </Text>
+              <Text style={styles.styleTextWhite}> Sélectionner un stade </Text>
           </View>
       );
   }

@@ -18,7 +18,7 @@ class SingleMatch extends Component {
         if (match.etat === 1) {
             return (
                 <View style={styles.containerMessage}>
-                    <Text style={styles.styleNameTeam}>En attente la réservation de capitaine</Text>
+                    <Text style={styles.styleNameTeam}>En attente la réservation de match</Text>
                 </View>
             );
         } else if (match.etat === 2) {

@@ -87,7 +87,7 @@ class ItemTeamNotificationRejoindre extends Component {
               );
       } else {
           if (joinMatch.accepted) {
-              return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${joinMatch.from.name} pour rejoindre l'équipe`}</Text>;
+              return <Text style={styles.styleText}>{`Vous avez accepté l'invitation de ${joinMatch.from.name} pour jouer un match.`}</Text>;
               }
               return (
                   <View>
